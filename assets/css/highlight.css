@@ -24,7 +24,6 @@ mark {
 }
 
 code,kbd,pre,samp {
-    font-family: monospace,serif;
     font-size: 1em
 }
 
@@ -134,7 +133,6 @@ address {
 }
 
 code,kbd,pre,samp {
-    font-family: "Source Code Pro",monospace
 }
 
 code {
@@ -200,7 +198,6 @@ pre code {
 }
 
 code,pre {
-    font-family: "Source Code Pro",monospace;
     font-size: .9em
 }
 

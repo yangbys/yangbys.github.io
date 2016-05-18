@@ -1,5 +1,5 @@
 
-        <!DOCTYPE HTML>
+  <!DOCTYPE HTML>
 <html >
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     
     
     
-    <title>杨标Blog</title>
+    <title>归档 | 杨标Blog</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -21,7 +21,7 @@
     <meta property="og:type" content="website">
     
     <meta property="og:title" content="">
-    <meta property="og:url" content="/">
+    <meta property="og:url" content="/archives/">
     <meta property="og:site_name" content="杨标Blog">
     <meta property="og:description" content="">
     <meta name="twitter:card" content="summary">
@@ -45,8 +45,8 @@
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
 </head>
 
-  <body>
-    <header>
+    <body>
+      <header>
         <div>
 		    
 			<div id="imglogo">
@@ -82,259 +82,130 @@
 			</nav>
 </div>
 
-    </header>
-    <div id="container">
-      <div id="main">
+      </header>
+      <div id="container">
+        <!--
+<%
+var title = '';
+var icon = '';
+if (page.category){
+  title = page.category;
+  icon = 'category';
+};
+if (page.tag){
+  title = page.tag;
+  icon = 'tag';
+};
+if (page.archive){
+  icon = 'archive';
+  if (page.year) title = page.year+  (page.month ? '/' + page.month : '');
+  else title = __('archive_a');
+};
+%>
+-->
 
+
+
+
+
+
+
+<div class="archive-title" >
+  <h2 class="archive-icon"><span class='archive-folder'>归档</span></h2>
   
-  
-  
-  
+  <div class="archiveslist archive-float clearfix">
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
     
-      <a href="/jekyll/2016/01/10/how-to-use-jacman" title="如何使用 Jacman 主题" itemprop="url">如何使用 Jacman 主题</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="" target="_blank" itemprop="author"></a>
-		
-  <p class="article-time">
-    <time datetime="2016-01-10 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-01-10</time>
     
-  </p>
-</header>
-    <div class="article-content">
+    
+    
+    
+    
+    <ul class="archive-list">
+    <li class="archive-list-item">
+    <a class="archive-list-link" href="#2016-01">2016 年 01 月</a>
+    <span class="archive-list-count">1</span>
+    
+    
         
-        <p>##主题介绍
-Jekyll-Jacman 是为 <a href="http://jekyllrb.com">Jekyll</a> 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 <a href="https://github.com/wuchong/jacman">Jacman</a> 移植而来。</p>
-
-
+    </li>
+    
+    
+    
+    
+    
+    
+    <ul class="archive-list">
+    <li class="archive-list-item">
+    <a class="archive-list-link" href="#2015-09">2015 年 09 月</a>
+    <span class="archive-list-count">1</span>
+    
+    
         
-        
-        <p class="article-more-link">
-          
-            <a href="/jekyll/2016/01/10/how-to-use-jacman#more">Read More</a>
-          
-       </p>
-    </div>
+    </li>
     
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <!--
-  <%- list_categories(item.categories, {
-      show_count: false,
-      class: 'article-category',
-      style: 'none',
-      separator: '►'
-  }) %>
-  -->
-  
-  <a class="article-category-link" href="/categories/#Jekyll">Jekyll</a>
-  
-</div>
-
-
-  <div class="article-tags">
-  <!--
-  <% var tags = [];
-    item.tags.forEach(function(tag){
-      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
-    }); %>-->
-  <span></span> <!--<%- tags.join('') %>-->
-  
-  
-  <a href="/tags/#Jekyll">Jekyll</a>
-  
-  <a href="/tags/#Jacman">Jacman</a>
-  
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-    </article>
-
-
-
-
-
-
-  
-  
-  
-  
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/jekyll/2015/09/20/how-to-use-jacman" title="如何使用 Jacman 主题" itemprop="url">如何使用 Jacman 主题</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="" target="_blank" itemprop="author"></a>
-		
-  <p class="article-time">
-    <time datetime="2015-09-20 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-09-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>##主题介绍
-Jekyll-Jacman 是为 <a href="http://jekyllrb.com">Jekyll</a> 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 <a href="https://github.com/wuchong/jacman">Jacman</a> 移植而来。</p>
-
-
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/jekyll/2015/09/20/how-to-use-jacman#more">Read More</a>
-          
-       </p>
-    </div>
-    
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <!--
-  <%- list_categories(item.categories, {
-      show_count: false,
-      class: 'article-category',
-      style: 'none',
-      separator: '►'
-  }) %>
-  -->
-  
-  <a class="article-category-link" href="/categories/#Jekyll">Jekyll</a>
-  
-</div>
-
-
-  <div class="article-tags">
-  <!--
-  <% var tags = [];
-    item.tags.forEach(function(tag){
-      tags.push('<a href="' + config.root + tag.path + '">' + tag.name + '</a>');
-    }); %>-->
-  <span></span> <!--<%- tags.join('') %>-->
-  
-  
-  <a href="/tags/#Jekyll">Jekyll</a>
-  
-  <a href="/tags/#Jacman">Jacman</a>
-  
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-    </article>
-
-
-
-
-
-
-
-  <nav id="page-nav" class="clearfix">
-  <nav id="page-nav" class="clearfix">
-    
-    
-    <span class="page-number current">1</span>
-    
-    
-     
-  </nav>
-  </nav>
-
-</div>
-      
-      
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
-<aside class="clearfix">
-
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/#Jekyll" title="Jekyll">Jekyll<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			
-				<li><a href="/tags/#Jekyll" title="Jekyll">Jekyll<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/#Jacman" title="Jacman">Jacman<sup>2</sup></a></li>
-			
-		
-		</ul>
-</div>
-
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-        
-          <li>
-            <a href="https://coderq.com,一个面向程序员交流分享的新一代社区" target="_blank" title="码农圈">码农圈</a>
-          </li>
-        
-          <li>
-            <a href="http://wuchong.me" target="_blank" title="Jark's Blog">Jark's Blog</a>
-          </li>
-        
     </ul>
+ </div>
+  
+  
+ 
+  
+ 
+</div>
+<div id="main" class="archive-part clearfix">
+  <div id="archive-page">
+  
+  
+  
+  
+<section class="post 2016-01" itemscope itemprop="blogPost">
+
+
+  
+    <a href="/jekyll/2016/01/10/how-to-use-jacman" title="如何使用 Jacman 主题" itemprop="url">
+  
+
+    <time datetime="2016-01-10 00:00:00 +0800" itemprop="datePublished">2016 年 01 月</time>
+
+
+    <h1 itemprop="name">如何使用 Jacman 主题</h1>
+
+  </a>
+</section>
+  
+  
+  
+  
+<section class="post 2015-09" itemscope itemprop="blogPost">
+
+
+  
+    <a href="/jekyll/2015/09/20/how-to-use-jacman" title="如何使用 Jacman 主题" itemprop="url">
+  
+
+    <time datetime="2015-09-20 00:00:00 +0800" itemprop="datePublished">2015 年 09 月</time>
+
+
+    <h1 itemprop="name">如何使用 Jacman 主题</h1>
+
+  </a>
+</section>
+  
+<!--
+<% if (page.total > 1){ %>
+  <nav id="page-nav" class="clearfix archive-nav">
+    <%- paginator({
+      prev_text: '<span></span>Prev',
+      next_text: 'Next<span></span>'
+    }) %>
+  </nav>
+<% } %>
+-->
+  </div>
 </div>
 
-  <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
-</div>
-
-
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
+      </div>
+      <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -384,7 +255,7 @@ Jekyll-Jacman 是为 <a href="http://jekyllrb.com">Jekyll</a> 设计的一款清
 		</p>
 </div>
 </footer>
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+      <script src="/assets/js/jquery-2.0.3.min.js"></script>
 <script src="/assets/js/jquery.imagesloaded.min.js"></script>
 <script src="/assets/js/gallery.js"></script>
 <script src="/assets/js/jquery.qrcode-0.12.0.min.js"></script>
@@ -448,6 +319,26 @@ $(document).ready(function(){
 -->
 
 
+<script type="text/javascript">
+$(document).ready(function(){
+    var show_post = function(anchor) {
+        $(".post").hide();
+        var cls = anchor.substr(1);
+        $("." + cls).show();
+        $(".archive-folder").text(cls);
+    }
+    if (document.location.hash) {
+        show_post(document.location.hash);
+    }
+    $('a[href*=#]').click(function() {
+        if (this.hash) {
+            show_post(this.hash);
+        }
+    });
+    
+});
+</script>
+
 
 
 <link rel="stylesheet" href="/assets/fancybox/jquery.fancybox.css" media="screen" type="text/css">
@@ -499,6 +390,6 @@ $(document).ready(function(){
 <!-- Tiny_search Begin -->
 
 <!-- Tiny_search End -->
-  </body>
- </html>
+    </body>
+   </html>
 

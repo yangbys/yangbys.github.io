@@ -5,8 +5,8 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Wed, 18 May 2016 16:04:51 +0800</lastBuildDate>
-        <pubDate>Wed, 18 May 2016 16:04:51 +0800</pubDate>
+        <lastBuildDate>Wed, 18 May 2016 18:14:39 +0800</lastBuildDate>
+        <pubDate>Wed, 18 May 2016 18:14:39 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -18,9 +18,9 @@ Jekyll-Jacman 是为 &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&
 &lt;!-- more --&gt;
 &lt;p&gt;##配置指南&lt;/p&gt;
 
-&lt;p&gt;Jacman 主题提供了丰富的配置属性，可以实现您对主题的自定义。配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;位于主题根目录下。本次更新对配置文件进行了较大调整，如您之前就使用了 Jacman，也需要您根据以下指南进行相应的修改。&lt;/p&gt;
+&lt;p&gt;Jacman 主题提供了丰富的配置属性，可以实现您对主题的自定义。配置文件&lt;code&gt;_config.yml&lt;/code&gt;位于主题根目录下。本次更新对配置文件进行了较大调整，如您之前就使用了 Jacman，也需要您根据以下指南进行相应的修改。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##### 菜单
+&lt;pre&gt;&lt;code&gt;##### 菜单
 menu:
   主页: /
   归档: /archives
@@ -120,17 +120,15 @@ tinysou_search:     ## http://tinysou.com/
   enable: false
   id: &quot;4ac092ad8d749fdc6293&quot;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;###属性功能
 - &lt;strong&gt;菜单 menu&lt;/strong&gt;
-默认没有启用 &lt;code class=&quot;highlighter-rouge&quot;&gt;/tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;/categories&lt;/code&gt;页面，如果需要启用请在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中分别建立&lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;文件夹每个文件夹中分别包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：&lt;/p&gt;
+默认没有启用 &lt;code&gt;/tags&lt;/code&gt; 和 &lt;code&gt;/categories&lt;/code&gt;页面，如果需要启用请在博客目录下的&lt;code&gt;source&lt;/code&gt;文件夹中分别建立&lt;code&gt;tags&lt;/code&gt; 和 &lt;code&gt;categories&lt;/code&gt;文件夹每个文件夹中分别包含一个&lt;code&gt;index.md&lt;/code&gt;文件。内容为：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;layout: tags (或categories)
+&lt;pre&gt;&lt;code&gt;layout: tags (或categories)
 title: tags (或categories)
 ---
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
 &lt;p&gt;      因为主题中已经内置了这两个页面的模板，所以他们会被正确的解析出来。&lt;/p&gt;
 
@@ -139,43 +137,43 @@ title: tags (或categories)
 提供了7种小工具。包括标签、分类、RSS、友情链接、微博秀。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;友情链接&lt;/strong&gt;：友情链接的网址添加可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;links&lt;/code&gt;属性下添加。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;友情链接&lt;/strong&gt;：友情链接的网址添加可以在&lt;code&gt;links&lt;/code&gt;属性下添加。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;微博秀&lt;/strong&gt;：需要注意的是，如果要启用微博秀，您必须填上&lt;code class=&quot;highlighter-rouge&quot;&gt;author&lt;/code&gt;属性下&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;的值，前者是您微博ID，后者是您微博秀的验证码，访问 http://app.weibo.com/tool/weiboshow 在如下图位置，可以获得您的 verifier，如：我的是&lt;code class=&quot;highlighter-rouge&quot;&gt;b3593ceb&lt;/code&gt;。
+&lt;p&gt;&lt;strong&gt;微博秀&lt;/strong&gt;：需要注意的是，如果要启用微博秀，您必须填上&lt;code&gt;author&lt;/code&gt;属性下&lt;code&gt;tsina&lt;/code&gt;和&lt;code&gt;weibo_verifier&lt;/code&gt;的值，前者是您微博ID，后者是您微博秀的验证码，访问 http://app.weibo.com/tool/weiboshow 在如下图位置，可以获得您的 verifier，如：我的是&lt;code&gt;b3593ceb&lt;/code&gt;。
 &lt;img src=&quot;http://ww1.sinaimg.cn/large/81b78497jw1emegd6b0ytj209204pweu.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;如果要关闭侧边栏，将&lt;code class=&quot;highlighter-rouge&quot;&gt;close_aside&lt;/code&gt;置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，就会在博文页面自动关闭侧边栏。&lt;/p&gt;
+&lt;p&gt;如果要关闭侧边栏，将&lt;code&gt;close_aside&lt;/code&gt;置为&lt;code&gt;true&lt;/code&gt;，就会在博文页面自动关闭侧边栏。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;图片相关 Image&lt;/strong&gt;
-本主题可以设置网站相关图片，例如网站图标（&lt;code class=&quot;highlighter-rouge&quot;&gt;favicon&lt;/code&gt;）、网站logo（&lt;code class=&quot;highlighter-rouge&quot;&gt;imglogo&lt;/code&gt;）、作者头像（&lt;code class=&quot;highlighter-rouge&quot;&gt;author_img&lt;/code&gt;）。建议启用网站logo，格式建议为&lt;code class=&quot;highlighter-rouge&quot;&gt;.svg&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;.png&lt;/code&gt;格式。同时建议提供配套的 favicon 以及在苹果设备上的图标&lt;code class=&quot;highlighter-rouge&quot;&gt;apple_icon&lt;/code&gt;（背景不要透明）。&lt;/p&gt;
+本主题可以设置网站相关图片，例如网站图标（&lt;code&gt;favicon&lt;/code&gt;）、网站logo（&lt;code&gt;imglogo&lt;/code&gt;）、作者头像（&lt;code&gt;author_img&lt;/code&gt;）。建议启用网站logo，格式建议为&lt;code&gt;.svg&lt;/code&gt;或&lt;code&gt;.png&lt;/code&gt;格式。同时建议提供配套的 favicon 以及在苹果设备上的图标&lt;code&gt;apple_icon&lt;/code&gt;（背景不要透明）。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;首页显示模式 Index&lt;/strong&gt;
-目前首页的显示模式支持两种，一种是原先的卡片式（前往 &lt;a href=&quot;http://wuchong.me/jacman&quot;&gt;Demo&lt;/a&gt; 预览），另一种是类似官方主题的文章展开式（&lt;a href=&quot;http://wuchong.me&quot;&gt;本站&lt;/a&gt;即采用的这种）。两者各有优劣，前者首页加载速度更快，后者文章内容更能吸引读者。主题默认采用后一种展开式，如需开启第一种卡片式，请设置&lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt;属性下的&lt;code class=&quot;highlighter-rouge&quot;&gt;expand: false&lt;/code&gt;。&lt;/p&gt;
+目前首页的显示模式支持两种，一种是原先的卡片式（前往 &lt;a href=&quot;http://wuchong.me/jacman&quot;&gt;Demo&lt;/a&gt; 预览），另一种是类似官方主题的文章展开式（&lt;a href=&quot;http://wuchong.me&quot;&gt;本站&lt;/a&gt;即采用的这种）。两者各有优劣，前者首页加载速度更快，后者文章内容更能吸引读者。主题默认采用后一种展开式，如需开启第一种卡片式，请设置&lt;code&gt;index&lt;/code&gt;属性下的&lt;code&gt;expand: false&lt;/code&gt;。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;卡片式的文章摘要是截取文章内容的前140个字，也可以自己总结&lt;code class=&quot;highlighter-rouge&quot;&gt;description&lt;/code&gt;并将其放在开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中。展开式的文章摘要就是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截取了。&lt;/p&gt;
+&lt;p&gt;卡片式的文章摘要是截取文章内容的前140个字，也可以自己总结&lt;code&gt;description&lt;/code&gt;并将其放在开头的&lt;code&gt;front-matter&lt;/code&gt;中。展开式的文章摘要就是使用&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截取了。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;作者信息 author&lt;/strong&gt;
-作者信息，建议尽量填写完整。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;是你的新浪微博ID，不同于用户名或微博主页地址。启用这个属性后，其他用户在微博上分享你文章的同时会自动@你。同时它和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;一起作用生成微博秀。&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line1&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line2&lt;/code&gt;是网站底部的个人介绍。&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;twitter&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;facebook&lt;/code&gt;等是用来显示网站右下角的社交按钮的，如下图所示。
+作者信息，建议尽量填写完整。其中&lt;code&gt;tsina&lt;/code&gt;是你的新浪微博ID，不同于用户名或微博主页地址。启用这个属性后，其他用户在微博上分享你文章的同时会自动@你。同时它和&lt;code&gt;weibo_verifier&lt;/code&gt;一起作用生成微博秀。&lt;code&gt;intro_line1&lt;/code&gt;和&lt;code&gt;intro_line2&lt;/code&gt;是网站底部的个人介绍。&lt;code&gt;weibo&lt;/code&gt;、&lt;code&gt;twitter&lt;/code&gt;、&lt;code&gt;facebook&lt;/code&gt;等是用来显示网站右下角的社交按钮的，如下图所示。
 &lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emgscr3575j2078050jrc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;目录 toc&lt;/strong&gt;
-是否启用在文章中或侧边栏中的目录功能。二者可以都为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;或都为&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;。同时，如果你希望在特定的某一篇文章中关闭目录功能你可以在文章文件开头中的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;toc: false&lt;/code&gt;。&lt;/p&gt;
+是否启用在文章中或侧边栏中的目录功能。二者可以都为&lt;code&gt;true&lt;/code&gt;或都为&lt;code&gt;false&lt;/code&gt;。同时，如果你希望在特定的某一篇文章中关闭目录功能你可以在文章文件开头中的&lt;code&gt;front-matter&lt;/code&gt;中加上一行&lt;code&gt;toc: false&lt;/code&gt;。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;评论 comments&lt;/strong&gt;
-填写&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo_shortname&lt;/code&gt;&lt;a href=&quot;http://duoshuo.com/&quot;&gt;多说&lt;/a&gt;的用户名，启用多说评论系统。在大陆地区更好用的评论系统。&lt;/p&gt;
+填写&lt;code&gt;duoshuo_shortname&lt;/code&gt;&lt;a href=&quot;http://duoshuo.com/&quot;&gt;多说&lt;/a&gt;的用户名，启用多说评论系统。在大陆地区更好用的评论系统。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;填写&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;&lt;a href=&quot;http://disqus.com/&quot;&gt;disqus&lt;/a&gt; 的用户名，启用 disqus 评论系统。国际上更广泛使用的评论系统。设置博客根目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;同样也能开启该功能。&lt;/p&gt;
+&lt;p&gt;填写&lt;code&gt;disqus_shortname&lt;/code&gt;&lt;a href=&quot;http://disqus.com/&quot;&gt;disqus&lt;/a&gt; 的用户名，启用 disqus 评论系统。国际上更广泛使用的评论系统。设置博客根目录下的&lt;code&gt;_config.yml&lt;/code&gt;文件中的&lt;code&gt;disqus_shortname&lt;/code&gt;同样也能开启该功能。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -184,50 +182,50 @@ title: tags (或categories)
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;网站统计 Analytics&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;google_analytics&lt;/code&gt;：Google Analytics追踪代码。请注意：Google Analytics已经升级到了Universal Analytics。请先前往后台升级你的Google Analytics版本后再启用追踪代码，更多信息请&lt;a href=&quot;https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN&quot;&gt;点击这里&lt;/a&gt;了解。&lt;/p&gt;
+&lt;code&gt;google_analytics&lt;/code&gt;：Google Analytics追踪代码。请注意：Google Analytics已经升级到了Universal Analytics。请先前往后台升级你的Google Analytics版本后再启用追踪代码，更多信息请&lt;a href=&quot;https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN&quot;&gt;点击这里&lt;/a&gt;了解。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_tongji&lt;/code&gt;：百度统计功能。需要填写站点特征码&lt;code class=&quot;highlighter-rouge&quot;&gt;sitecode&lt;/code&gt;，在&lt;a href=&quot;http://tongji.baidu.com/web/welcome/login&quot;&gt;官网&lt;/a&gt;注册并配置站点后，获取特征码。特征码可以在「网站中心」-&amp;gt; 「代码获取」中查看，如下图所示的&lt;code class=&quot;highlighter-rouge&quot;&gt;e6d1f421bbc9962127a50488f9ed37d1&lt;/code&gt;，注意去掉前面的&lt;code class=&quot;highlighter-rouge&quot;&gt;3F&lt;/code&gt;。
+&lt;p&gt;&lt;code&gt;baidu_tongji&lt;/code&gt;：百度统计功能。需要填写站点特征码&lt;code&gt;sitecode&lt;/code&gt;，在&lt;a href=&quot;http://tongji.baidu.com/web/welcome/login&quot;&gt;官网&lt;/a&gt;注册并配置站点后，获取特征码。特征码可以在「网站中心」-&amp;gt; 「代码获取」中查看，如下图所示的&lt;code&gt;e6d1f421bbc9962127a50488f9ed37d1&lt;/code&gt;，注意去掉前面的&lt;code&gt;3F&lt;/code&gt;。
 &lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emf4v6qf91j20kf07sq8v.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cnzz_tongji&lt;/code&gt;：站长统计功能。需要填写站点ID&lt;code class=&quot;highlighter-rouge&quot;&gt;siteid&lt;/code&gt;，同理在&lt;a href=&quot;http://www.cnzz.com&quot;&gt;站长官网&lt;/a&gt;注册并配置站点后获得。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cnzz_tongji&lt;/code&gt;：站长统计功能。需要填写站点ID&lt;code&gt;siteid&lt;/code&gt;，同理在&lt;a href=&quot;http://www.cnzz.com&quot;&gt;站长官网&lt;/a&gt;注册并配置站点后获得。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;数学公式 mathjax&lt;/strong&gt;
-主题支持写 LaTex 数学公式。只需要在文章文件开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中，加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax: true&lt;/code&gt;，即可在文中写 LaTex 公式。&lt;/p&gt;
+主题支持写 LaTex 数学公式。只需要在文章文件开头的&lt;code&gt;front-matter&lt;/code&gt;中，加上一行&lt;code&gt;mathjax: true&lt;/code&gt;，即可在文中写 LaTex 公式。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;图片浏览 fancybox&lt;/strong&gt;
-默认关闭，如果你经常发表 Gallery 类型的文章，那么请设置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/p&gt;
+默认关闭，如果你经常发表 Gallery 类型的文章，那么请设置为&lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;返回顶部 totop&lt;/strong&gt;
-右下角&lt;code class=&quot;highlighter-rouge&quot;&gt;返回顶部&lt;/code&gt;按钮，默认开启。&lt;/p&gt;
+右下角&lt;code&gt;返回顶部&lt;/code&gt;按钮，默认开启。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;自定义搜索 Search&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_search&lt;/code&gt;：如果开启百度站内搜索需要登录 &lt;a href=&quot;http://zn.baidu.com/&quot;&gt;百度站内搜索&lt;/a&gt;，配置好你的站点，并开启站内搜索获取搜索ID，另外&lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt;属性可以填默认值，也可以填自己做了CNAME的二级域名，更详细的可以阅读&lt;a href=&quot;http://gengbiao.me/hexo/hexo%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2/&quot;&gt;这篇博客&lt;/a&gt;了解。&lt;/p&gt;
+&lt;code&gt;baidu_search&lt;/code&gt;：如果开启百度站内搜索需要登录 &lt;a href=&quot;http://zn.baidu.com/&quot;&gt;百度站内搜索&lt;/a&gt;，配置好你的站点，并开启站内搜索获取搜索ID，另外&lt;code&gt;site&lt;/code&gt;属性可以填默认值，也可以填自己做了CNAME的二级域名，更详细的可以阅读&lt;a href=&quot;http://gengbiao.me/hexo/hexo%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2/&quot;&gt;这篇博客&lt;/a&gt;了解。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;google_cse&lt;/code&gt;：如果开启谷歌自定义搜索需要先登录 &lt;a href=&quot;https://www.google.com/cse/&quot;&gt;Google CSE&lt;/a&gt;，配置好你的站点，并获得此自定义搜索的ID。此外你需要在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中建立&lt;code class=&quot;highlighter-rouge&quot;&gt;search&lt;/code&gt;文件夹并包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：
- &lt;code class=&quot;highlighter-rouge&quot;&gt;
+&lt;p&gt;&lt;code&gt;google_cse&lt;/code&gt;：如果开启谷歌自定义搜索需要先登录 &lt;a href=&quot;https://www.google.com/cse/&quot;&gt;Google CSE&lt;/a&gt;，配置好你的站点，并获得此自定义搜索的ID。此外你需要在博客目录下的&lt;code&gt;source&lt;/code&gt;文件夹中建立&lt;code&gt;search&lt;/code&gt;文件夹并包含一个&lt;code&gt;index.md&lt;/code&gt;文件。内容为：
+ &lt;code&gt;
  layout: search
  title: search
  ---
 &lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tiny_search&lt;/code&gt;: 如果要开启&lt;a href=&quot;http://tinysou.com/&quot;&gt;微搜索&lt;/a&gt;，需要先注册一个帐号，配置一个Engine，将Engine的Key填入配置文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;即可。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tiny_search&lt;/code&gt;: 如果要开启&lt;a href=&quot;http://tinysou.com/&quot;&gt;微搜索&lt;/a&gt;，需要先注册一个帐号，配置一个Engine，将Engine的Key填入配置文件中的&lt;code&gt;id&lt;/code&gt;即可。&lt;/p&gt;
 
 &lt;p&gt;##常见问题
 - &lt;strong&gt;Q：图片默认都是居左的，我怎么设置能让图片居中呢？&lt;/strong&gt;
-&amp;gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;img src=&quot;&quot; style=&quot;display:block;margin:auto&quot;/&amp;gt;&lt;/code&gt;的HTML标签。&lt;/p&gt;
+&amp;gt;使用 &lt;code&gt;&amp;lt;img src=&quot;&quot; style=&quot;display:block;margin:auto&quot;/&amp;gt;&lt;/code&gt;的HTML标签。&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Q：如何建立一篇图片类文章（Gallery Post）？&lt;/strong&gt;
-&amp;gt; 直接新建一个 Markdown 文件，将其&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;修改为如下，即可看到主题为图片类文章提供的样式。
+&amp;gt; 直接新建一个 Markdown 文件，将其&lt;code&gt;front-matter&lt;/code&gt;修改为如下，即可看到主题为图片类文章提供的样式。
 ```
 —
 layout: photo
@@ -240,7 +238,7 @@ photos:&lt;/li&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Q：我在配置文件中给某一项设置了值，但为什么总是看不到效果啊？&lt;/strong&gt;
-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的每个属性值前面必须留一个空格，建议在 Sublime/Notepad++ 中开启显示所有空格模式。另每篇文章的 &lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt; 也要注意这个问题。&lt;/p&gt;
+&amp;gt;&lt;code&gt;_config.yml&lt;/code&gt;文件中的每个属性值前面必须留一个空格，建议在 Sublime/Notepad++ 中开启显示所有空格模式。另每篇文章的 &lt;code&gt;front-matter&lt;/code&gt; 也要注意这个问题。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Q：怎么提意见和建议？&lt;/strong&gt;
@@ -248,7 +246,7 @@ photos:&lt;/li&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;**Q：为什么我修改了配置文件/发表了博文，解析出来的却是乱码呢？ **
-&amp;gt; 请将你的配置文件/markdown文件保存成 &lt;code class=&quot;highlighter-rouge&quot;&gt;UTF-8&lt;/code&gt; 格式。&lt;/p&gt;
+&amp;gt; 请将你的配置文件/markdown文件保存成 &lt;code&gt;UTF-8&lt;/code&gt; 格式。&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;**Q：为什么开启了微博秀后，显示是空白的，没有内容展示？ **
 &amp;gt; 每次修改参数都会这样，需要多刷新几次或者上传到服务器上就好了。&lt;/li&gt;
@@ -260,500 +258,195 @@ photos:&lt;/li&gt;
         </item>
 
         <item>
-                <title>test2</title>
-                <description>&lt;p&gt;##主题介绍
-Jekyll-Jacman 是为 &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 &lt;a href=&quot;https://github.com/wuchong/jacman&quot;&gt;Jacman&lt;/a&gt; 移植而来。&lt;/p&gt;
+                <title>web app变革之rem</title>
+                <description>&lt;h2 id=&quot;rem&quot;&gt;rem确实做自适应相当好用…..&lt;/h2&gt;
 
-&lt;!-- more --&gt;
-&lt;p&gt;##配置指南&lt;/p&gt;
+&lt;p&gt;(开发前可以先用PX来定义元素的大小宽高，到发布的时候用转换工具转成PX)&lt;/p&gt;
 
-&lt;p&gt;Jacman 主题提供了丰富的配置属性，可以实现您对主题的自定义。配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;位于主题根目录下。本次更新对配置文件进行了较大调整，如您之前就使用了 Jacman，也需要您根据以下指南进行相应的修改。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CSS&lt;/strong&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##### 菜单
-menu:
-  主页: /
-  归档: /archives
-  关于: /about
-
-#### 控件
-widgets:
-- category
-- tag
-- links
-- rss
-
-#### RSS
-rss: /atom.xml
-
-#### 图片相关
-imglogo:
-  enable: true               ## 是否显示网站 logo
-  src: img/logo.png
-favicon: img/favicon.ico     ## 网站图标
-apple_icon: img/jacman.jpg   ## 苹果设备上的图标，背景不要透明
-author_img: img/author.jpg   ## 网站底部的博主头像
-banner_img: img/banner.jpg   ## 博客顶部的图片
-
-close_aside: false      ##是否在文章页面自动关闭侧边栏
-
-#### 首页相关
-index:
-  expand: true              ## 首页文章是否展开。默认为展开式，显示 Read More。
-  excerpt_link: Read More
-
-#### 作者信息
-author:
-  name: ## 作者名
-  intro_line1:  &quot;Hello ,I&#39;m Larry Page in Google.&quot;    ## 网站底部的个人介绍
-  intro_line2:  &quot;This is my blog,believe it or not.&quot;
-  weibo_verifier:  ## 微博秀的验证码
-  tsina:           ## 用于微博秀和微博分享
-  weibo:           ## 用于显示网站底部社交按钮，下同
-  douban:
-  zhihu:
-  email:
-  twitter:
-  github:
-  facebook:
-  linkedin:
-  google_plus:
-  stackoverflow:
-
-
-#### 目录
-toc:
-  article: true   ## 是否在文章中显示目录
-  aside: true     ## 是否在侧边栏显示目录
-
-#### 友情链接
-links:
-  码农圈: https://coderq.com,一个面向程序员交流分享的新一代社区
-  Jark&#39;s Blog: http://wuchong.me
-
-#### 评论
-duoshuo_shortname:
-disqus_shortname:
-
-#### 分享按钮
-jiathis:
-  enable: false   ## 默认使用主题内建分享
-  id:
-  tsina:
-
-#### 网站统计
-google_analytics:
-  enable: false
-  id:            ## google analytics ID.
-  site:          ## 网站地址.
-baidu_tongji:
-  enable: false
-  sitecode:      ## 百度统计站点特征码
-cnzz_tongji:
-  enable: false
-  siteid:        ## CNZZ统计站点ID
-
-#### 杂项
-ShowCustomFont: true
-fancybox: true
-totop: true
-
-#### 自定义搜索
-google_cse:
-  enable: false
-  cx:
-baidu_search:
-  enable: false
-  id:
-  site: http://zhannei.baidu.com/cse/search
-tinysou_search:     ## http://tinysou.com/
-  enable: false
-  id: &quot;4ac092ad8d749fdc6293&quot;
+&lt;pre&gt;&lt;code&gt;html {font-size:20px}
+.header {padding:0.5rem 0.25rem 1rem;}
+.footer {padding-top: 0.75rem;} //等等
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
-&lt;p&gt;###属性功能
-- &lt;strong&gt;菜单 menu&lt;/strong&gt;
-默认没有启用 &lt;code class=&quot;highlighter-rouge&quot;&gt;/tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;/categories&lt;/code&gt;页面，如果需要启用请在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中分别建立&lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;文件夹每个文件夹中分别包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;JS&lt;/strong&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;layout: tags (或categories)
-title: tags (或categories)
----
+&lt;pre&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+    (function (doc, win) {
+      var docEl = doc.documentElement,
+        resizeEvt = &#39;orientationchange&#39; in window ? &#39;orientationchange&#39; : &#39;resize&#39;,
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          if (!clientWidth) return;
+          docEl.style.fontSize = 20 * (clientWidth / 320) + &#39;px&#39;;
+        };
+      if (!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener(&#39;DOMContentLoaded&#39;, recalc, false);
+    })(document, window);
+&amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
 
-&lt;p&gt;      因为主题中已经内置了这两个页面的模板，所以他们会被正确的解析出来。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;控件 widgets&lt;/strong&gt;
-提供了7种小工具。包括标签、分类、RSS、友情链接、微博秀。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;友情链接&lt;/strong&gt;：友情链接的网址添加可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;links&lt;/code&gt;属性下添加。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;微博秀&lt;/strong&gt;：需要注意的是，如果要启用微博秀，您必须填上&lt;code class=&quot;highlighter-rouge&quot;&gt;author&lt;/code&gt;属性下&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;的值，前者是您微博ID，后者是您微博秀的验证码，访问 http://app.weibo.com/tool/weiboshow 在如下图位置，可以获得您的 verifier，如：我的是&lt;code class=&quot;highlighter-rouge&quot;&gt;b3593ceb&lt;/code&gt;。
-&lt;img src=&quot;http://ww1.sinaimg.cn/large/81b78497jw1emegd6b0ytj209204pweu.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果要关闭侧边栏，将&lt;code class=&quot;highlighter-rouge&quot;&gt;close_aside&lt;/code&gt;置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，就会在博文页面自动关闭侧边栏。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;//最后付上一个转换工具(完成)&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片相关 Image&lt;/strong&gt;
-本主题可以设置网站相关图片，例如网站图标（&lt;code class=&quot;highlighter-rouge&quot;&gt;favicon&lt;/code&gt;）、网站logo（&lt;code class=&quot;highlighter-rouge&quot;&gt;imglogo&lt;/code&gt;）、作者头像（&lt;code class=&quot;highlighter-rouge&quot;&gt;author_img&lt;/code&gt;）。建议启用网站logo，格式建议为&lt;code class=&quot;highlighter-rouge&quot;&gt;.svg&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;.png&lt;/code&gt;格式。同时建议提供配套的 favicon 以及在苹果设备上的图标&lt;code class=&quot;highlighter-rouge&quot;&gt;apple_icon&lt;/code&gt;（背景不要透明）。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;首页显示模式 Index&lt;/strong&gt;
-目前首页的显示模式支持两种，一种是原先的卡片式（前往 &lt;a href=&quot;http://wuchong.me/jacman&quot;&gt;Demo&lt;/a&gt; 预览），另一种是类似官方主题的文章展开式（&lt;a href=&quot;http://wuchong.me&quot;&gt;本站&lt;/a&gt;即采用的这种）。两者各有优劣，前者首页加载速度更快，后者文章内容更能吸引读者。主题默认采用后一种展开式，如需开启第一种卡片式，请设置&lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt;属性下的&lt;code class=&quot;highlighter-rouge&quot;&gt;expand: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;最近做了一款px转rem的工具，可以帮助各位免去换算rem的烦恼，切页面的时候按照px去切，最后在丢到工具里面去，会自动将样式表里面的px转成rem。
+工具地址：http://520ued.com/tools/rem&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;卡片式的文章摘要是截取文章内容的前140个字，也可以自己总结&lt;code class=&quot;highlighter-rouge&quot;&gt;description&lt;/code&gt;并将其放在开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中。展开式的文章摘要就是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截取了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;rem是什么？&lt;/strong&gt;
+    rem（font size of the root element）是指相对于根元素的字体大小的单位。简单的说它就是一个相对单位。看到rem大家一定会想起em单位，em（font size of the element）是指相对于父元素的字体大小的单位。它们之间其实很相似，只不过一个计算的规则是依赖根元素一个是依赖父元素计算。&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;作者信息 author&lt;/strong&gt;
-作者信息，建议尽量填写完整。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;是你的新浪微博ID，不同于用户名或微博主页地址。启用这个属性后，其他用户在微博上分享你文章的同时会自动@你。同时它和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;一起作用生成微博秀。&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line1&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line2&lt;/code&gt;是网站底部的个人介绍。&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;twitter&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;facebook&lt;/code&gt;等是用来显示网站右下角的社交按钮的，如下图所示。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emgscr3575j2078050jrc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;目录 toc&lt;/strong&gt;
-是否启用在文章中或侧边栏中的目录功能。二者可以都为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;或都为&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;。同时，如果你希望在特定的某一篇文章中关闭目录功能你可以在文章文件开头中的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;toc: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;评论 comments&lt;/strong&gt;
-填写&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo_shortname&lt;/code&gt;&lt;a href=&quot;http://duoshuo.com/&quot;&gt;多说&lt;/a&gt;的用户名，启用多说评论系统。在大陆地区更好用的评论系统。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;为什么web app要使用rem？&lt;/strong&gt;
+    这里我特别强调web app，web page就不能使用rem吗，其实也当然可以，不过出于兼容性的考虑在web app下使用更加能突显这个单位的价值和能力，接下来我们来看看目前一些企业的web app是怎么做屏幕适配的。&lt;/p&gt;
 
-&lt;p&gt;填写&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;&lt;a href=&quot;http://disqus.com/&quot;&gt;disqus&lt;/a&gt; 的用户名，启用 disqus 评论系统。国际上更广泛使用的评论系统。设置博客根目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;同样也能开启该功能。&lt;/p&gt;
+&lt;h2 id=&quot;section&quot;&gt;1、实现强大的屏幕适配布局：&lt;/h2&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;加网分享 jiathis&lt;/strong&gt;
-&lt;a href=&quot;http://www.jiathis.com/&quot;&gt;加网&lt;/a&gt;分享系统。默认关闭，因为主题已经内置了原生的分享功能。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;网站统计 Analytics&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;google_analytics&lt;/code&gt;：Google Analytics追踪代码。请注意：Google Analytics已经升级到了Universal Analytics。请先前往后台升级你的Google Analytics版本后再启用追踪代码，更多信息请&lt;a href=&quot;https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN&quot;&gt;点击这里&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;最近iphone6一下出了两款尺寸的手机，导致的移动端的屏幕种类更加的混乱，记得一两年前做web app有一种做法是以320宽度为标准去做适配，超过320的大小还是以320的规格去展示，这种实现方式以淘宝web app为代表作，但是近期手机淘宝首页进行了改版，采用了rem这个单位，首页以内依旧是和以前一样各种混乱，有定死宽度的页面，也有那种流式布局的页面。&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_tongji&lt;/code&gt;：百度统计功能。需要填写站点特征码&lt;code class=&quot;highlighter-rouge&quot;&gt;sitecode&lt;/code&gt;，在&lt;a href=&quot;http://tongji.baidu.com/web/welcome/login&quot;&gt;官网&lt;/a&gt;注册并配置站点后，获取特征码。特征码可以在「网站中心」-&amp;gt; 「代码获取」中查看，如下图所示的&lt;code class=&quot;highlighter-rouge&quot;&gt;e6d1f421bbc9962127a50488f9ed37d1&lt;/code&gt;，注意去掉前面的&lt;code class=&quot;highlighter-rouge&quot;&gt;3F&lt;/code&gt;。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emf4v6qf91j20kf07sq8v.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;我们现在在切页面布局的使用常用的单位是px，这是一个绝对单位，web app的屏幕适配有很多中做法，例如：流式布局、限死宽度，还有就是通过响应式来做，但是这些方案都不是最佳的解决方法。&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cnzz_tongji&lt;/code&gt;：站长统计功能。需要填写站点ID&lt;code class=&quot;highlighter-rouge&quot;&gt;siteid&lt;/code&gt;，同理在&lt;a href=&quot;http://www.cnzz.com&quot;&gt;站长官网&lt;/a&gt;注册并配置站点后获得。&lt;/p&gt;
+&lt;p&gt;例如流式布局的解决方案有不少弊端，它虽然可以让各种屏幕都适配，但是显示的效果极其的不好，因为只有几个尺寸的手机能够完美的显示出视觉设计师和交互最想要的效果，但是目前行业里用流式布局切web app的公司还是挺多的，看看下面我收集的一些案例：&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;数学公式 mathjax&lt;/strong&gt;
-主题支持写 LaTex 数学公式。只需要在文章文件开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中，加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax: true&lt;/code&gt;，即可在文中写 LaTex 公式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片浏览 fancybox&lt;/strong&gt;
-默认关闭，如果你经常发表 Gallery 类型的文章，那么请设置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;返回顶部 totop&lt;/strong&gt;
-右下角&lt;code class=&quot;highlighter-rouge&quot;&gt;返回顶部&lt;/code&gt;按钮，默认开启。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;自定义搜索 Search&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_search&lt;/code&gt;：如果开启百度站内搜索需要登录 &lt;a href=&quot;http://zn.baidu.com/&quot;&gt;百度站内搜索&lt;/a&gt;，配置好你的站点，并开启站内搜索获取搜索ID，另外&lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt;属性可以填默认值，也可以填自己做了CNAME的二级域名，更详细的可以阅读&lt;a href=&quot;http://gengbiao.me/hexo/hexo%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2/&quot;&gt;这篇博客&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;1.亚马逊：&lt;/strong&gt;
+&lt;img src=&quot;/assets/image/a3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;google_cse&lt;/code&gt;：如果开启谷歌自定义搜索需要先登录 &lt;a href=&quot;https://www.google.com/cse/&quot;&gt;Google CSE&lt;/a&gt;，配置好你的站点，并获得此自定义搜索的ID。此外你需要在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中建立&lt;code class=&quot;highlighter-rouge&quot;&gt;search&lt;/code&gt;文件夹并包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：
- &lt;code class=&quot;highlighter-rouge&quot;&gt;
- layout: search
- title: search
- ---
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.携程：&lt;/strong&gt;
+&lt;img src=&quot;/assets/image/a1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tiny_search&lt;/code&gt;: 如果要开启&lt;a href=&quot;http://tinysou.com/&quot;&gt;微搜索&lt;/a&gt;，需要先注册一个帐号，配置一个Engine，将Engine的Key填入配置文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.兰亭&lt;/strong&gt;
+&lt;img src=&quot;/assets/image/a2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;##常见问题
-- &lt;strong&gt;Q：图片默认都是居左的，我怎么设置能让图片居中呢？&lt;/strong&gt;
-&amp;gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;img src=&quot;&quot; style=&quot;display:block;margin:auto&quot;/&amp;gt;&lt;/code&gt;的HTML标签。&lt;/p&gt;
+&lt;p&gt;上面的网站都是采用的流式布局的技术实现的，他们在页面布局的时候都是通过百分比来定义宽度，但是高度大都是用px来固定住，所以在大屏幕的手机下显示效果会变成有些页面元素宽度被拉的很长，但是高度还是和原来一样，实际显示非常的不协调，这就是流式布局的最致命的缺点，往往只有几个尺寸的手机下看到的效果是令人满意的，其实很多视觉设计师应该无法接受这种效果，因为他们的设计图在大屏幕手机下看到的效果相当于是被横向拉长来一样。&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Q：如何建立一篇图片类文章（Gallery Post）？&lt;/strong&gt;
-&amp;gt; 直接新建一个 Markdown 文件，将其&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;修改为如下，即可看到主题为图片类文章提供的样式。
-```
-—
-layout: photo
-title: Gallery Post
-photos:&lt;/li&gt;
-  &lt;li&gt;http://i.minus.com/ibobbTlfxZgITW.jpg&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h2 id=&quot;httpiminuscomiedpg90y0exfsjpg&quot;&gt;http://i.minus.com/iedpg90Y0exFS.jpg&lt;/h2&gt;
-    &lt;p&gt;```&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：我在配置文件中给某一项设置了值，但为什么总是看不到效果啊？&lt;/strong&gt;
-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的每个属性值前面必须留一个空格，建议在 Sublime/Notepad++ 中开启显示所有空格模式。另每篇文章的 &lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt; 也要注意这个问题。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：怎么提意见和建议？&lt;/strong&gt;
-&amp;gt;主题还在不断完善中，欢迎 &lt;a href=&quot;https://github.com/Simpleyyt/jekyll-jacman/issues&quot;&gt;open issue&lt;/a&gt; 来提建议，参与讨论。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;**Q：为什么我修改了配置文件/发表了博文，解析出来的却是乱码呢？ **
-&amp;gt; 请将你的配置文件/markdown文件保存成 &lt;code class=&quot;highlighter-rouge&quot;&gt;UTF-8&lt;/code&gt; 格式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;**Q：为什么开启了微博秀后，显示是空白的，没有内容展示？ **
-&amp;gt; 每次修改参数都会这样，需要多刷新几次或者上传到服务器上就好了。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;流式布局并不是最理想的实现方式，通过大量的百分比布局，会经常出现许多兼容性的问题，还有就是对设计有很多的限制，因为他们在设计之初就需要考虑流式布局对元素造成的影响，只能设计横向拉伸的元素布局，设计的时候存在很多局限性。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;2.固定宽度做法&lt;/h2&gt;
+
+&lt;p&gt;还有一种是固定页面宽度的做法，早期有些网站把页面设置成320的宽度，超出部分留白，这样做视觉，前端都挺开心，视觉在也不用被流式布局限制自己的设计灵感了，前端也不用在搞坑爹的流式布局。但是这种解决方案也是存在一些问题，例如在大屏幕手机下两边是留白的，还有一个就是大屏幕手机下看起来页面会特别小，操作的按钮也很小，手机淘宝首页起初是这么做的，但近期改版了，采用了rem。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;3.响应式做法&lt;/h2&gt;
+
+&lt;p&gt;响应式这种方式在国内很少有大型企业的复杂性的网站在移动端用这种方法去做，主要原因是工作大，维护性难，所以一般都是中小型的门户或者博客类站点会采用响应式的方法从web page到web app直接一步到位，因为这样反而可以节约成本，不用再专门为自己的网站做一个web app的版本。&lt;/p&gt;
+
+&lt;h2 id=&quot;viewport&quot;&gt;4.设置viewport进行缩放&lt;/h2&gt;
+
+&lt;p&gt;天猫的web app的首页就是采用这种方式去做的，以320宽度为基准，进行缩放，最大缩放为320*1.3 = 416，基本缩放到416都就可以兼容iphone6 plus的屏幕了，这个方法简单粗暴，又高效。说实话我觉得他和用接下去我们要讲的rem都非常高效，不过有部分同学使用过程中反应缩放会导致有些页面元素会糊的情况。
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=320,maximum-scale=1.3,user-scalable=no&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;rem-1&quot;&gt;rem能等比例适配所有屏幕&lt;/h2&gt;
+
+&lt;p&gt;上面讲了一大堆目前大部分公司主流的一些web app的适配解决方案，接下来讲下rem是如何工作的。&lt;/p&gt;
+
+&lt;p&gt;上面说过rem是通过根元素进行适配的，网页中的根元素指的是html我们通过设置html的字体大小就可以控制rem的大小。举个例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html{
+    font-size:20px;
+}
+.btn {
+    width: 6rem;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1.2rem;
+    display: inline-block;
+    background: #06c;
+    color: #fff;
+    border-radius: .5rem;
+    text-decoration: none;
+    text-align: center;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面代码结果按钮大小如下图：
+&lt;img src=&quot;/assets/image/a4.jpg&quot; alt=&quot;&quot; /&gt;
+我把html设置成10px是为了方便我们计算，为什么6rem等于60px。如果这个时候我们的.btn的样式不变，我们再改变html的font-size的值，看看按钮发生上面变化:&lt;/p&gt;
+
+&lt;p&gt;html{font-size:40px;}&lt;/p&gt;
+
+&lt;p&gt;按钮大小结果如下：
+&lt;img src=&quot;/assets/image/a5.jpg&quot; alt=&quot;&quot; /&gt;
+上面的width，height变成了上面结果的两倍，我们只改变了html的font-size，但.btn样式的width,height的rem设置的属性不变的情况下就改变了按钮在web中的大小。&lt;/p&gt;
+
+&lt;p&gt;其实从上面两个案例中我们就可以计算出1px多少rem:&lt;/p&gt;
+
+&lt;p&gt;第一个例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;120px = 6rem * 20px(根元素设置大值)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第二个例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;240px = 6rem * 40px(根元素设置大值)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;推算出：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;10px  = 1rem 在根元素（font-size = 10px的时候）；
+
+20px  = 1rem 在根元素（font-size = 20px的时候）；
+
+40px  = 1rem 在根元素（font-size = 40px的时候）；
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在上面两个例子中我们发现第一个案例按钮是等比例放大到第二个按钮，html font-size的改变就会导致按钮的大小发生改变，我们并不需要改变先前给按钮设置的宽度和高度，其实这就是我们最想看到的，为什么这么说？接下来我们再来看一个例子：
+&lt;img src=&quot;/assets/image/a6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;由上面两个的demo中我们知道改变html的font-size可以等比改变所有用了rem单位的元素，所以大家可以通过chrome浏览器的调试工具去切换第三个的demo在不同设备下的展示效果，或者通过缩放浏览器的宽度来查看效果，我们可以看到不管在任何分辨率下，页面的排版都是按照等比例进行切换，并且布局没有乱。我只是通过一段js根据浏览器当前的分辨率改变font-size的值，就简单的实现了上面的效果，页面的所有元素都不需要进行任何改变。&lt;/p&gt;
+
+&lt;p&gt;到这里肯定有很多人会问我是怎么计算出不同分辨率下font-size的值？&lt;/p&gt;
+
+&lt;p&gt;首先假设我上面的页面设计稿给我时候是按照640的标准尺寸给我的前提下，（当然这个尺寸肯定不一定是640，可以是320，或者480，又或是375）来看一组表格。
+&lt;img src=&quot;/assets/image/a7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上面的表格蓝色一列是Demo3中页面的尺寸，页面是以640的宽度去切的，怎么计算不同宽度下font-site的值，大家看表格上面的数值变化应该能明白。举个例子：384/640 = 0.6，384是640的0.6倍，所以384页面宽度下的font-size也等于它的0.6倍，这时384的font-size就等于12px。在不同设备的宽度计算方式以此类推。&lt;/p&gt;
+
+&lt;p&gt;Demo3中我是通过JS去动态计算根元素的font-size，这样的好处是所有设备分辨率都能兼容适配，淘宝首页目前就是用的JS计算。但其实不用JS我们也可以做适配，一般我们在做web app都会先统计自己网站有哪些主流的屏幕设备，然后去针对那些设备去做media query设置也可以实现适配，例如下面这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;html {
+    font-size : 20px;
+}
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
-                <link>/jekyll/2015/09/22/how-to-us</link>
-                <guid>/jekyll/2015/09/22/how-to-us</guid>
+                <link>/yangbys/2015/09/22/rem</link>
+                <guid>/yangbys/2015/09/22/rem</guid>
                 <pubDate>Tue, 22 Sep 2015 00:00:00 +0800</pubDate>
         </item>
 
         <item>
-                <title>test3</title>
-                <description>&lt;p&gt;##主题介绍
-Jekyll-Jacman 是为 &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 &lt;a href=&quot;https://github.com/wuchong/jacman&quot;&gt;Jacman&lt;/a&gt; 移植而来。&lt;/p&gt;
+                <title>yangbys.github.io 博客正式开通啦！</title>
+                <description>&lt;h2 id=&quot;yangbysgithubio&quot;&gt;yangbys.github.io&lt;/h2&gt;
 
-&lt;!-- more --&gt;
-&lt;p&gt;##配置指南&lt;/p&gt;
-
-&lt;p&gt;Jacman 主题提供了丰富的配置属性，可以实现您对主题的自定义。配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;位于主题根目录下。本次更新对配置文件进行了较大调整，如您之前就使用了 Jacman，也需要您根据以下指南进行相应的修改。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##### 菜单
-menu:
-  主页: /
-  归档: /archives
-  关于: /about
-
-#### 控件
-widgets:
-- category
-- tag
-- links
-- rss
-
-#### RSS
-rss: /atom.xml
-
-#### 图片相关
-imglogo:
-  enable: true               ## 是否显示网站 logo
-  src: img/logo.png
-favicon: img/favicon.ico     ## 网站图标
-apple_icon: img/jacman.jpg   ## 苹果设备上的图标，背景不要透明
-author_img: img/author.jpg   ## 网站底部的博主头像
-banner_img: img/banner.jpg   ## 博客顶部的图片
-
-close_aside: false      ##是否在文章页面自动关闭侧边栏
-
-#### 首页相关
-index:
-  expand: true              ## 首页文章是否展开。默认为展开式，显示 Read More。
-  excerpt_link: Read More
-
-#### 作者信息
-author:
-  name: ## 作者名
-  intro_line1:  &quot;Hello ,I&#39;m Larry Page in Google.&quot;    ## 网站底部的个人介绍
-  intro_line2:  &quot;This is my blog,believe it or not.&quot;
-  weibo_verifier:  ## 微博秀的验证码
-  tsina:           ## 用于微博秀和微博分享
-  weibo:           ## 用于显示网站底部社交按钮，下同
-  douban:
-  zhihu:
-  email:
-  twitter:
-  github:
-  facebook:
-  linkedin:
-  google_plus:
-  stackoverflow:
-
-
-#### 目录
-toc:
-  article: true   ## 是否在文章中显示目录
-  aside: true     ## 是否在侧边栏显示目录
-
-#### 友情链接
-links:
-  码农圈: https://coderq.com,一个面向程序员交流分享的新一代社区
-  Jark&#39;s Blog: http://wuchong.me
-
-#### 评论
-duoshuo_shortname:
-disqus_shortname:
-
-#### 分享按钮
-jiathis:
-  enable: false   ## 默认使用主题内建分享
-  id:
-  tsina:
-
-#### 网站统计
-google_analytics:
-  enable: false
-  id:            ## google analytics ID.
-  site:          ## 网站地址.
-baidu_tongji:
-  enable: false
-  sitecode:      ## 百度统计站点特征码
-cnzz_tongji:
-  enable: false
-  siteid:        ## CNZZ统计站点ID
-
-#### 杂项
-ShowCustomFont: true
-fancybox: true
-totop: true
-
-#### 自定义搜索
-google_cse:
-  enable: false
-  cx:
-baidu_search:
-  enable: false
-  id:
-  site: http://zhannei.baidu.com/cse/search
-tinysou_search:     ## http://tinysou.com/
-  enable: false
-  id: &quot;4ac092ad8d749fdc6293&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;###属性功能
-- &lt;strong&gt;菜单 menu&lt;/strong&gt;
-默认没有启用 &lt;code class=&quot;highlighter-rouge&quot;&gt;/tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;/categories&lt;/code&gt;页面，如果需要启用请在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中分别建立&lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;categories&lt;/code&gt;文件夹每个文件夹中分别包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;layout: tags (或categories)
-title: tags (或categories)
----
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;      因为主题中已经内置了这两个页面的模板，所以他们会被正确的解析出来。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;控件 widgets&lt;/strong&gt;
-提供了7种小工具。包括标签、分类、RSS、友情链接、微博秀。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;友情链接&lt;/strong&gt;：友情链接的网址添加可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;links&lt;/code&gt;属性下添加。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;微博秀&lt;/strong&gt;：需要注意的是，如果要启用微博秀，您必须填上&lt;code class=&quot;highlighter-rouge&quot;&gt;author&lt;/code&gt;属性下&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;的值，前者是您微博ID，后者是您微博秀的验证码，访问 http://app.weibo.com/tool/weiboshow 在如下图位置，可以获得您的 verifier，如：我的是&lt;code class=&quot;highlighter-rouge&quot;&gt;b3593ceb&lt;/code&gt;。
-&lt;img src=&quot;http://ww1.sinaimg.cn/large/81b78497jw1emegd6b0ytj209204pweu.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果要关闭侧边栏，将&lt;code class=&quot;highlighter-rouge&quot;&gt;close_aside&lt;/code&gt;置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;，就会在博文页面自动关闭侧边栏。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片相关 Image&lt;/strong&gt;
-本主题可以设置网站相关图片，例如网站图标（&lt;code class=&quot;highlighter-rouge&quot;&gt;favicon&lt;/code&gt;）、网站logo（&lt;code class=&quot;highlighter-rouge&quot;&gt;imglogo&lt;/code&gt;）、作者头像（&lt;code class=&quot;highlighter-rouge&quot;&gt;author_img&lt;/code&gt;）。建议启用网站logo，格式建议为&lt;code class=&quot;highlighter-rouge&quot;&gt;.svg&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;.png&lt;/code&gt;格式。同时建议提供配套的 favicon 以及在苹果设备上的图标&lt;code class=&quot;highlighter-rouge&quot;&gt;apple_icon&lt;/code&gt;（背景不要透明）。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;首页显示模式 Index&lt;/strong&gt;
-目前首页的显示模式支持两种，一种是原先的卡片式（前往 &lt;a href=&quot;http://wuchong.me/jacman&quot;&gt;Demo&lt;/a&gt; 预览），另一种是类似官方主题的文章展开式（&lt;a href=&quot;http://wuchong.me&quot;&gt;本站&lt;/a&gt;即采用的这种）。两者各有优劣，前者首页加载速度更快，后者文章内容更能吸引读者。主题默认采用后一种展开式，如需开启第一种卡片式，请设置&lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt;属性下的&lt;code class=&quot;highlighter-rouge&quot;&gt;expand: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;卡片式的文章摘要是截取文章内容的前140个字，也可以自己总结&lt;code class=&quot;highlighter-rouge&quot;&gt;description&lt;/code&gt;并将其放在开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中。展开式的文章摘要就是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截取了。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;作者信息 author&lt;/strong&gt;
-作者信息，建议尽量填写完整。其中&lt;code class=&quot;highlighter-rouge&quot;&gt;tsina&lt;/code&gt;是你的新浪微博ID，不同于用户名或微博主页地址。启用这个属性后，其他用户在微博上分享你文章的同时会自动@你。同时它和&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo_verifier&lt;/code&gt;一起作用生成微博秀。&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line1&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;intro_line2&lt;/code&gt;是网站底部的个人介绍。&lt;code class=&quot;highlighter-rouge&quot;&gt;weibo&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;twitter&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;facebook&lt;/code&gt;等是用来显示网站右下角的社交按钮的，如下图所示。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emgscr3575j2078050jrc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;目录 toc&lt;/strong&gt;
-是否启用在文章中或侧边栏中的目录功能。二者可以都为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;或都为&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;。同时，如果你希望在特定的某一篇文章中关闭目录功能你可以在文章文件开头中的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;toc: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;评论 comments&lt;/strong&gt;
-填写&lt;code class=&quot;highlighter-rouge&quot;&gt;duoshuo_shortname&lt;/code&gt;&lt;a href=&quot;http://duoshuo.com/&quot;&gt;多说&lt;/a&gt;的用户名，启用多说评论系统。在大陆地区更好用的评论系统。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;填写&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;&lt;a href=&quot;http://disqus.com/&quot;&gt;disqus&lt;/a&gt; 的用户名，启用 disqus 评论系统。国际上更广泛使用的评论系统。设置博客根目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus_shortname&lt;/code&gt;同样也能开启该功能。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;加网分享 jiathis&lt;/strong&gt;
-&lt;a href=&quot;http://www.jiathis.com/&quot;&gt;加网&lt;/a&gt;分享系统。默认关闭，因为主题已经内置了原生的分享功能。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;网站统计 Analytics&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;google_analytics&lt;/code&gt;：Google Analytics追踪代码。请注意：Google Analytics已经升级到了Universal Analytics。请先前往后台升级你的Google Analytics版本后再启用追踪代码，更多信息请&lt;a href=&quot;https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN&quot;&gt;点击这里&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_tongji&lt;/code&gt;：百度统计功能。需要填写站点特征码&lt;code class=&quot;highlighter-rouge&quot;&gt;sitecode&lt;/code&gt;，在&lt;a href=&quot;http://tongji.baidu.com/web/welcome/login&quot;&gt;官网&lt;/a&gt;注册并配置站点后，获取特征码。特征码可以在「网站中心」-&amp;gt; 「代码获取」中查看，如下图所示的&lt;code class=&quot;highlighter-rouge&quot;&gt;e6d1f421bbc9962127a50488f9ed37d1&lt;/code&gt;，注意去掉前面的&lt;code class=&quot;highlighter-rouge&quot;&gt;3F&lt;/code&gt;。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emf4v6qf91j20kf07sq8v.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cnzz_tongji&lt;/code&gt;：站长统计功能。需要填写站点ID&lt;code class=&quot;highlighter-rouge&quot;&gt;siteid&lt;/code&gt;，同理在&lt;a href=&quot;http://www.cnzz.com&quot;&gt;站长官网&lt;/a&gt;注册并配置站点后获得。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;数学公式 mathjax&lt;/strong&gt;
-主题支持写 LaTex 数学公式。只需要在文章文件开头的&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;中，加上一行&lt;code class=&quot;highlighter-rouge&quot;&gt;mathjax: true&lt;/code&gt;，即可在文中写 LaTex 公式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片浏览 fancybox&lt;/strong&gt;
-默认关闭，如果你经常发表 Gallery 类型的文章，那么请设置为&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;返回顶部 totop&lt;/strong&gt;
-右下角&lt;code class=&quot;highlighter-rouge&quot;&gt;返回顶部&lt;/code&gt;按钮，默认开启。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;自定义搜索 Search&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;baidu_search&lt;/code&gt;：如果开启百度站内搜索需要登录 &lt;a href=&quot;http://zn.baidu.com/&quot;&gt;百度站内搜索&lt;/a&gt;，配置好你的站点，并开启站内搜索获取搜索ID，另外&lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt;属性可以填默认值，也可以填自己做了CNAME的二级域名，更详细的可以阅读&lt;a href=&quot;http://gengbiao.me/hexo/hexo%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2/&quot;&gt;这篇博客&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;google_cse&lt;/code&gt;：如果开启谷歌自定义搜索需要先登录 &lt;a href=&quot;https://www.google.com/cse/&quot;&gt;Google CSE&lt;/a&gt;，配置好你的站点，并获得此自定义搜索的ID。此外你需要在博客目录下的&lt;code class=&quot;highlighter-rouge&quot;&gt;source&lt;/code&gt;文件夹中建立&lt;code class=&quot;highlighter-rouge&quot;&gt;search&lt;/code&gt;文件夹并包含一个&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;文件。内容为：
- &lt;code class=&quot;highlighter-rouge&quot;&gt;
- layout: search
- title: search
- ---
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tiny_search&lt;/code&gt;: 如果要开启&lt;a href=&quot;http://tinysou.com/&quot;&gt;微搜索&lt;/a&gt;，需要先注册一个帐号，配置一个Engine，将Engine的Key填入配置文件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;即可。&lt;/p&gt;
-
-&lt;p&gt;##常见问题
-- &lt;strong&gt;Q：图片默认都是居左的，我怎么设置能让图片居中呢？&lt;/strong&gt;
-&amp;gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;img src=&quot;&quot; style=&quot;display:block;margin:auto&quot;/&amp;gt;&lt;/code&gt;的HTML标签。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Q：如何建立一篇图片类文章（Gallery Post）？&lt;/strong&gt;
-&amp;gt; 直接新建一个 Markdown 文件，将其&lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt;修改为如下，即可看到主题为图片类文章提供的样式。
-```
-—
-layout: photo
-title: Gallery Post
-photos:&lt;/li&gt;
-  &lt;li&gt;http://i.minus.com/ibobbTlfxZgITW.jpg&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h2 id=&quot;httpiminuscomiedpg90y0exfsjpg&quot;&gt;http://i.minus.com/iedpg90Y0exFS.jpg&lt;/h2&gt;
-    &lt;p&gt;```&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：我在配置文件中给某一项设置了值，但为什么总是看不到效果啊？&lt;/strong&gt;
-&amp;gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;文件中的每个属性值前面必须留一个空格，建议在 Sublime/Notepad++ 中开启显示所有空格模式。另每篇文章的 &lt;code class=&quot;highlighter-rouge&quot;&gt;front-matter&lt;/code&gt; 也要注意这个问题。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：怎么提意见和建议？&lt;/strong&gt;
-&amp;gt;主题还在不断完善中，欢迎 &lt;a href=&quot;https://github.com/Simpleyyt/jekyll-jacman/issues&quot;&gt;open issue&lt;/a&gt; 来提建议，参与讨论。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;**Q：为什么我修改了配置文件/发表了博文，解析出来的却是乱码呢？ **
-&amp;gt; 请将你的配置文件/markdown文件保存成 &lt;code class=&quot;highlighter-rouge&quot;&gt;UTF-8&lt;/code&gt; 格式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;**Q：为什么开启了微博秀后，显示是空白的，没有内容展示？ **
-&amp;gt; 每次修改参数都会这样，需要多刷新几次或者上传到服务器上就好了。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;博客正式开通啦!&lt;/p&gt;
 </description>
-                <link>/yangbys/2015/09/20/how-to-use-jacman</link>
-                <guid>/yangbys/2015/09/20/how-to-use-jacman</guid>
+                <link>/yangbys/2015/09/20/create-blog</link>
+                <guid>/yangbys/2015/09/20/create-blog</guid>
                 <pubDate>Sun, 20 Sep 2015 00:00:00 +0800</pubDate>
         </item>
 

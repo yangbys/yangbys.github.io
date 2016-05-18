@@ -11,5 +11,5 @@
 /sitemap.txt
 
 /jekyll/2016/01/10/how-to-use-jacman
-/jekyll/2015/09/22/how-to-us
-/yangbys/2015/09/20/how-to-use-jacman
+/yangbys/2015/09/22/rem
+/yangbys/2015/09/20/create-blog

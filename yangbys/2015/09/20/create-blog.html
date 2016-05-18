@@ -7,7 +7,7 @@
     
     
     
-    <title>杨标Blog</title>
+    <title>yangbys.github.io 博客正式开通啦！ | 杨标Blog</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -18,14 +18,14 @@
     
     <meta name="description" content="page.description">
     
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="article">
     
-    <meta property="og:title" content="">
-    <meta property="og:url" content="/">
+    <meta property="og:title" content="yangbys.github.io 博客正式开通啦！">
+    <meta property="og:url" content="/yangbys/2015/09/20/create-blog">
     <meta property="og:site_name" content="杨标Blog">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="yangbys.github.io 博客正式开通啦！。">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="">
+    <meta name="twitter:title" content="yangbys.github.io 博客正式开通啦！">
     <meta name="twitter:description" content="page.description">
     <meta name="twitter:creator" content="@">
     <link rel="publisher" href="">
@@ -75,80 +75,15 @@
 
     </div>
     <div id="container">
-      <div id="main">
-
-  
-  
-  
-  
-
-<div class="post-expand post articleItem" itemprop="articleBody">
-    <div class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/jekyll/2016/01/10/how-to-use-jacman" title="test1" itemprop="url">test1</a>
-  </h1>
-  <p class="article-time">
-    <time datetime="2016-01-10 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-01-10</time>
-  </p>
-</div>
-
-<div class="article-content">
-    
-    <p>##主题介绍
-Jekyll-Jacman 是为 <a href="http://jekyllrb.com">Jekyll</a> 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 <a href="https://github.com/wuchong/jacman">Jacman</a> 移植而来。</p>
-
-
-    
-
-    <p class="article-more-link">
       
-        <a href="/jekyll/2016/01/10/how-to-use-jacman#more">Read More</a>
-      
-   </p>
-</div>
-</div>
 
 
-  
-  
-  
-  
-
-<div class="post-expand post articleItem" itemprop="articleBody">
-    <div class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/yangbys/2015/09/22/rem" title="web app变革之rem" itemprop="url">web app变革之rem</a>
-  </h1>
-  <p class="article-time">
-    <time datetime="2015-09-22 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-09-22</time>
-  </p>
-</div>
-
-<div class="article-content">
-    
-    <h2 id="rem">rem确实做自适应相当好用…..</h2>
 
 
-    
 
-    <p class="article-more-link">
-      
-        <a href="/yangbys/2015/09/22/rem#more">Read More</a>
-      
-   </p>
-</div>
-</div>
-
-
-  
-  
-  
-  
-
-<div class="post-expand post articleItem" itemprop="articleBody">
-    <div class="article-info clearfix">
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/yangbys/2015/09/20/create-blog" title="yangbys.github.io 博客正式开通啦！" itemprop="url">yangbys.github.io 博客正式开通啦！</a>
@@ -158,37 +93,32 @@ Jekyll-Jacman 是为 <a href="http://jekyllrb.com">Jekyll</a> 设计的一款清
   </p>
 </div>
 
-<div class="article-content">
-    
-    <h2 id="yangbysgithubio">yangbys.github.io</h2>
+	<div class="article-content">
+		<h2 id="yangbysgithubio">yangbys.github.io</h2>
 
+<p>博客正式开通啦!</p>
 
-    
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
 
-    <p class="article-more-link">
-      
-        <a href="/yangbys/2015/09/20/create-blog#more">Read More</a>
-      
-   </p>
+<div class="next pageBtn">
+<a href="/yangbys/2015/09/22/rem"  title="web app变革之rem">
+ <strong>下一篇：</strong><br/>
+ <span>web app变革之rem
+</span>
+</a>
 </div>
-</div>
-
-
-
-
-  <nav id="page-nav" class="clearfix">
-  <nav id="page-nav" class="clearfix">
-    
-    
-    <span class="page-number current">1</span>
-    
-    
-     
-  </nav>
-  </nav>
-
 
 </div>
+
+
+	
+
+</div>
+
 
     </div>
     <div id="footer" >
@@ -245,6 +175,11 @@ $(document).ready(function(){
   });
   
   
+        getSize();
+        if (myWidth >= 1024) {
+          c.click();
+        }
+  
   
   $(window).resize(function(){
     getSize(); 
@@ -255,12 +190,100 @@ $(document).ready(function(){
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
       
+      $('#toc.toc-aside').css('display', 'none');
+      
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.toc-content').toc();
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+/*
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      //$('.hoverqrcode').hide();
+  });
+  */
+});   
+</script>
 
 
 

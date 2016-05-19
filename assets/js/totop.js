@@ -43,4 +43,22 @@
         }
     });
 
+    var timer = null;
+    var _name = $(".site-name").find("a");
+    var _speend = 5000;
+    function setAnimateName(){
+        timer = setTimeout(function(){
+            _name.addClass("bounce");
+        },_speend);
+    };
+
+    setAnimateName();
+
+    _name[0].addEventListener("animationend", function(){
+        clearTimeout(timer);
+        _name.removeClass("bounce");
+        _name[0].getClientRects();
+        setAnimateName();
+    });
+
 })(jQuery);

@@ -336,6 +336,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
     -moz-box-shadow : 0 1px 5px rgba(0,0,0,.2);
     box-shadow : 0 1px 5px rgba(0,0,0,.2);
 }
+.articleItem .article-content p {margin:0;}
 .articleItem .img-logo {
 	max-width:180px;
 	max-height:96px;

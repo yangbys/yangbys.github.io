@@ -5,256 +5,317 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Wed, 18 May 2016 18:18:41 +0800</lastBuildDate>
-        <pubDate>Wed, 18 May 2016 18:18:41 +0800</pubDate>
+        <lastBuildDate>Thu, 19 May 2016 11:39:08 +0800</lastBuildDate>
+        <pubDate>Thu, 19 May 2016 11:39:08 +0800</pubDate>
         <ttl>60</ttl>
 
 
         <item>
-                <title>test1</title>
-                <description>&lt;p&gt;##主题介绍
-Jekyll-Jacman 是为 &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 &lt;a href=&quot;https://github.com/wuchong/jacman&quot;&gt;Jacman&lt;/a&gt; 移植而来。&lt;/p&gt;
+                <title>分享一个JS实现复制、剪切、粘贴的功能</title>
+                <description>&lt;p&gt;&lt;img src=&quot;/assets/image/e2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;!-- more --&gt;
-&lt;p&gt;##配置指南&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/image/e1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Jacman 主题提供了丰富的配置属性，可以实现您对主题的自定义。配置文件&lt;code&gt;_config.yml&lt;/code&gt;位于主题根目录下。本次更新对配置文件进行了较大调整，如您之前就使用了 Jacman，也需要您根据以下指南进行相应的修改。&lt;/p&gt;
+&lt;p&gt;浏览器只允许用户主动触发这样的事件，不允许JavaScript代码随意将文本复制到剪贴板中，如果代码尝试越过用户自行复制，该调用会失败。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;##### 菜单
-menu:
-  主页: /
-  归档: /archives
-  关于: /about
+&lt;h2 id=&quot;copy&quot;&gt;copy&lt;/h2&gt;
 
-#### 控件
-widgets:
-- category
-- tag
-- links
-- rss
-
-#### RSS
-rss: /atom.xml
-
-#### 图片相关
-imglogo:
-  enable: true               ## 是否显示网站 logo
-  src: img/logo.png
-favicon: img/favicon.ico     ## 网站图标
-apple_icon: img/jacman.jpg   ## 苹果设备上的图标，背景不要透明
-author_img: img/author.jpg   ## 网站底部的博主头像
-banner_img: img/banner.jpg   ## 博客顶部的图片
-
-close_aside: false      ##是否在文章页面自动关闭侧边栏
-
-#### 首页相关
-index:
-  expand: true              ## 首页文章是否展开。默认为展开式，显示 Read More。
-  excerpt_link: Read More
-
-#### 作者信息
-author:
-  name: ## 作者名
-  intro_line1:  &quot;Hello ,I&#39;m Larry Page in Google.&quot;    ## 网站底部的个人介绍
-  intro_line2:  &quot;This is my blog,believe it or not.&quot;
-  weibo_verifier:  ## 微博秀的验证码
-  tsina:           ## 用于微博秀和微博分享
-  weibo:           ## 用于显示网站底部社交按钮，下同
-  douban:
-  zhihu:
-  email:
-  twitter:
-  github:
-  facebook:
-  linkedin:
-  google_plus:
-  stackoverflow:
-
-
-#### 目录
-toc:
-  article: true   ## 是否在文章中显示目录
-  aside: true     ## 是否在侧边栏显示目录
-
-#### 友情链接
-links:
-  码农圈: https://coderq.com,一个面向程序员交流分享的新一代社区
-  Jark&#39;s Blog: http://wuchong.me
-
-#### 评论
-duoshuo_shortname:
-disqus_shortname:
-
-#### 分享按钮
-jiathis:
-  enable: false   ## 默认使用主题内建分享
-  id:
-  tsina:
-
-#### 网站统计
-google_analytics:
-  enable: false
-  id:            ## google analytics ID.
-  site:          ## 网站地址.
-baidu_tongji:
-  enable: false
-  sitecode:      ## 百度统计站点特征码
-cnzz_tongji:
-  enable: false
-  siteid:        ## CNZZ统计站点ID
-
-#### 杂项
-ShowCustomFont: true
-fancybox: true
-totop: true
-
-#### 自定义搜索
-google_cse:
-  enable: false
-  cx:
-baidu_search:
-  enable: false
-  id:
-  site: http://zhannei.baidu.com/cse/search
-tinysou_search:     ## http://tinysou.com/
-  enable: false
-  id: &quot;4ac092ad8d749fdc6293&quot;
+&lt;pre&gt;&lt;code&gt;var copy = new clipBoard(document.getElementById(&#39;data&#39;), {
+    beforeCopy: function() {
+    },
+    copy: function() {
+        return document.getElementById(&#39;data&#39;).value;
+    },
+    afterCopy: function() {
+    }
+});
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;###属性功能
-- &lt;strong&gt;菜单 menu&lt;/strong&gt;
-默认没有启用 &lt;code&gt;/tags&lt;/code&gt; 和 &lt;code&gt;/categories&lt;/code&gt;页面，如果需要启用请在博客目录下的&lt;code&gt;source&lt;/code&gt;文件夹中分别建立&lt;code&gt;tags&lt;/code&gt; 和 &lt;code&gt;categories&lt;/code&gt;文件夹每个文件夹中分别包含一个&lt;code&gt;index.md&lt;/code&gt;文件。内容为：&lt;/p&gt;
+&lt;p&gt;copy will be called automatic, if you want call by yourself, you can do like this&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;layout: tags (或categories)
-title: tags (或categories)
----
+&lt;pre&gt;&lt;code&gt;var copy = new clipBoard(document.getElementById(&#39;data&#39;));
+copy.copyd();
+document.getElementById(&#39;data&#39;) is the value target, you can also use it with jquery $(&#39;#data&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;      因为主题中已经内置了这两个页面的模板，所以他们会被正确的解析出来。&lt;/p&gt;
+&lt;h2 id=&quot;cut&quot;&gt;cut&lt;/h2&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;控件 widgets&lt;/strong&gt;
-提供了7种小工具。包括标签、分类、RSS、友情链接、微博秀。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;var cut = new clipBoard(document.getElementById(&#39;data&#39;), {
+    beforeCut: function() {
+    },
+    cut: function() {
+        return document.getElementById(&#39;data&#39;).value;
+    },
+    afterCut: function() {
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;友情链接&lt;/strong&gt;：友情链接的网址添加可以在&lt;code&gt;links&lt;/code&gt;属性下添加。&lt;/p&gt;
+&lt;p&gt;或&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;微博秀&lt;/strong&gt;：需要注意的是，如果要启用微博秀，您必须填上&lt;code&gt;author&lt;/code&gt;属性下&lt;code&gt;tsina&lt;/code&gt;和&lt;code&gt;weibo_verifier&lt;/code&gt;的值，前者是您微博ID，后者是您微博秀的验证码，访问 http://app.weibo.com/tool/weiboshow 在如下图位置，可以获得您的 verifier，如：我的是&lt;code&gt;b3593ceb&lt;/code&gt;。
-&lt;img src=&quot;http://ww1.sinaimg.cn/large/81b78497jw1emegd6b0ytj209204pweu.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var cut = new clipBoard(document.getElementById(&#39;data&#39;));
+cut.cut();
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;如果要关闭侧边栏，将&lt;code&gt;close_aside&lt;/code&gt;置为&lt;code&gt;true&lt;/code&gt;，就会在博文页面自动关闭侧边栏。&lt;/p&gt;
+&lt;h2 id=&quot;paste&quot;&gt;paste&lt;/h2&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片相关 Image&lt;/strong&gt;
-本主题可以设置网站相关图片，例如网站图标（&lt;code&gt;favicon&lt;/code&gt;）、网站logo（&lt;code&gt;imglogo&lt;/code&gt;）、作者头像（&lt;code&gt;author_img&lt;/code&gt;）。建议启用网站logo，格式建议为&lt;code&gt;.svg&lt;/code&gt;或&lt;code&gt;.png&lt;/code&gt;格式。同时建议提供配套的 favicon 以及在苹果设备上的图标&lt;code&gt;apple_icon&lt;/code&gt;（背景不要透明）。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;首页显示模式 Index&lt;/strong&gt;
-目前首页的显示模式支持两种，一种是原先的卡片式（前往 &lt;a href=&quot;http://wuchong.me/jacman&quot;&gt;Demo&lt;/a&gt; 预览），另一种是类似官方主题的文章展开式（&lt;a href=&quot;http://wuchong.me&quot;&gt;本站&lt;/a&gt;即采用的这种）。两者各有优劣，前者首页加载速度更快，后者文章内容更能吸引读者。主题默认采用后一种展开式，如需开启第一种卡片式，请设置&lt;code&gt;index&lt;/code&gt;属性下的&lt;code&gt;expand: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;var paste = new clipBoard(document.getElementById(&#39;data&#39;), {
+    beforePaste: function() {
+    },
+    paste: function() {
+        return document.getElementById(&#39;data&#39;).value;
+    },
+    afterPaste: function() {
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;卡片式的文章摘要是截取文章内容的前140个字，也可以自己总结&lt;code&gt;description&lt;/code&gt;并将其放在开头的&lt;code&gt;front-matter&lt;/code&gt;中。展开式的文章摘要就是使用&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截取了。&lt;/p&gt;
+&lt;p&gt;或&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;作者信息 author&lt;/strong&gt;
-作者信息，建议尽量填写完整。其中&lt;code&gt;tsina&lt;/code&gt;是你的新浪微博ID，不同于用户名或微博主页地址。启用这个属性后，其他用户在微博上分享你文章的同时会自动@你。同时它和&lt;code&gt;weibo_verifier&lt;/code&gt;一起作用生成微博秀。&lt;code&gt;intro_line1&lt;/code&gt;和&lt;code&gt;intro_line2&lt;/code&gt;是网站底部的个人介绍。&lt;code&gt;weibo&lt;/code&gt;、&lt;code&gt;twitter&lt;/code&gt;、&lt;code&gt;facebook&lt;/code&gt;等是用来显示网站右下角的社交按钮的，如下图所示。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emgscr3575j2078050jrc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;目录 toc&lt;/strong&gt;
-是否启用在文章中或侧边栏中的目录功能。二者可以都为&lt;code&gt;true&lt;/code&gt;或都为&lt;code&gt;false&lt;/code&gt;。同时，如果你希望在特定的某一篇文章中关闭目录功能你可以在文章文件开头中的&lt;code&gt;front-matter&lt;/code&gt;中加上一行&lt;code&gt;toc: false&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;评论 comments&lt;/strong&gt;
-填写&lt;code&gt;duoshuo_shortname&lt;/code&gt;&lt;a href=&quot;http://duoshuo.com/&quot;&gt;多说&lt;/a&gt;的用户名，启用多说评论系统。在大陆地区更好用的评论系统。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;var paste = new clipBoard(document.getElementById(&#39;data&#39;));
+paste.paste();
+document.getElementById(&#39;data&#39;) is the paste target, you can also use it with jquery $(&#39;#data&#39;)
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;填写&lt;code&gt;disqus_shortname&lt;/code&gt;&lt;a href=&quot;http://disqus.com/&quot;&gt;disqus&lt;/a&gt; 的用户名，启用 disqus 评论系统。国际上更广泛使用的评论系统。设置博客根目录下的&lt;code&gt;_config.yml&lt;/code&gt;文件中的&lt;code&gt;disqus_shortname&lt;/code&gt;同样也能开启该功能。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;加网分享 jiathis&lt;/strong&gt;
-&lt;a href=&quot;http://www.jiathis.com/&quot;&gt;加网&lt;/a&gt;分享系统。默认关闭，因为主题已经内置了原生的分享功能。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;网站统计 Analytics&lt;/strong&gt;
-&lt;code&gt;google_analytics&lt;/code&gt;：Google Analytics追踪代码。请注意：Google Analytics已经升级到了Universal Analytics。请先前往后台升级你的Google Analytics版本后再启用追踪代码，更多信息请&lt;a href=&quot;https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN&quot;&gt;点击这里&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code&gt;baidu_tongji&lt;/code&gt;：百度统计功能。需要填写站点特征码&lt;code&gt;sitecode&lt;/code&gt;，在&lt;a href=&quot;http://tongji.baidu.com/web/welcome/login&quot;&gt;官网&lt;/a&gt;注册并配置站点后，获取特征码。特征码可以在「网站中心」-&amp;gt; 「代码获取」中查看，如下图所示的&lt;code&gt;e6d1f421bbc9962127a50488f9ed37d1&lt;/code&gt;，注意去掉前面的&lt;code&gt;3F&lt;/code&gt;。
-&lt;img src=&quot;http://ww4.sinaimg.cn/large/81b78497jw1emf4v6qf91j20kf07sq8v.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;cnzz_tongji&lt;/code&gt;：站长统计功能。需要填写站点ID&lt;code&gt;siteid&lt;/code&gt;，同理在&lt;a href=&quot;http://www.cnzz.com&quot;&gt;站长官网&lt;/a&gt;注册并配置站点后获得。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;数学公式 mathjax&lt;/strong&gt;
-主题支持写 LaTex 数学公式。只需要在文章文件开头的&lt;code&gt;front-matter&lt;/code&gt;中，加上一行&lt;code&gt;mathjax: true&lt;/code&gt;，即可在文中写 LaTex 公式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;图片浏览 fancybox&lt;/strong&gt;
-默认关闭，如果你经常发表 Gallery 类型的文章，那么请设置为&lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;返回顶部 totop&lt;/strong&gt;
-右下角&lt;code&gt;返回顶部&lt;/code&gt;按钮，默认开启。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;自定义搜索 Search&lt;/strong&gt;
-&lt;code&gt;baidu_search&lt;/code&gt;：如果开启百度站内搜索需要登录 &lt;a href=&quot;http://zn.baidu.com/&quot;&gt;百度站内搜索&lt;/a&gt;，配置好你的站点，并开启站内搜索获取搜索ID，另外&lt;code&gt;site&lt;/code&gt;属性可以填默认值，也可以填自己做了CNAME的二级域名，更详细的可以阅读&lt;a href=&quot;http://gengbiao.me/hexo/hexo%E6%B7%BB%E5%8A%A0%E7%99%BE%E5%BA%A6%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2/&quot;&gt;这篇博客&lt;/a&gt;了解。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code&gt;google_cse&lt;/code&gt;：如果开启谷歌自定义搜索需要先登录 &lt;a href=&quot;https://www.google.com/cse/&quot;&gt;Google CSE&lt;/a&gt;，配置好你的站点，并获得此自定义搜索的ID。此外你需要在博客目录下的&lt;code&gt;source&lt;/code&gt;文件夹中建立&lt;code&gt;search&lt;/code&gt;文件夹并包含一个&lt;code&gt;index.md&lt;/code&gt;文件。内容为：
- &lt;code&gt;
- layout: search
- title: search
- ---
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;tiny_search&lt;/code&gt;: 如果要开启&lt;a href=&quot;http://tinysou.com/&quot;&gt;微搜索&lt;/a&gt;，需要先注册一个帐号，配置一个Engine，将Engine的Key填入配置文件中的&lt;code&gt;id&lt;/code&gt;即可。&lt;/p&gt;
-
-&lt;p&gt;##常见问题
-- &lt;strong&gt;Q：图片默认都是居左的，我怎么设置能让图片居中呢？&lt;/strong&gt;
-&amp;gt;使用 &lt;code&gt;&amp;lt;img src=&quot;&quot; style=&quot;display:block;margin:auto&quot;/&amp;gt;&lt;/code&gt;的HTML标签。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Q：如何建立一篇图片类文章（Gallery Post）？&lt;/strong&gt;
-&amp;gt; 直接新建一个 Markdown 文件，将其&lt;code&gt;front-matter&lt;/code&gt;修改为如下，即可看到主题为图片类文章提供的样式。
-```
-—
-layout: photo
-title: Gallery Post
-photos:&lt;/li&gt;
-  &lt;li&gt;http://i.minus.com/ibobbTlfxZgITW.jpg&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h2 id=&quot;httpiminuscomiedpg90y0exfsjpg&quot;&gt;http://i.minus.com/iedpg90Y0exFS.jpg&lt;/h2&gt;
-    &lt;p&gt;```&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：我在配置文件中给某一项设置了值，但为什么总是看不到效果啊？&lt;/strong&gt;
-&amp;gt;&lt;code&gt;_config.yml&lt;/code&gt;文件中的每个属性值前面必须留一个空格，建议在 Sublime/Notepad++ 中开启显示所有空格模式。另每篇文章的 &lt;code&gt;front-matter&lt;/code&gt; 也要注意这个问题。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Q：怎么提意见和建议？&lt;/strong&gt;
-&amp;gt;主题还在不断完善中，欢迎 &lt;a href=&quot;https://github.com/Simpleyyt/jekyll-jacman/issues&quot;&gt;open issue&lt;/a&gt; 来提建议，参与讨论。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;**Q：为什么我修改了配置文件/发表了博文，解析出来的却是乱码呢？ **
-&amp;gt; 请将你的配置文件/markdown文件保存成 &lt;code&gt;UTF-8&lt;/code&gt; 格式。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;**Q：为什么开启了微博秀后，显示是空白的，没有内容展示？ **
-&amp;gt; 每次修改参数都会这样，需要多刷新几次或者上传到服务器上就好了。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;最后上一个例子
+&lt;a href=&quot;/assets/demo/clipboard/&quot;&gt;demo(用力击击它….)&lt;/a&gt;&lt;/p&gt;
 </description>
-                <link>/jekyll/2016/01/10/how-to-use-jacman</link>
-                <guid>/jekyll/2016/01/10/how-to-use-jacman</guid>
-                <pubDate>Sun, 10 Jan 2016 00:00:00 +0800</pubDate>
+                <link>/yangbys/2015/11/29/copy-txt</link>
+                <guid>/yangbys/2015/11/29/copy-txt</guid>
+                <pubDate>Sun, 29 Nov 2015 00:00:00 +0800</pubDate>
+        </item>
+
+        <item>
+                <title>webapp移动端的另一复制文本(selection)方法</title>
+                <description>&lt;p&gt;selection是对当前激活选中区（即高亮文本）进行操作。&lt;/p&gt;
+
+&lt;p&gt;在非IE浏览器（Firefox、Safari、Chrome、Opera）下可以使用window.getSelection()获得selection对象，本文讲述的是标准的selection操作方法。文中绝大部分内容来自 https://developer.mozilla.org/en/DOM/Selection&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;术语&lt;/h2&gt;
+
+&lt;p&gt;以下几个名词是英文文档中的几个名词。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;anchor&lt;/strong&gt;
+选中区域的“起点”。
+&lt;strong&gt;focus&lt;/strong&gt;
+选中区域的“结束点”。
+&lt;strong&gt;range&lt;/strong&gt;
+是一种fragment(HTML片断)，它包含了节点或文本节点的一部分。一般情况下，同一时刻页面中只可能有一个range，也有可能是多个range（使用Ctrl健进行多选，不过有的浏览器不允许，例如Chrome）。可以从selection中获得range对象，也可以使用document.createRange()方法获得。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;属性&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;anchorNode&lt;/strong&gt;
+返回包含“起点”的节点。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;anchorOffset&lt;/strong&gt;
+“起点”在anchorNode中的偏移量。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;focusNode&lt;/strong&gt;
+返回包含“结束点”的节点。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;focusOffset&lt;/strong&gt;
+“结束点”在focusNode中的偏移量。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;isCollapsed&lt;/strong&gt;
+“起点”和“结束点”是否重合。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;rangeCount&lt;/strong&gt;
+返回selection中包含的range对象的数目，一般存在一个range，Ctrl健配合使用可以有多个。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;常用方法&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;getRangeAt(index)&lt;/strong&gt;
+从当前selection对象中获得一个range对象。
+index：参考rangeCount属性。
+返回：根据下标index返回相应的range对象。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;selectAllChildren(parentNode)&lt;/strong&gt;
+将parentNode的所有后代节点（parentNode除外）变为selection，页面中原来的selection将被抛弃。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;addRange(range)&lt;/strong&gt;
+将range添加到selection当中，所以一个selection中可以有多个range。
+注意Chrome不允许同时存在多个range，它的处理方式和Firefox有些不同。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;removeRange(range)&lt;/strong&gt;
+从当前selection移除range对象，返回值undefined。
+Chrome目前没有改函数，即便是在Firefox中如果用自己创建（document.createRange()）的range作为参数也会报错。
+如果用oSelction.getRangeAt()取到的，则不会报错。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;removeAllRanges()&lt;/strong&gt;
+移除selection中所有的range对象，执行后anchorNode、focusNode被设置为null，不存在任何被选中的内容。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;例子&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/image/d1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;document.querySelector(&#39;#copy&#39;).addEventListener(&#39;click&#39;, function(){
+        var selection = window.getSelection(),
+             range = new Range();
+         range.selectNodeContents(nodeLink);
+         selection.removeAllRanges();
+         selection.addRange(range);
+});
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>/yangbys/2015/11/12/copy-txt</link>
+                <guid>/yangbys/2015/11/12/copy-txt</guid>
+                <pubDate>Thu, 12 Nov 2015 00:00:00 +0800</pubDate>
+        </item>
+
+        <item>
+                <title>聊聊移动端position:sticky</title>
+                <description>&lt;p&gt;position:sticky是一个新的css3属性，它的表现类似position:relative和position:fixed的合体，在目标区域在屏幕中可见时，它的行为就像position:relative; 而当页面滚动超出目标区域时，它的表现就像position:fixed，它会固定在目标位置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.sticky {
+	position: -webkit-sticky;
+	position:sticky;
+	top: 15px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;浏览器兼容性：&lt;/h2&gt;
+
+&lt;p&gt;由于这是一个全新的属性，以至于到现在都没有一个规范，W3C也刚刚开始讨论它，而现在只有webkit nightly版本和chrome 开发版(Chrome 23.0.1247.0+ Canary)才开始支持它。
+另外需要注意的是，如果同时定义了left和right值，那么left生效，right会无效，同样，同时定义了top和bottom，top赢。&lt;/p&gt;
+
+&lt;p&gt;来个例子&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/c1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先我们要的效果是，只要滚动到菜单栏（或超过菜单栏）时，我们就一直固定菜单栏的位置在顶部。
+&lt;img src=&quot;/assets/image/c2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后我们脑里当然想到的就是用position:fixed;属性，用JS来判断onscroll的scrollTop属性，如果scrollTop超过了菜单栏的高度，就加一个fixed样式给菜单栏，反之去掉。（哈哈，一切都是这么easy…)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;问题来了….&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;然而在移动端浏览器，这种效果就不够平滑了，特别是在ios设备上。因为在ios设备上，当页面滚动时，会暂停所有js的执行，直到 滚动停止才会继续执行js。因此，scroll事件在页面滚动的时候并不会被触发，而是在页面停止滚动的时候才触发。这样一来，效果就不是我们想象的那样了，就是动画停止后，菜单突然从上或下跑出来，是不是有点一惊一咋的（吓到宝宝了）。&lt;/p&gt;
+
+&lt;p&gt;这样导致的一个结果是，无法通过监听scroll事件来实现黏性布局，那么监听touchmove事件可以做到吗？&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;答案是同样做不到。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;在&lt;strong&gt;touchmove&lt;/strong&gt;的过程中可以实时地执行回调，但是在手指离开屏幕，页面继续减速滚动，直到听下的这段过程，js还是无能为力。&lt;/p&gt;
+
+&lt;p&gt;position:sticky就是为了解决这个问题而引入的一个试验性属性。position:sticky表现上是position:relative和 position:fixed的结合，怎么理解呢？设置了position:sticky的元素，表现如下：&lt;/p&gt;
+
+&lt;p&gt;当页面滚动到该元素之前，元素的表现跟position:relative一样
+当页面滚动到该元素之后，元素的表现跟position:fixed一样&lt;/p&gt;
+
+&lt;h2 id=&quot;positionsticky&quot;&gt;position:sticky的用法&lt;/h2&gt;
+
+&lt;p&gt;设置了position:sticky的元素要生效必须至少设置top、bottom、left、right其中的一个。top和bottom两者之间top的优先级高， left和right两者之间left的优先级高。&lt;/p&gt;
+
+&lt;p&gt;从上面的例子可以看出，设置了position:sticky的元素，当页面滚动其父容器的底部时，就不在固定在可见区域，而是跟随 父容器一起滚动了.&lt;/p&gt;
+</description>
+                <link>/yangbys/2015/10/28/sticky</link>
+                <guid>/yangbys/2015/10/28/sticky</guid>
+                <pubDate>Wed, 28 Oct 2015 00:00:00 +0800</pubDate>
+        </item>
+
+        <item>
+                <title>聊聊移动端webapp下的1px 细线</title>
+                <description>&lt;p&gt;&lt;img src=&quot;/assets/image/b1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上面的图片可以看得出，webapp 1PX的线条上跟（原生的APP上的1PX线条）的区别…&lt;/p&gt;
+
+&lt;p&gt;处理方法&lt;/p&gt;
+
+&lt;h2 id=&quot;height&quot;&gt;一、用Height来解决&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;.line {
+    width:100px;
+    position:relative;
+}
+.line:before {
+    position:absolute;
+    content:&quot;&quot;;
+    left:0;
+    bottom:0;
+    height:1px;
+    width:100%;
+    background: red;
+    -webkit-transform-origin:50% 100%;
+    transform-origin: 50% 100%;
+}
+/*****细线兼容*****/
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 3) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;border&quot;&gt;二、border来解决&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;.line {
+    width:100px;
+    position:relative;
+}
+.line:before {
+    position:absolute;
+    content:&quot;&quot;;
+    left:0;
+    bottom:0;
+    height:0;
+    border-bottom:1px solid red;
+    width:100%;
+    -webkit-transform-origin:50% 100%;
+    transform-origin: 50% 100%;
+}
+/*****细线兼容*****/
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 3) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然还有一些方法我就不列出来了~~比如用border-image也是可以做到的~只要一张边线图就可以….&lt;/p&gt;
+</description>
+                <link>/yangbys/2015/10/21/border-1px</link>
+                <guid>/yangbys/2015/10/21/border-1px</guid>
+                <pubDate>Wed, 21 Oct 2015 00:00:00 +0800</pubDate>
+        </item>
+
+        <item>
+                <title>UC浏览器 默认字体放大的坑</title>
+                <description>&lt;p&gt;在android机子下~UC浏览器会自己把你的页面放大了（这里我设置的字体是12号），在什么原生浏览器或什么360浏览器上都是正常的~~偏偏UC这货就放大了(scale);&lt;/p&gt;
+
+&lt;p&gt;后面问了问前端老大，说是UC浏览器可能读取到你页面的字体太小了，会把你的整体放大了&lt;/p&gt;
+
+&lt;p&gt;加了这个属性就正常了，我的天啊&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;meta name=&quot;wap-font-scale&quot; content=&quot;no&quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有一个问题可以H5页面套在webview里时，有些机子字体可能会出现一些很奇怪的样子&lt;/p&gt;
+
+&lt;p&gt;可以试下加个这属性看看&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;meta http-equiv=&quot;Cache-Control&quot; content=&quot;no-siteapp&quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+                <link>/yangbys/2015/10/10/uc-fontSize</link>
+                <guid>/yangbys/2015/10/10/uc-fontSize</guid>
+                <pubDate>Sat, 10 Oct 2015 00:00:00 +0800</pubDate>
         </item>
 
         <item>

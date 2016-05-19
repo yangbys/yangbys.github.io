@@ -10,6 +10,10 @@
 /rss.xml
 /sitemap.txt
 
-/jekyll/2016/01/10/how-to-use-jacman
+/yangbys/2015/11/29/copy-txt
+/yangbys/2015/11/12/copy-txt
+/yangbys/2015/10/28/sticky
+/yangbys/2015/10/21/border-1px
+/yangbys/2015/10/10/uc-fontSize
 /yangbys/2015/09/22/rem
 /yangbys/2015/09/20/create-blog

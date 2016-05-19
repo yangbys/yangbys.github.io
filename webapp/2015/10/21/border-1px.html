@@ -7,7 +7,7 @@
     
     
     
-    <title>yangbys.github.io 博客正式开通啦！ | 杨标Blog</title>
+    <title>聊聊移动端webapp下的1px 细线 | 杨标Blog</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -20,12 +20,12 @@
     
     <meta property="og:type" content="article">
     
-    <meta property="og:title" content="yangbys.github.io 博客正式开通啦！">
-    <meta property="og:url" content="/yangbys/2015/09/20/create-blog">
+    <meta property="og:title" content="聊聊移动端webapp下的1px 细线">
+    <meta property="og:url" content="/webapp/2015/10/21/border-1px">
     <meta property="og:site_name" content="杨标Blog">
-    <meta property="og:description" content="yangbys.github.io 博客正式开通啦！。">
+    <meta property="og:description" content="聊聊移动端webapp下的1px 细线。">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="yangbys.github.io 博客正式开通啦！">
+    <meta name="twitter:title" content="聊聊移动端webapp下的1px 细线">
     <meta name="twitter:description" content="page.description">
     <meta name="twitter:creator" content="@">
     <link rel="publisher" href="">
@@ -90,28 +90,108 @@
 	<div class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/yangbys/2015/09/20/create-blog" title="yangbys.github.io 博客正式开通啦！" itemprop="url">yangbys.github.io 博客正式开通啦！</a>
+      <a href="/webapp/2015/10/21/border-1px" title="聊聊移动端webapp下的1px 细线" itemprop="url">聊聊移动端webapp下的1px 细线</a>
   </h1>
   <p class="article-time">
-    <time datetime="2015-09-20 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-09-20</time>
+    <time datetime="2015-10-21 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-10-21</time>
   </p>
 </div>
 
 	<div class="article-content">
-		<h2 id="yangbysgithubio">yangbys.github.io</h2>
+		<p><img src="/assets/image/b1.png" alt="" /></p>
 
-<p>博客正式开通啦!</p>
+<p>从上面的图片可以看得出，webapp 1PX的线条上跟（原生的APP上的1PX线条）的区别…</p>
+
+<p>处理方法</p>
+
+<h2 id="height">一、用Height来解决</h2>
+
+<pre><code>.line {
+    width:100px;
+    position:relative;
+}
+.line:before {
+    position:absolute;
+    content:"";
+    left:0;
+    bottom:0;
+    height:1px;
+    width:100%;
+    background: red;
+    -webkit-transform-origin:50% 100%;
+    transform-origin: 50% 100%;
+}
+/*****细线兼容*****/
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 3) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+</code></pre>
+
+<h2 id="border">二、border来解决</h2>
+
+<pre><code>.line {
+    width:100px;
+    position:relative;
+}
+.line:before {
+    position:absolute;
+    content:"";
+    left:0;
+    bottom:0;
+    height:0;
+    border-bottom:1px solid red;
+    width:100%;
+    -webkit-transform-origin:50% 100%;
+    transform-origin: 50% 100%;
+}
+/*****细线兼容*****/
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 3) {
+    /****  Y  ***/
+  .line:before {
+    -webkit-transform: scaleY(0.33);
+            transform: scaleY(0.33);
+  }
+}
+</code></pre>
+
+<p>当然还有一些方法我就不列出来了~~比如用border-image也是可以做到的~只要一张边线图就可以….</p>
 
 	</div>
 	</div>
 	
 <div class="article-nav clearfix">
  
+ <div class="prev pageBtn" >
+ <a href="/webapp/2015/10/10/uc-fontSize" title="UC浏览器 默认字体放大的坑">
+  <strong>上一篇：</strong><br/>
+  <span>
+  UC浏览器 默认字体放大的坑</span>
+</a>
+</div>
+
 
 <div class="next pageBtn">
-<a href="/webapp/2015/09/22/rem"  title="web app变革之rem">
+<a href="/webapp/2015/10/28/sticky"  title="聊聊移动端position:sticky">
  <strong>下一篇：</strong><br/>
- <span>web app变革之rem
+ <span>聊聊移动端position:sticky
 </span>
 </a>
 </div>

@@ -7,7 +7,7 @@
     
     
     
-    <title>杨标Blog</title>
+    <title>UC浏览器 默认字体放大的坑 | 杨标Blog</title>
     
 
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
@@ -18,14 +18,14 @@
     
     <meta name="description" content="page.description">
     
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="article">
     
-    <meta property="og:title" content="">
-    <meta property="og:url" content="/search/">
+    <meta property="og:title" content="UC浏览器 默认字体放大的坑">
+    <meta property="og:url" content="/webapp/2015/10/10/uc-fontSize">
     <meta property="og:site_name" content="杨标Blog">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="UC浏览器 默认字体放大的坑。">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="">
+    <meta name="twitter:title" content="UC浏览器 默认字体放大的坑">
     <meta name="twitter:description" content="page.description">
     <meta name="twitter:creator" content="@">
     <link rel="publisher" href="">
@@ -80,6 +80,70 @@
     </div>
     <div id="container">
       
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/webapp/2015/10/10/uc-fontSize" title="UC浏览器 默认字体放大的坑" itemprop="url">UC浏览器 默认字体放大的坑</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2015-10-10 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-10-10</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>在android机子下~UC浏览器会自己把你的页面放大了（这里我设置的字体是12号），在什么原生浏览器或什么360浏览器上都是正常的~~偏偏UC这货就放大了(scale);</p>
+
+<p>后面问了问前端老大，说是UC浏览器可能读取到你页面的字体太小了，会把你的整体放大了</p>
+
+<p>加了这个属性就正常了，我的天啊</p>
+
+<pre><code>&lt;meta name="wap-font-scale" content="no"&gt;
+</code></pre>
+
+<p>还有一个问题可以H5页面套在webview里时，有些机子字体可能会出现一些很奇怪的样子</p>
+
+<p>可以试下加个这属性看看</p>
+
+<pre><code>&lt;meta http-equiv="Cache-Control" content="no-siteapp" /&gt;
+</code></pre>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/webapp/2015/09/22/rem" title="web app变革之rem">
+  <strong>上一篇：</strong><br/>
+  <span>
+  web app变革之rem</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/webapp/2015/10/21/border-1px"  title="聊聊移动端webapp下的1px 细线">
+ <strong>下一篇：</strong><br/>
+ <span>聊聊移动端webapp下的1px 细线
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
     </div>
     <div id="footer" >
 	

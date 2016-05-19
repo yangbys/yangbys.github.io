@@ -1,0 +1,235 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>fis plus(fisp)的使用心得 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="fis plus(fisp)的使用心得">
+    <meta property="og:url" content="/fisp/2016/02/13/fisp">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="fis plus(fisp)的使用心得">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="fis plus(fisp)的使用心得">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/fisp/2016/02/13/fisp" title="fis plus(fisp)的使用心得" itemprop="url">fis plus(fisp)的使用心得</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2016-02-13 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-02-13</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<h2 id="fis">FIS原理</h2>
+
+<p>fis其实是一个半成品，只有经过更多的包装（例如插件）才能发挥最大的作用，fis的核心是生成的map.json，很多想法可以通过map.json这个表来实现。比如我自己订制的require inline方式。</p>
+
+<p>fisp结合map.json和FISSource.class.php，对smarty语法进行了扩展，扩展出来了 html、widget、require、script等smarty自定义标签。</p>
+
+<p>想了解详情的童鞋，可以直接看下fisp的plugin。</p>
+
+<h2 id="fisp">FISP环境部署</h2>
+
+<p><strong>安装</strong>
+安装node环境
+配置java环境，并放入环境变量
+安装php环境，并且将php.exe放进环境变量
+然后进入cmd，依次执行：</p>
+
+<pre><code>#安装fis-plus
+$ npm install -g fis-plus
+
+#安装fis-plus调试环境
+$ fisp server install pc
+
+# 启动fisp
+$ fisp server start
+
+# 这时应该会自动打开系统默认浏览器访问127.0.0.1
+# 查看www路径
+
+$ fisp server open
+# 清理www路径，慎用，会清理掉之前安装的调试环境
+$ fisp server clean
+</code></pre>
+
+<h2 id="fis-1">fis部署</h2>
+
+<p>fisp release有很多参数，具体可以通过fisp release -h查看下。</p>
+
+<h1 id="section">常用的参数</h1>
+
+<pre><code>o 压缩文件/优化图片等
+-w watch功能
+-m md功能
+</code></pre>
+
+<h2 id="fisp-1">FISP本地模板调试</h2>
+
+<p>fisp支持本地模板调试，每个模块下，可以放置test文件夹，作为调试数据，支持json和php格式，fe童鞋当然推荐JSON数据（注意严格json格式哦）了。</p>
+
+<p>server.conf
+server.conf是方便调试用的，对应编译到server-conf/${namespace}-server.conf目录下，server.conf的书写规则类似.htaccess。</p>
+
+<p>在使用时，需要首先安装rewrite:</p>
+
+<pre><code>$ fisp server install rewrite
+</code></pre>
+
+<p>如果安装了pc（fisp server install pc），那么会自动带有这个功能的。</p>
+
+<p>对外提供match方法，供其他调试模块调用，具体方法参考代码注释说明。
+默认读取根目录server.conf文件，书写方式是：
+rewrite和redirect开头的会被翻译成一条匹配规则，自上而下的匹配。所有非rewrite和redirect开头的会被当做注释处理。
+rewrite： 匹配规则后转发到一个文件
+redirect： 匹配规则后重定向到另一个url
+例如下面的：</p>
+
+<pre><code>template ^\/login.html gpm/page/login/login.tpl
+template ^\/register.html gpm/page/register/register.tpl
+
+rewrite ^/news?.*tn=[a-zA-Z0-9]+.* app/data/news.php
+redirect ^/index?.* /photo/index/a
+rewrite ^/(.*)?.*  app/data/$1.php
+</code></pre>
+
+<h2 id="section-1">最重要的一点是</h2>
+
+<p>做到了前后端的分离，这才是我们真正需要的功能
+前端只需要在PHP里写的smarty模板变量，渲染出想要的页面，可以在phper没有拼好数据的前提下，将前端模板提前测试好。
+把我们做好的模板上传到服务器上，然后，开发他们就只要按照test文件夹下的php文件中的$fis_data里的(我们前端自定义的变量)给值就可以了。</p>
+
+<p>一种新的架建网站的工具….</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/fis3/2015/12/30/fis3_1" title="用Fis3做活动或专题页面相当的方便">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用Fis3做活动或专题页面相当的方便</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

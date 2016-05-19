@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-05-19T15:17:09+08:00</updated>
+ <updated>2016-05-19T16:42:21+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -13,10 +13,251 @@
 
  
  <entry>
+   <title>fis plus(fisp)的使用心得</title>
+   <link href="/fisp/2016/02/13/fisp"/>
+   <updated>2016-02-13T00:00:00+08:00</updated>
+   <id>/fisp/2016/02/13/fisp</id>
+   <content type="html">&lt;h2 id=&quot;fis&quot;&gt;FIS原理&lt;/h2&gt;
+
+&lt;p&gt;fis其实是一个半成品，只有经过更多的包装（例如插件）才能发挥最大的作用，fis的核心是生成的map.json，很多想法可以通过map.json这个表来实现。比如我自己订制的require inline方式。&lt;/p&gt;
+
+&lt;p&gt;fisp结合map.json和FISSource.class.php，对smarty语法进行了扩展，扩展出来了 html、widget、require、script等smarty自定义标签。&lt;/p&gt;
+
+&lt;p&gt;想了解详情的童鞋，可以直接看下fisp的plugin。&lt;/p&gt;
+
+&lt;h2 id=&quot;fisp&quot;&gt;FISP环境部署&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;安装&lt;/strong&gt;
+安装node环境
+配置java环境，并放入环境变量
+安装php环境，并且将php.exe放进环境变量
+然后进入cmd，依次执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#安装fis-plus
+$ npm install -g fis-plus
+
+#安装fis-plus调试环境
+$ fisp server install pc
+
+# 启动fisp
+$ fisp server start
+
+# 这时应该会自动打开系统默认浏览器访问127.0.0.1
+# 查看www路径
+
+$ fisp server open
+# 清理www路径，慎用，会清理掉之前安装的调试环境
+$ fisp server clean
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;fis-1&quot;&gt;fis部署&lt;/h2&gt;
+
+&lt;p&gt;fisp release有很多参数，具体可以通过fisp release -h查看下。&lt;/p&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;常用的参数&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;o 压缩文件/优化图片等
+-w watch功能
+-m md功能
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;fisp-1&quot;&gt;FISP本地模板调试&lt;/h2&gt;
+
+&lt;p&gt;fisp支持本地模板调试，每个模块下，可以放置test文件夹，作为调试数据，支持json和php格式，fe童鞋当然推荐JSON数据（注意严格json格式哦）了。&lt;/p&gt;
+
+&lt;p&gt;server.conf
+server.conf是方便调试用的，对应编译到server-conf/${namespace}-server.conf目录下，server.conf的书写规则类似.htaccess。&lt;/p&gt;
+
+&lt;p&gt;在使用时，需要首先安装rewrite:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ fisp server install rewrite
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果安装了pc（fisp server install pc），那么会自动带有这个功能的。&lt;/p&gt;
+
+&lt;p&gt;对外提供match方法，供其他调试模块调用，具体方法参考代码注释说明。
+默认读取根目录server.conf文件，书写方式是：
+rewrite和redirect开头的会被翻译成一条匹配规则，自上而下的匹配。所有非rewrite和redirect开头的会被当做注释处理。
+rewrite： 匹配规则后转发到一个文件
+redirect： 匹配规则后重定向到另一个url
+例如下面的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;template ^\/login.html gpm/page/login/login.tpl
+template ^\/register.html gpm/page/register/register.tpl
+
+rewrite ^/news?.*tn=[a-zA-Z0-9]+.* app/data/news.php
+redirect ^/index?.* /photo/index/a
+rewrite ^/(.*)?.*  app/data/$1.php
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;最重要的一点是&lt;/h2&gt;
+
+&lt;p&gt;做到了前后端的分离，这才是我们真正需要的功能
+前端只需要在PHP里写的smarty模板变量，渲染出想要的页面，可以在phper没有拼好数据的前提下，将前端模板提前测试好。
+把我们做好的模板上传到服务器上，然后，开发他们就只要按照test文件夹下的php文件中的$fis_data里的(我们前端自定义的变量)给值就可以了。&lt;/p&gt;
+
+&lt;p&gt;一种新的架建网站的工具….&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>用Fis3做活动或专题页面相当的方便</title>
+   <link href="/fis3/2015/12/30/fis3_1"/>
+   <updated>2015-12-30T00:00:00+08:00</updated>
+   <id>/fis3/2015/12/30/fis3_1</id>
+   <content type="html">&lt;p&gt;FIS3 主要是用户易用性和扩展能力的提升，定位是方便那些做前端工程方案的用户能快捷的完成方案定制，我们不期待所有的人都能拿来即用，而我们期待的是 FIS3 真正能使你从折腾工具中解放出来，通过几行配置、依靠 FIS 社区能快速解决你遇到的工程问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;fis3&quot;&gt;用fis3做活动等等页面相当的方便&lt;/h2&gt;
+
+&lt;p&gt;比如说，我们过往的开发经验是&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1、设计做好了PSD设计图给到我们前端
+2、然后我们前端做了模板（包括JS交互等），就差与后端接口对接了
+3、然后我们就把模板扔给了后端，让后端开发人员他们蛋疼去（哈哈....）
+4、突然问题来了，他们后端人员不小心与你的一个标签删了，然后页面挂了，他们就过来找我们解决了，这样的开发合作太蛋疼了...(感觉有没有)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有一种开发好一点的是（后端人员给接口），这样我们就很好的去实现了我们自己前端想要的结果，而且这也是现在大部分公司开发的流程之一。后端人员只管接口那块就OK了。前端把功能都实现了，然后就把页面给后端，让他们去生成或放到服务器上（一般后端人员是不会给我们前端人员的权限去目录操作的…）&lt;/p&gt;
+
+&lt;p&gt;第二种方法好是好，但有一个问题就是，如果有一点产品那边需要改一个小小的地方（给我那toast提示那标题改一下），简单一点就好说，直接让开发去改就好。但是，如果功能改了，我们前端必须在模板上动手脚的话，我们改好了模板文件，又扔给开发，开发又得去操作一遍流程，这样反反复复，前端都感觉很烦…&lt;/p&gt;
+
+&lt;p&gt;但是用Fis3上的fis.plugin功能（其实是用node.js写一个向服务器上传文件的功能），我们只需要在服务器上放一个.php文件就解决上面的问题了，我们前端就可以在本地一键上传文件到服务器上，而已文件、图片、样式的静态资源都可以随时加MD5(而且可以引用CDN的文件)等等功能。这样就不用每次都去找开发了，我们省事，开发他们也省事，一举两得，哈哈….&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;config(fis, &quot;fuli&quot;);
+fis.media(&#39;fuli&#39;).match(&#39;*&#39;, {
+    deploy: fis.plugin(&#39;http-push&#39;, {
+        receiver: &#39;http://www.xxx.cn/reciver.php&#39;,
+        to : &#39;/deploy/newfuli&#39;
+    })
+});
+fis.media(&#39;fuli&#39;).match(&quot;{**.js,**.css}&quot;, {
+    domain: &quot;http://xxx.cn/deploy/newfuli&quot;
+});
+fis.media(&#39;fuli&#39;).match(&quot;{**.jpg,**.png,**.gif}&quot;, {
+    domain: &quot;http://cdn.xxx.cn/uploads/deploy/hd&quot;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上线时，直接发布命令就行了  fis3 release fuli&lt;/p&gt;
+
+&lt;p&gt;是不是很方便啊….&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>fis3初步学习体验</title>
+   <link href="/fis3/2015/12/08/fis3_0"/>
+   <updated>2015-12-08T00:00:00+08:00</updated>
+   <id>/fis3/2015/12/08/fis3_0</id>
+   <content type="html">&lt;p&gt;作为前端开发，或多或少都会接触很多前端构建工具，最近的业务使用到了百度FIS团队的fis3，想和大家分享下我所理解的fis3。&lt;/p&gt;
+
+&lt;p&gt;使用方法简单说&lt;/p&gt;
+
+&lt;p&gt;首先，你需要安装node和npm&lt;/p&gt;
+
+&lt;p&gt;然后，使用 npm install -g install 命令安装fis3，安装完成是这样的
+&lt;img src=&quot;/assets/image/fis3/01/1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;表示安装成功。&lt;/p&gt;
+
+&lt;p&gt;然后我们可以通过 fis3 release -w 来对代码进行监听。
+注：fis3默认内置了fis3-command-release插件，提供了文件监听和浏览器自动刷新功能，在release的时候添加-w或-L参数就可以，这样可以很方便的部署代码。&lt;/p&gt;
+
+&lt;p&gt;当你需要使用插件的时候，可以用 fis3 install -g 插件名 进行安装。&lt;/p&gt;
+
+&lt;p&gt;与其他构件工具一样，fis3也需要配置fis-conf.js文件。&lt;/p&gt;
+
+&lt;p&gt;添加MD5戳以及资源的合并压缩（配置 useHash: true 即可添加MD5戳）
+&lt;img src=&quot;/assets/image/fis3/01/2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;CssSprite图片合并&lt;/strong&gt;
+&lt;img src=&quot;/assets/image/fis3/01/3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;对sass文件进行编译&lt;/strong&gt;
+&lt;img src=&quot;/assets/image/fis3/01/4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样我们就可以使用基本的fis3了。&lt;/p&gt;
+
+&lt;p&gt;fis三种编译能力&lt;/p&gt;
+
+&lt;p&gt;fis3可以做到以下几点：
+&lt;img src=&quot;/assets/image/fis3/01/5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。
+&lt;img src=&quot;/assets/image/fis3/01/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;1、资源定位&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;HTML中的资源定位&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!--源码：
+&amp;lt;img title=&quot;百度logo&quot; src=&quot;images/logo.gif&quot;/&amp;gt;
+编译后--&amp;gt;
+&amp;lt;img title=&quot;百度logo&quot; src=&quot;/images/logo_74e5229.gif&quot;/&amp;gt;
+
+&amp;lt;!--源码：
+&amp;lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;demo.css&quot;&amp;gt;
+编译后--&amp;gt;
+&amp;lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/demo_7defa41.css&quot;&amp;gt;
+
+&amp;lt;!--源码：
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;demo.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+编译后--&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;/demo_33c5143.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;js中的资源定位&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var img = __uri(&#39;images/logo.gif&#39;);
+ var css = __uri(&#39;demo.css&#39;);
+ var js = __uri(&#39;demo.js&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;编译&lt;/strong&gt;后&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var img = &#39;/images/logo_74e5229.gif&#39;;
+var css = &#39;/demo_7defa41.css&#39;;
+var js = &#39;/demo_33c5143.js&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;css中的资源定位&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@import url(&#39;demo.css&#39;);
+.style {
+      background: url(&#39;images/body-bg.png&#39;);
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;编译后&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@import url(&#39;/demo_7defa41.css&#39;);
+  .style {
+      background: url(&#39;/images/body-bg_1b8c3e0.png&#39;);
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;2、内容嵌入&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;demo.css?__inline&quot;&amp;gt;
+&amp;lt;link rel=&quot;import&quot; href=&quot;demo.html?__inline&quot;&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;demo.js?__inline&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;3、依赖声明&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+ *   @require demo.js
+ *   @require &quot;demo.css&quot;
+*/
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>分享一个JS实现复制、剪切、粘贴的功能</title>
-   <link href="/yangbys/2015/11/29/copy-txt"/>
+   <link href="/webapp/2015/11/29/copy-txt"/>
    <updated>2015-11-29T00:00:00+08:00</updated>
-   <id>/yangbys/2015/11/29/copy-txt</id>
+   <id>/webapp/2015/11/29/copy-txt</id>
    <content type="html">&lt;p&gt;&lt;img src=&quot;/assets/image/e2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/image/e1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
@@ -89,9 +330,9 @@ document.getElementById(&#39;data&#39;) is the paste target, you can also use it
  
  <entry>
    <title>webapp移动端的另一复制文本(selection)方法</title>
-   <link href="/yangbys/2015/11/12/copy-txt"/>
+   <link href="/webapp/2015/11/12/copy-txt"/>
    <updated>2015-11-12T00:00:00+08:00</updated>
-   <id>/yangbys/2015/11/12/copy-txt</id>
+   <id>/webapp/2015/11/12/copy-txt</id>
    <content type="html">&lt;p&gt;selection是对当前激活选中区（即高亮文本）进行操作。&lt;/p&gt;
 
 &lt;p&gt;在非IE浏览器（Firefox、Safari、Chrome、Opera）下可以使用window.getSelection()获得selection对象，本文讲述的是标准的selection操作方法。文中绝大部分内容来自 https://developer.mozilla.org/en/DOM/Selection&lt;/p&gt;
@@ -165,9 +406,9 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
  
  <entry>
    <title>聊聊移动端position:sticky</title>
-   <link href="/yangbys/2015/10/28/sticky"/>
+   <link href="/webapp/2015/10/28/sticky"/>
    <updated>2015-10-28T00:00:00+08:00</updated>
-   <id>/yangbys/2015/10/28/sticky</id>
+   <id>/webapp/2015/10/28/sticky</id>
    <content type="html">&lt;p&gt;position:sticky是一个新的css3属性，它的表现类似position:relative和position:fixed的合体，在目标区域在屏幕中可见时，它的行为就像position:relative; 而当页面滚动超出目标区域时，它的表现就像position:fixed，它会固定在目标位置。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;.sticky {
@@ -216,9 +457,9 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
  
  <entry>
    <title>聊聊移动端webapp下的1px 细线</title>
-   <link href="/yangbys/2015/10/21/border-1px"/>
+   <link href="/webapp/2015/10/21/border-1px"/>
    <updated>2015-10-21T00:00:00+08:00</updated>
-   <id>/yangbys/2015/10/21/border-1px</id>
+   <id>/webapp/2015/10/21/border-1px</id>
    <content type="html">&lt;p&gt;&lt;img src=&quot;/assets/image/b1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;从上面的图片可以看得出，webapp 1PX的线条上跟（原生的APP上的1PX线条）的区别…&lt;/p&gt;
@@ -299,9 +540,9 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
  
  <entry>
    <title>UC浏览器 默认字体放大的坑</title>
-   <link href="/yangbys/2015/10/10/uc-fontSize"/>
+   <link href="/webapp/2015/10/10/uc-fontSize"/>
    <updated>2015-10-10T00:00:00+08:00</updated>
-   <id>/yangbys/2015/10/10/uc-fontSize</id>
+   <id>/webapp/2015/10/10/uc-fontSize</id>
    <content type="html">&lt;p&gt;在android机子下~UC浏览器会自己把你的页面放大了（这里我设置的字体是12号），在什么原生浏览器或什么360浏览器上都是正常的~~偏偏UC这货就放大了(scale);&lt;/p&gt;
 
 &lt;p&gt;后面问了问前端老大，说是UC浏览器可能读取到你页面的字体太小了，会把你的整体放大了&lt;/p&gt;
@@ -322,9 +563,9 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
  
  <entry>
    <title>web app变革之rem</title>
-   <link href="/yangbys/2015/09/22/rem"/>
+   <link href="/webapp/2015/09/22/rem"/>
    <updated>2015-09-22T00:00:00+08:00</updated>
-   <id>/yangbys/2015/09/22/rem</id>
+   <id>/webapp/2015/09/22/rem</id>
    <content type="html">&lt;h2 id=&quot;rem&quot;&gt;rem确实做自适应相当好用…..&lt;/h2&gt;
 
 &lt;p&gt;(开发前可以先用PX来定义元素的大小宽高，到发布的时候用转换工具转成PX)&lt;/p&gt;

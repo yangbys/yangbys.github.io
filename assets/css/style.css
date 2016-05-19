@@ -290,6 +290,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 
 /****************/
 #header {
+	position:relative;
 	width:100%;
 	-webkit-box-shadow:2px 4px 5px rgba(3,3,3,0.2);
 	box-shadow:2px 4px 5px rgba(3,3,3,0.2);
@@ -301,6 +302,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 	width:1000px;
 	margin:0 auto;
 	position:relative;
+	z-index: 10;
 }
 #header .header-content a {
 	display:block;

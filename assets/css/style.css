@@ -353,6 +353,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 .nav {float:right;}
 .navList li {display:inline-block; }
 .navList li a {
+	font-size: 1.4em;
 	padding:.2em 1em;
     cursor: pointer;
 }
@@ -433,48 +434,38 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
     -moz-box-shadow:0 0 5px  rgba(0,0,0,.2);
     box-shadow:0 0 5px  rgba(0,0,0,.2);
 }
-#page-nav {
-	background:#fafafa;
+#page { padding: 10px 0; background:#fafafa;}
+.page-nav {
 	text-align:center;
 	overflow:hidden;
 }
-#page-nav a {
+.page-nav a,.page-nav span {
+	border:1px solid #e5e5e5;
 	display:inline-block;
 	padding:.5em 1em
 }
-#page-nav a {
+.page-nav a {
+	position:relative;
 	color:#2ca6cb;
 }
-#page-nav a:hover {
-	background:#ccc;
-	color:#2ca6cb
+.page-nav a:hover {
+	background:#2ca6cb;
+	color:#fff
 }
-#page-nav .prev {
-	float:left;
-	-webkit-transition:border-left 0.5s;
-	-moz-transition:border-left 0.5s;
-	-o-transition:border-left 0.5s;
-	-ms-transition:border-left 0.5s;
-	transition:border-left 0.5s;
-}
-#page-nav .prev span:before {
-
-}
-#page-nav .next {
-	float:right;
-}
-#page-nav .next span:before {
-
-}
-#page-nav span {display:inline-block;}
-#page-nav .page-number {
+.page-nav .prev {padding-left:1.5em;}
+.page-nav .next {padding-right:1.5em;}
+.page-nav .prev:before,.page-nav .next:before {position:absolute; top:7px; font-family: initial;}
+.page-nav .prev:before {content:"<"; left:.5em;}
+.page-nav .next:before {content:">"; right:.5em;}
+.page-nav .page-number {
 	padding:.5em 1em;
 }
-#page-nav .current {
+.page-nav .current {
 	color:#ea6753;
+	border:none;
 	font-weight:bold
 }
-#page-nav .space {
+.page-nav .space {
 	color:#2ca6cb
 }
 
@@ -628,7 +619,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 	font-size:.9em;
 }
 
-#archive-page .post h6 {display:inline-block; padding-left:25px; font-size:1.6em}
+#archive-page .post h6 {display:inline-block; padding-left:25px; font-size:1.4em}
 .archive-list li {padding:.2em 0;}
 .archiveslist .archive-list-count:before {
 	content:"("

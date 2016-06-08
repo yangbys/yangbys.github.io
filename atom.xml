@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-06-08T11:18:59+08:00</updated>
+ <updated>2016-06-08T11:21:25+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>javascript 加载更多数据</title>
-   <link href="/javascript/2016/03/05/loadMoreData"/>
-   <updated>2016-03-05T00:00:00+08:00</updated>
-   <id>/javascript/2016/03/05/loadMoreData</id>
+   <link href="/javascript/2016/03/15/loadMoreData"/>
+   <updated>2016-03-15T00:00:00+08:00</updated>
+   <id>/javascript/2016/03/15/loadMoreData</id>
    <content type="html">&lt;p&gt;平时在做webapp 手机移动项目的时候，经常遇到加载分页的功能，向下拖到底的时候，可以后端返回还有下一页数据的时候，我们得正常加载出来，实现这个功能其实对大家来说都没什么的，关键就是每次项目或其实页面如果需要用到加载的时候，都要去写一遍，很烦。&lt;/p&gt;
 
 &lt;p&gt;如果是后端直出数据(&lt;strong&gt;直出数据就是后端把html拼接好后直接返回来前端&lt;/strong&gt;)还好，这个我们就很好的解决统一封装了。但按正常的前端跟后端的交互是，后台那边只是返回一串数组的数据给我们，让 我们去拼接起来，再渲染到页面上，这样我们就不能统一了，因为每次拼接的数据都不一样，所以我们想办法给它一个方法，让他只处理渲染到页面这一层。&lt;/p&gt;

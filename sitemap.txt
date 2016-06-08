@@ -10,7 +10,7 @@
 /rss.xml
 /sitemap.txt
 
-/javascript/2016/03/05/loadMoreData
+/javascript/2016/03/15/loadMoreData
 /javascript/2016/03/05/loadImg
 /fisp/2016/02/13/fisp
 /fis3/2015/12/30/fis3_1

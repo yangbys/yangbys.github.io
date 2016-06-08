@@ -4,13 +4,355 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-05-19T18:27:12+08:00</updated>
+ <updated>2016-06-08T11:18:59+08:00</updated>
  <id></id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>javascript 加载更多数据</title>
+   <link href="/javascript/2016/03/05/loadMoreData"/>
+   <updated>2016-03-05T00:00:00+08:00</updated>
+   <id>/javascript/2016/03/05/loadMoreData</id>
+   <content type="html">&lt;p&gt;平时在做webapp 手机移动项目的时候，经常遇到加载分页的功能，向下拖到底的时候，可以后端返回还有下一页数据的时候，我们得正常加载出来，实现这个功能其实对大家来说都没什么的，关键就是每次项目或其实页面如果需要用到加载的时候，都要去写一遍，很烦。&lt;/p&gt;
+
+&lt;p&gt;如果是后端直出数据(&lt;strong&gt;直出数据就是后端把html拼接好后直接返回来前端&lt;/strong&gt;)还好，这个我们就很好的解决统一封装了。但按正常的前端跟后端的交互是，后台那边只是返回一串数组的数据给我们，让 我们去拼接起来，再渲染到页面上，这样我们就不能统一了，因为每次拼接的数据都不一样，所以我们想办法给它一个方法，让他只处理渲染到页面这一层。&lt;/p&gt;
+
+&lt;p&gt;直接上代码  – 本人懒 - - 依赖jquery啦&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var loadMore = function (obj, param){
+    var defaduls = {
+        callback : null
+    }
+    var opt = $.extend({}, defaduls, param);
+    this.init(obj, opt);
+    return this;
+}
+
+loadMore.prototype = {
+    init : function(obj, opt){
+        this.opt = opt;
+        this.run = true;
+        this.loadMore = null;
+        this.data = opt.data == undefined ? {} : opt.data;
+        this.index = 1;
+        this.newDataUrl = opt.url;
+        this.obj = obj;
+
+        obj.after(this.Loading());
+        this.bindUI();
+        this.getScroll();
+        //兼容手机版刷新后重新获取scrollTop的值
+        $(window).on(&#39;load&#39;,function(){
+            setTimeout(function(){
+            //	$(window).trigger(&#39;scroll&#39;);
+            })
+        })
+
+
+    },
+    bindUI : function(){
+        var _self = this;
+        $(window).on(&#39;scroll&#39;,function(){
+            this.getScroll();
+        }.bind(this));
+    },
+    getScroll : function(){
+        if(!this.run) return false;
+        var tops= Math.max( document.body.scrollTop || document.documentElement.scrollTop );
+        this.isLoad(tops);
+    },
+    isLoad : function(top){
+        if(this.bottom(top)){
+            this.loadAjax(this.newDataUrl);
+        }
+    },
+    loadAjax : function(url){
+        if(!url) {
+            this.loadMore.remove();
+            return;
+        };
+        var _self=this;
+        $.ajax({
+            type : &quot;get&quot;,
+            url :url,
+            timeout : 10000,
+            dataType : &quot;json&quot;,
+            data : _self.data,
+            beforeSend:function(){
+                $(window).off(&#39;scroll&#39;);
+            },
+            success:function(data){
+                _self.success(data);
+            },
+            error:function(){
+                _self.fail();
+            }
+        });
+    },
+    setClick : function(){
+        var _self = this;
+        this.$loadBtn.off(&#39;click&#39;).on(&#39;click&#39;,function(e){
+            $(this).remove();
+            _self.loadAjax(_self.newDataUrl);
+        });
+    },
+    bottom : function(tops){
+        var top = window.pageYOffset,
+            footer = document.getElementById(&#39;footer&#39;),
+            bottom = footer ? (footer.offsetTop - 10) : this.obj.offset().top + this.obj.height(),
+            height = Math.max(document.documentElement.clientHeight || document.body.clientHeight),
+            documentTop = tops;
+
+        if(documentTop + height &amp;gt;= bottom){
+            this.run = false;
+            return true;
+        }
+    },
+    success : function(data){
+        this.index++;
+        var _self = this;
+        setTimeout(function(){
+            _self.opt.callback &amp;amp;&amp;amp; _self.opt.callback.call(_self, data);
+            !$(&quot;.loadMore&quot;).length &amp;amp;&amp;amp; _self.obj.after(_self.loadMore);
+            _self.run = true;
+            //$(window).on(&quot;scroll&quot;);
+            _self.bindUI();
+            _self.getScroll();
+        },500);
+
+    },
+    fail : function(){
+        var _self=this;
+        setTimeout(function(){
+            _self.run = true;
+        },500);
+        this.$loadBtn = $(&#39;&amp;lt;span class=&quot;loadBtn&quot; style=&quot;display:block; text-align:center; padding:10px 0; font-size:14px; color:#999;&quot;&amp;gt;点击重新加载&amp;lt;/span&amp;gt;&#39;);
+        if(!document.querySelector(&quot;.loadBtn&quot;)){
+            this.obj.append(this.$loadBtn);
+        }
+        this.loadMore.remove();
+        // _self.loadMore.html(&#39;加载超时，请重新加载...&#39;);
+        this.$loadBtn.off(&#39;click&#39;).on(&#39;click&#39;,function(e){
+            $(this).remove();
+            _self.loadAjax(_self.newDataUrl);
+        });
+    },
+    Loading :  function(){
+        var loadHTML = $(&#39;&amp;lt;div class=&quot;loadDataMore&quot;&amp;gt;&amp;lt;a href=&quot;javascript:;&quot;&amp;gt;加载中...&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;&#39;);
+        this.loadMore = loadHTML;
+        return loadHTML;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样~~我们就提供了一个callback的方法处理html&lt;/p&gt;
+
+&lt;p&gt;使用方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var _list = $(&quot;.xcpj-list&quot;);
+    var _jsonURL = &quot;test/pingjianList.json&quot;;
+
+    //获取数据
+    var loadList = new loadMore(_list, {
+        url : _jsonURL,
+        callback : function(data){
+            return Utils.fire(&quot;getJSON&quot;, data);
+        }
+    });
+
+    //加载数据
+
+    Utils.on(&quot;getJSON&quot;, function(res){
+        if(!res) return false;
+        //这里后端自己来拼
+
+        var _html = getHTML(res.data);
+        _list.append(_html);
+        _list.find(&quot;img.lazy&quot;).loadImg({
+            callback : function(){
+                this.removeAttribute(&quot;data-original&quot;);
+                this.classList.remove(&quot;lazy&quot;);
+            }
+        });
+
+        if(!res.next_page) {
+            loadList.newDataUrl = &quot;&quot;;
+            return false;
+        };
+
+        //开发的同学注意啦~~~这里帮我拼一个下个完整的接口出来替换掉   _jsonURL
+        loadList.newDataUrl = _jsonURL;
+
+    });
+
+    function getHTML(data){
+        if(!data) return false;
+        var _listHTML = &quot;&quot;;
+        for (var i = 0,max=data.length; i&amp;lt;max; i++) {
+            _listHTML += &#39;&amp;lt;li&amp;gt;\
+                            &amp;lt;a href=&quot;xin-che-detail.html&quot;&amp;gt;\
+                                &amp;lt;img data-original=&quot;&#39;+data[i].src+&#39;&quot; src=&quot;image/c_load.jpg&quot; class=&quot;lazy xcpj-img&quot;/&amp;gt;\
+                                &amp;lt;div class=&quot;pj-btm&quot;&amp;gt;\
+                                    &amp;lt;p class=&quot;ellipsis&quot;&amp;gt;国际大师之作 博瑞全面逆袭高端车&amp;lt;/p&amp;gt;\
+                                    &amp;lt;div class=&quot;pj-info row&quot;&amp;gt;\
+                                        &amp;lt;span class=&quot;p-total&quot;&amp;gt;￥12.99万-20.99万&amp;lt;/span&amp;gt;\
+                                        &amp;lt;span class=&quot;col p-yg ellipsis&quot;&amp;gt;月供&amp;lt;span&amp;gt;￥4009&amp;lt;em&amp;gt;起&amp;lt;/em&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;\
+                                        &amp;lt;span class=&quot;p-pl&quot;&amp;gt;3880&amp;lt;/span&amp;gt;\
+                                    &amp;lt;/div&amp;gt;\
+                                &amp;lt;/div&amp;gt;\
+                            &amp;lt;/a&amp;gt;\
+                        &amp;lt;/li&amp;gt;&#39;;
+        }
+        return _listHTML;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后附上&lt;a href=&quot;/assets/demo/loadImg/&quot;&gt;demo&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>javascript 简单的延迟加载图片</title>
+   <link href="/javascript/2016/03/05/loadImg"/>
+   <updated>2016-03-05T00:00:00+08:00</updated>
+   <id>/javascript/2016/03/05/loadImg</id>
+   <content type="html">&lt;p&gt;&lt;strong&gt;Lazy Load&lt;/strong&gt; 是一个用 JavaScript 编写的 jQuery 插件. 它可以延迟加载长页面中的图片. 在浏览器可视区域外的图片不会被载入, 直到用户将页面滚动到它们所在的位置. 这与图片预加载的处理方式正好是相反的.&lt;/p&gt;
+
+&lt;p&gt;在包含很多大图片长页面中延迟加载图片可以加快页面加载速度. 浏览器将会在加载可见图片之后即进入就绪状态. 在某些情况下还可以帮助降低服务器负担.&lt;/p&gt;
+
+&lt;p&gt;最近闲着没事，就做了一个简单的懒加载图片功能，其实也就是缩小版的lazyload，但功能没有它的强大，我只做了可视区域加载与限定在某个区域下加载，所以说，功能很小，但只要用到我平时的小活动项目中，只要够用就好…哈哈&lt;/p&gt;
+
+&lt;p&gt;本人懒~~依赖了jquery来实现…&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;看代码&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;//yangbys
+;(function($){
+
+    $.fn.loadImg = function(option){
+        var opt = $.extend({}, {
+            placeholder : &quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC&quot;,
+            dataSrc : &quot;data-original&quot;,
+            container : null,
+            callback : null
+        }, option);
+        return new loadLazy(this, opt);
+    };
+
+    function loadLazy(img, opt){
+        return this.init.apply(this, arguments);
+    };
+
+    loadLazy.prototype = {
+        init : function(imgArr, option){
+            this.opt = option;
+            this.imgArr = [];
+            var self = this;
+            var imgArr = option.container ? option.container.find(&quot;[&quot;+option.dataSrc+&quot;]&quot;) : imgArr;
+            $.each(imgArr, function(i, item){
+                if(!item.getAttribute(&quot;src&quot;)){
+                    item.setAttribute(&quot;src&quot;, self.opt.placeholder);
+                }
+                if(item &amp;amp;&amp;amp; item.getAttribute(self.opt.dataSrc)){
+                    self.imgArr.push({
+                        obj : item,
+                        isLoad : false,
+                        tagName : item.tagName.toLocaleLowerCase()
+                    });
+                }
+            });
+            this.bindUI();
+        },
+        bindUI : function(){
+            var self = this;
+            (this.opt.container ? this.opt.container[0] : window).addEventListener(&quot;scroll&quot;, $.proxy(this.loadImg, this));
+            // window.addEventListener(&quot;load&quot;, function(){
+            //     setTimeout($.proxy(self.loadImg, self),10);
+            // },false);
+            window.addEventListener(&quot;resize&quot;, $.proxy(this.loadImg, this));
+            this.imgArr.length &amp;amp;&amp;amp; this.loadImg();
+            this.bindUI = function(){};
+        },
+        isArea : function(img){
+            var scrollTop     = document.body.scrollTop || document.documentElement.scrollTop,
+                scrollLeft    = document.body.scrollLeft || document.documentElement.scrollLeft,
+                imgOffsetTop  = $(img).offset().top,
+                imgOffsetLeft = $(img).offset().left,
+                winHeight     = this.win().h,
+                winWidth      = this.win().w,
+                imgTop        = imgOffsetTop + $(img).height();
+
+            if(scrollTop + winHeight &amp;gt;= imgOffsetTop &amp;amp;&amp;amp; scrollTop &amp;lt; imgTop &amp;amp;&amp;amp; scrollLeft + winWidth &amp;gt;= imgOffsetLeft){
+                return true;
+            }
+            return false;
+        },
+        loadImg : function(){
+            var _item, _src, img;
+
+            for(var i=0,len=this.imgArr.length; i&amp;lt;len; i++){
+                _item = this.imgArr[i];
+                img = _item.obj;
+                if(this.isArea(img) &amp;amp;&amp;amp; !_item.isLoad &amp;amp;&amp;amp; img.getAttribute(this.opt.dataSrc)){
+                    _src = img.getAttribute(this.opt.dataSrc);
+                    //加载img
+                    if(_item.tagName === &quot;img&quot; &amp;amp;&amp;amp; _src){
+                        //img.setAttribute(&quot;src&quot;, _src);
+                        $(img).css(&quot;opacity&quot;, 0).attr(&quot;src&quot;, _src).animate({opacity:1},200);
+                        this.callback(img);
+                    }else{
+                        //加载文件
+                        $(document).load(img.getAttribute(this.opt.dataSrc),function(){
+                            return this.callback(this);
+                        }.bind(this));
+                    };
+                    _item.isLoad = true;
+                }
+            };
+
+        },
+        callback : function(img){
+            this.opt.callback &amp;amp;&amp;amp; this.opt.callback.call(img);
+        },
+        win : function(){
+            return {
+                w : document.body.clientWidth || document.documentElement.clientWidth,
+                h : document.body.clientHeight || document.documentElement.clientHeight
+            }
+        }
+    }
+
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;使用方法&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&#39;img.lazy&#39;).loadImg({
+    callback : function(){
+        $(this).removeAttr(&quot;data-original&quot;);
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果在限定在某个区域下延迟加载的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&#39;img.lazy&#39;).loadImg({
+    container : $(&quot;.list&quot;),
+    callback : function(){
+        $(this).removeAttr(&quot;data-original&quot;);
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;是不是很简单呢~~哈哈&lt;/p&gt;
+
+&lt;p&gt;最后附上&lt;a href=&quot;/assets/demo/loadImg/&quot;&gt;demo&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>fis plus(fisp)的使用心得</title>

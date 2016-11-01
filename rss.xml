@@ -5,8 +5,8 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Tue, 01 Nov 2016 11:51:54 +0800</lastBuildDate>
-        <pubDate>Tue, 01 Nov 2016 11:51:54 +0800</pubDate>
+        <lastBuildDate>Tue, 01 Nov 2016 12:02:07 +0800</lastBuildDate>
+        <pubDate>Tue, 01 Nov 2016 12:02:07 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -82,9 +82,10 @@
 也可以用于做老虎机抽奖活动等等&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;开始前，我们要准备两个工作&lt;/strong&gt;
-1、由于一些浏览器不兼容jquery animate =&amp;gt; backgroundPosition 属性，所以要加载外部一个兼容脚本
-animateBackground-plugin.js
-2、要好看就得把数字替换成图片的方式 0 - 9 打竖排下来… (如图)
+1、由于一些浏览器不兼容jquery animate =&amp;gt; backgroundPosition 属性，所以要加载外部一个兼容脚本&lt;br /&gt;
+animateBackground-plugin.js&lt;br /&gt;
+2、要好看就得把数字替换成图片的方式 0 - 9 打竖排下来… &lt;br /&gt;
+(如图)
 &lt;img src=&quot;/assets/image/number/num_bg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;直接上代码&lt;/strong&gt;&lt;/p&gt;

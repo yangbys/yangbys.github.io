@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>数字特效</title>
+    <style>
+    * {margin:0; padding:0;}
+    ul,li {list-style: none;}
+    .about-num {padding:60px 0 ;}
+    .about-num ul {overflow: hidden;}
+    .about-num ul li {float:left; width:33%; text-align: center;}
+    .about-num ul li.last-l {border-left:1px solid #d8d8d8;}
+    .about-num li h6 {font-size: 100px; line-height: 100px; font-family: "DIN Condensed Bold";}
+    .about-num li p {font-size: 24px; line-height: 30px;}
+
+
+    </style>
+<body>
+
+    <div class="about-num">
+        <ul class="clearfix">
+            <li>
+                <h6>9</h6>
+                <p>个城市</p>
+            </li>
+            <li>
+                <h6>360</h6>
+                <p>名专业设计师</p>
+            </li>
+            <li>
+                <h6>1180</h6>
+                <p>名专业施工人员</p>
+            </li>
+        </ul>
+    </div>
+
+
+	<script src="../loadImg/jquery.js"></script>
+	<script>
+        $.each($(".about-num").find("li"), function(i, v){
+            setNum({
+                obj : $(v).find("h6"),
+                duration: 2000,
+                fps: 24
+            });
+        })
+
+        function setNum(settings){
+            var steps = duration / 1000 * fps;
+            var duration = settings.duration ? settings.duration : 2000;
+            var fps = settings.fps ? settings.fps : 24;
+            var steps = duration / 1000 * fps;
+            var $window = $(window);
+
+            settings.obj.each(function(i, item){
+                var me = $(item);
+                var runed = false;
+                var top = me.offset().top;
+                var interval = null;
+                var goal = parseInt(me.text());
+                var step = 0;
+
+                $window.scroll(function(){
+                    var height = $window.height();
+                    var elemHeight = me.height();
+                    var scrollTop = $window.scrollTop();
+                    var visible = scrollTop + height > top && scrollTop  < top + elemHeight;
+                    if(!runed && visible) {
+                    runed = true;
+                    interval = setInterval(function(){
+                      if(step < steps + 1) {
+                        me.text(settings.pattern ? settings.pattern.replace('@number' , Math.round(goal / steps * step)) : Math.round(goal / steps * step));
+                        step++;
+                      } else {
+                        clearInterval(interval);
+                      }
+                    }, 1000 / fps);
+                    }
+                }).scroll();
+            });
+
+            return this;
+        }
+
+	</script>
+</body>
+</html>

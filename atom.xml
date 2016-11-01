@@ -4,13 +4,851 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2016-06-08T11:24:07+08:00</updated>
+ <updated>2016-11-01T11:51:54+08:00</updated>
  <id></id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>jquery 数字同步累加动画</title>
+   <link href="/jquery/2016/07/11/javascript-num"/>
+   <updated>2016-07-11T00:00:00+08:00</updated>
+   <id>/jquery/2016/07/11/javascript-num</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;&lt;strong&gt;数字累加动画&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/image/n1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在项目上遇到一种这样的问题，比如在10秒内，由0平均增长到100，现在有(20,244,66)这个数字，同时由0在同一时间内以平均的增速到达。&lt;/p&gt;
+
+&lt;p&gt;JS&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.fn.runingNumbers = function(settings) {
+  var steps = duration / 1000 * fps;
+  var duration = settings.duration ? settings.duration : 2000;
+  var fps = settings.fps ? settings.fps : 24;
+  var steps = duration / 1000 * fps;
+  var $window = $(window);
+  this.each(function(i, item){
+    var me = $(item);
+    var runed = false;
+    var top = me.offset().top;
+    var interval = null;
+    var goal = parseInt(me.text());
+    var step = 0;
+    $window.scroll(function(){
+      var height = $window.height();
+      var elemHeight = me.height();
+      var scrollTop = $window.scrollTop();
+      var visible = scrollTop + height &amp;gt; top &amp;amp;&amp;amp; scrollTop  &amp;lt; top + elemHeight;
+      if(!runed &amp;amp;&amp;amp; visible) {
+        runed = true;
+        interval = setInterval(function(){
+          if(step &amp;lt; steps + 1) {
+            me.text(settings.pattern ? settings.pattern.replace(&#39;@number&#39; , Math.round(goal / steps * step)) : Math.round(goal / steps * step));
+            step++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 1000 / fps);
+      }
+    }).scroll();
+  });
+  return this;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;调用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; var _li = $(&#39;.al-nums ul&#39;).children(&#39;li&#39;),$txt;
+	$.each(_li,function(i,item){
+		$txt = $(item).find(&#39;.numing&#39;);
+        $txt.runingNumbers({
+          duration: 2000,
+          fps: 24
+        });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后上一个例子
+&lt;a href=&quot;/assets/demo/number1/&quot;&gt;demo(用力击击它….)&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>jquery数字滚动特效</title>
+   <link href="/jquery/2016/06/22/javascript-num"/>
+   <updated>2016-06-22T00:00:00+08:00</updated>
+   <id>/jquery/2016/06/22/javascript-num</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;数字滚动特效&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/image/number/num.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;今天想在数字上做点手脚，哈哈，让静态的数字动起来…这样页面就不会太死了。
+也可以用于做老虎机抽奖活动等等&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;开始前，我们要准备两个工作&lt;/strong&gt;
+1、由于一些浏览器不兼容jquery animate =&amp;gt; backgroundPosition 属性，所以要加载外部一个兼容脚本
+animateBackground-plugin.js
+2、要好看就得把数字替换成图片的方式 0 - 9 打竖排下来… (如图)
+&lt;img src=&quot;/assets/image/number/num_bg.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;直接上代码&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function setNum(obj,num){
+	//console.log(&#39;Nub&#39;,num)
+	var numArr=num.toString().split(&#39;&#39;);
+	var html=&#39;&#39;;
+	for(var i=0; i&amp;lt;numArr.length; i++){
+		html +=&#39;&amp;lt;i&amp;gt;&amp;lt;/i&amp;gt;&#39;;
+	}
+	obj.html(html);
+	var span=obj.children(&#39;i&#39;);
+	var h=20;
+	var m=12;
+	$.each(span,function(i,n){
+		setTimeout(function(){
+			$(n).animate(
+				{backgroundPosition:&quot;0 &quot;+(-h*m*10 - h*numArr[i])+&quot;px&quot;},
+				{
+					duration:2000+i*500,
+					easing: &#39;easeOutElastic&#39;,
+					complete:function(){
+						if(i==numArr.length-1){
+							//console.log(&#39;end&#39;)
+						}
+					}
+				}
+			)
+		},i*500)
+	})
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后上一个例子
+&lt;a href=&quot;/assets/demo/number/&quot;&gt;demo(用力击击它….)&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Vue.js学习笔记：入门</title>
+   <link href="/vue.js/2016/06/08/vue"/>
+   <updated>2016-06-08T00:00:00+08:00</updated>
+   <id>/vue.js/2016/06/08/vue</id>
+   <content type="html">&lt;p&gt;前言
+　　vue是法语中视图的意思，Vue.js是一个轻巧、高性能、可组件化的MVVM库。&lt;br /&gt;
+　　MV&lt;em&gt;可能大家都经常听说，我们先来理解一下MV&lt;/em&gt;的概念。&lt;/p&gt;
+
+&lt;p&gt;出现的背景&lt;/p&gt;
+
+&lt;p&gt;　　MVC开始是存在于桌面程序中的，但由于后端的mvc框架的v层越来越重，后端的MVC思想就搬移到了前端。随着前端代码越来越重，能力越来越大，重前端的系统越来越多地涌现出来。前端为主的MV*时代中，前端在MVC的结构指导下分为model(模型), view(视图)， controller(控制器)三部分。而controller慢慢演化为presenter和viewmodel。MVC, MVP, MVVM框架不断涌现。&lt;/p&gt;
+
+&lt;p&gt;MVC, MVP, MVVM&lt;/p&gt;
+
+&lt;p&gt;MVC(model-view-controller)，如backbone, angular(较高版本是mvvm, 也许说它是MVW更准确)。&lt;br /&gt;
+　　View: 与页面上元素直接相关的部分，包括html，CSS和一部分直接控制页面元素的JS。它可以从Model中得到数据，并将其显示到页面上。&lt;br /&gt;
+　　Model: 与后端的沟通、AJAX请求以及对数据的处理。Model本身不知道谁是View，谁是Controller。它只提供一些方法供View和Controller调用，并且将变更通知给它的观察者。&lt;br /&gt;
+　　Controller: Model和View的粘合剂。Controller将View方面的请求转发给合适的Model，作为Model的观察者，获取Model的变更,在必要时更新View。&lt;/p&gt;
+
+&lt;p&gt;MVP(model-view-presenter)使用此模型的框架不多，现在几乎倒向MVVM。MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。&lt;br /&gt;
+　　Presenter，与Controller一样，接收View的命令，对Model进行操作；与Controller不同的是Presenter会反作用于View，Model的变更通知首先被Presenter获得，然后Presenter再去更新View。&lt;/p&gt;
+
+&lt;p&gt;MVVM(model-view-viewmodel)如Vue.js。将Controller改为ViewModel。它与MVP的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在ViewModel。&lt;br /&gt;
+　　下图来自对MVC、MVP、MVVM的理解，清晰地说明它们之间的区别&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/vue/mvc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;vuejs&quot;&gt;Vue.js起步&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;简单介绍一下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;尤雨溪老师写的一个用于创建 web交互界面的库，是一个精简的MVVM，和其他库相比是一个小而美的库&lt;br /&gt;
+官方文档很清晰，比 Angular 简单易学&lt;br /&gt;
+采用双向绑定，用解耦的组件组合你的应用程序
+&lt;img src=&quot;/assets/image/vue/vue1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;　　下图是vue.js官网上的双向绑定的小例子。首先是VM -&amp;gt; V，VM中的data里的message变化，会自动反映在V中的p标签里大括号内的message；V -&amp;gt; VM，V中input里输入的值，会自动反映到VM中的message值。所以，你在输入框中输入的文字会被实时显示成上方的文字。
+&lt;img src=&quot;/assets/image/vue/vuedemo.png&quot; alt=&quot;&quot; /&gt;　　
+&lt;strong&gt;安装&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;　　安装步骤vue.js官网上介绍得十分清楚。这里我推荐先安装淘宝镜像，再进行安装Vue.js官方命令行工具，这样会更快。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# 全局安装 cnpm淘宝镜像
+$ npm install -g cnpm --registry=https://registry.npm.taobao.org
+# 全局安装 vue-cli
+$ cnpm install -g vue-cli
+# 创建一个基于 &quot;webpack&quot; 模板的新项目
+$ vue init webpack my-project
+# 安装依赖，走你
+$ cd my-project
+$ cnpm install
+$ npm run dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;一些常用的指令
+v-model&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用法：在表单控件(input、select、textarea)上创建双向绑定。&lt;br /&gt;
+例子：输入框中初始化文字是”hello vue.js”，而你在输入框中输入的文字会被实时显示成上方的文字。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&quot;app&quot;&amp;gt;
+	&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+	&amp;lt;input v-model=&quot;newItem&quot;/&amp;gt;
+&amp;lt;/div&amp;gt; js
+
+
+  new Vue({
+        el:&#39;#app&#39;,
+        data: {
+            newItem:&#39;hello vue.js.&#39;
+        }
+    });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;v-for&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用法：基于源数据将元素或模板块重复数次，简单来说就是列表渲染。如果之前学过Angular会觉得很相似。&lt;br /&gt;
+例子：会显示列表，列表中有”No.1”、”No.2”。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;ul&amp;gt;
+  &amp;lt;li v-for=&quot;item in items&quot;&amp;gt;
+    
+  &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt; js
+
+new Vue({
+    el:&#39;#app&#39;,
+    data: {
+        newItem:&#39;hello vue.js.&#39;,
+        items: [
+        	{label: &quot;No.1&quot;,isFinished: false},
+        	{label: &quot;No.2&quot;,isFinished: true}
+        ]
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;v-on&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用法：绑定事件监听器。事件类型由参数指定。表达式可以是一个方法的名字或一个内联语句，如果没有修饰符（如.stop、.prevent等）也可以省略。&lt;br /&gt;
+例子：&amp;lt;li&amp;gt;标签上绑定了点击事件，每次点击会改变item的isFinished属性。v-on:click可以缩写成@click。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;ul&amp;gt;
+  &amp;lt;li v-for=&quot;item in items&quot; v-on:click=&quot;toggleFinish(item)&quot;&amp;gt;
+    
+  &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;new Vue({
+    methods: {
+      toggleFinish: function(item) {
+        item.isFinished = !item.isFinished
+      }
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;v-bind&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;用法：动态地绑定一个或多个 attribute，或一个组件prop到表达式。在绑定 class 或 style 时，支持其它类型的值，如数组或对象；在绑定 prop 时，prop 必须在子组件中声明。可以用修饰符指定不同的绑定类型。&lt;br /&gt;
+例子：如果&amp;lt;li&amp;gt;的数据item.isFinished是true，&amp;lt;li&amp;gt;的class就是finished，文字颜色就会变成#ccc。v-bind:class可以缩写成:class。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;ul&amp;gt;
+  &amp;lt;li v-for=&quot;item in items&quot; v-bind:class=&quot;{finished: item.isFinished}&quot; v-on:click=&quot;toggleFinish(item)&quot;&amp;gt;
+    
+  &amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.finished {
+  color: #ccc;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;父向子组件传参&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;　　例子：App.vue为父，引入componetA组件之后，则可以在template中使用标签（注意驼峰写法要改成componet-a写法，因为html对大小写不敏感，componenta与componentA对于它来说是一样的，不好区分，所以使用小写-小写这种写法）。而子组件componetA中，声明props参数’msgfromfa’之后，就可以收到父向子组件传的参数了。例子中将msgfromfa显示在&amp;lt;p&amp;gt;标签中。
+App.vue中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;component-a msgfromfa=&quot;(Just Say U Love Me)&quot;&amp;gt;&amp;lt;/component-a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vue&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import componentA from &#39;./components/componentA&#39;
+export default {
+	new Vue({
+	    components: {
+	      componentA
+	    }
+	})
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;componentA.vue中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;vue&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export default {
+	props: [&#39;msgfromfa&#39;]
+}
+
+
+父向子组件传参
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用法：vm.$on( event, […args] )，触发当前实例上的事件。附加参数都会传给监听器回调。&lt;br /&gt;
+监听:   vm.$emit(event, ….参数)&lt;br /&gt;
+类似发布者 与 订阅者&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>fis3 文档学习研究</title>
+   <link href="/fis3/2016/05/05/fis3-learn"/>
+   <updated>2016-05-05T00:00:00+08:00</updated>
+   <id>/fis3/2016/05/05/fis3-learn</id>
+   <content type="html">&lt;p&gt;FIS3 , 为你定制的前端工程构建工具
+解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;一、安装&lt;/h2&gt;
+
+&lt;p&gt;安装初始化&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm i -g fis3
+fis3 -v
+fis3 init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;二、配置&lt;/h2&gt;
+
+&lt;p&gt;类似Gruntfile.js或Gulpfile.js，新建fis-config.js文件 配置api介绍如下：
+fis.set(key, value)
+设置一些配置，如系统内置属性 project、namespace、modules、settings。 fis.set 设置的值通过fis.get()获取
+fis.get(key)
+获取已经配置的属性，和 fis.set() 成对使用
+fis.match(selector, props, [, important])
+给匹配到的文件分配属性，文件属性决定了这个文件进行怎么样的操作；fis.match 模拟一个类似 css 的覆盖规则，负责给文件分配规则属性，这些规则属性决定了这个文件将会被如何处理；另外，后面分配到的规则会覆盖前面的；&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.match(&#39;{a,b}.js&#39;, {
+    release: &#39;/static/\$0&#39;
+});
+
+fis.match(&#39;b.js&#39;, {
+    release: &#39;/static/new/\$0&#39;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里b.js的输出为 /static/new/$0，如果important为true则规则不能被覆盖
+fis.media(mode)
+fis.media 是模仿自 css 的 @media，表示不同的状态。这是 fis3 中的一个重要概念，其意味着有多份配置，每一份配置都可以让 fis3 进行不同的编译；&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.media(&#39;dev&#39;).match(&#39;*.js&#39;, {
+    optimizer: null
+});
+
+fis.media(&#39;rd&#39;).match(&#39;*.js&#39;, {
+  domain: &#39;http://rd-host/static/cdn&#39;
+});
+fis.plugin(name, [props, [, place]])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fis.baidu.com/fis3/docs/api/config-api.html#%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7&quot;&gt;(http://fis.baidu.com/fis3/docs/api/config-api.html#%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;–几种重要属性设置
+&lt;strong&gt;全局属性介绍：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var DEFAULT_SETTINGS = {
+  project: {
+    charset: &#39;utf8&#39;,    //字符编码，@param: string
+    md5Length: 7,    //md5长度， @param: number
+    md5Connector: &#39;_&#39;,    //设置md5与文件的连接字符，@param: string
+    files: [&#39;**&#39;],    //设置项目源码文件过滤器，@param:
+    ignore: [&#39;node_modules/**&#39;, &#39;output/**&#39;, &#39;.git/**&#39;, &#39;fis-conf.js&#39;]    //排除某些不处理的文件
+    fileType:{
+        text: [&#39;html&#39;, &#39;js&#39;],    //追加文本文件后缀列表，@param: array | string
+        image: [&#39;png&#39;]    //最佳图片类二进制文件后缀列表，@param: array | string
+    }
+  },
+
+    // project的属性也可以通过 fis.set(&#39;project.charset&#39;, &#39;utf8&#39;) 来设置，其它的类似
+
+  component: {
+    skipRoadmapCheck: true,
+    protocol: &#39;github&#39;,
+    author: &#39;fis-components&#39;
+  },
+
+  modules: {
+    hook: &#39;components&#39;,
+    packager: &#39;map&#39;
+  },
+
+  options: {}
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;文件属性：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.set(&#39;timeDate&#39;, Date.now());    //获取当前时间戳
+fis.match(&#39;/widget/{*,**/*}.js&#39;, {
+    charset: &#39;utf8&#39;,    //指定文本文件的输出编码。@param: string
+    url: &#39;/static/proj/pkg_widget.js&#39;, //指定文件的资源定位路径，以 / 开头。默认是 release 的值，url可以与发布路径 release 不一致。@param: string
+    release: &#39;/static/$0&#39;,    //设置文件的产出路径。设置为false表示不生成文件,@param: string
+    packTo: &#39;/static/pkg_widget.js&#39;,     //分配到这个属性的文件将会合并到这个属性配置的文件中,@param: string
+    query: &#39;?=t&#39; + fis.get(&#39;timeDate&#39;),    //指定文件的资源定位路径之后的query，比如&#39;?t=123124132&#39;。@param: string
+    isHtmlLike: true,     //指定对文件进行 html 相关语言能力处理.@param: bool
+    isCssLike: true,     //指定对文件进行 css 相关的语言能力处理.@param: bool
+    isJsLike: true,    //指定对文件进行 js 相关的语言能力处理
+    useSameNameRequire: true,    //开启同名依赖.@param: bool
+    requires:[    //默认依赖的资源id表
+        &#39;&#39;static/lib/jquery.js&#39;&#39;
+    ],
+    extras: {    //在[静态资源映射表][]中的附加数据，用于扩展[静态资源映射表][]表的功能。@param: object
+        isPage: true
+    }
+});
+
+fis.match(&#39;/widget/mod.js&#39;, {
+    packOrder: -100,     //用来控制合并时的顺序，值越小越在前面。配合 packTo 一起使用。@param:number
+});
+
+fis.match(&#39;/widget/jquery.js&#39;, {
+    //使用 var $ = require(&#39;jquery&#39;);
+    id: &#39;query&#39;,    //指定文件的资源id。默认是 namespace + subpath 的值,@param: string
+    moduleId: &#39;jquery&#39;,    //指定文件资源的模块id。在插件fis3-hook-module里面自动包裹define的时候会用到，默认是 id 的值。@param: string
+    isMod: true    //标示文件是否为组件化文件。@param: bool
+});
+
+fis.media(&#39;prod&#39;).match(&#39;*.css&#39;, {
+    useHash: true,     //是否携带md5戳。@param: true
+    domain: &#39;http://www.qq.com&#39;,   //给文件 URL 设置cdn替换前缀。@paran: string
+});
+
+fis.match(&#39;*.less&#39;, {
+    rExt: &#39;.css&#39;    //设置最终文件产出后的后缀.@param: string
+    userMap: true,    //文件信息是否添加到 map.json,用于处理声明依赖，后面会讲到。@param: bool
+
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;插件配置属性：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.match(&#39;*.js&#39;, {
+    lint: fis.plugin(&#39;js&#39;, {    //启用 lint 插件进行代码检查
+
+    });
+});
+fis.match(&#39;*.less&#39;, {
+   parser: fis.plugin(&#39;less&#39;), //启用fis-parser-less插件
+   rExt: &#39;.css&#39;
+});
+fis.match(&#39;*.sass&#39;, {
+    parser: fis.plugin(&#39;sass&#39;), //启用fis-parser-sass插件
+    rExt: &#39;.css&#39;
+});
+fis.match(&#39;*.{css,less}&#39;, {
+    paser: fis.plugin(&#39;image-set&#39;)
+});
+fis.match(&#39;::package&#39;, {
+    packager: fis.plugin(&#39;map&#39;),
+    spriter: fis.plugin(&#39;csssprites&#39;)
+});
+fis.media(&#39;prod&#39;).match(&#39;::package&#39;, {
+    spriter: fis.plugin(&#39;csssprites&#39;)
+});
+// 发布部署等
+fis.match(&#39;**&#39;, {
+      deploy: fis.plugin(&#39;http-push&#39;, {
+          receiver: &#39;http://target-host/receiver.php&#39;, // 接收端
+          to: &#39;/home/work/www&#39; // 将部署到服务器的这个目录下
+      })
+  })
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当然更多插件可以查看 http://npmsearch.com/?q=fis-parser%20fis3-parser 通过插件我们就可以使用一些基础功能的组合了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 加 md5
+fis.match(&#39;*.{js,css,png}&#39;, {
+    useHash: true
+});
+
+// 启用 fis-spriter-csssprites 插件
+fis.match(&#39;::package&#39;, {
+    spriter: fis.plugin(&#39;csssprites&#39;)
+})
+
+// 对 CSS 进行图片合并
+fis.match(&#39;*.css&#39;, {
+    // 给匹配到的文件分配属性 `useSprite`
+    useSprite: true
+});
+
+fis.match(&#39;*.js&#39;, {
+     // fis-optimizer-uglify-js 插件进行压缩，已内置
+    optimizer: fis.plugin(&#39;uglify-js&#39;)
+});
+
+fis.match(&#39;*.css&#39;, {
+    // fis-optimizer-clean-css 插件进行压缩，已内置
+    optimizer: fis.plugin(&#39;clean-css&#39;)
+});
+
+fis.match(&#39;*.png&#39;, {
+    // fis-optimizer-png-compressor 插件进行压缩，已内置
+    optimizer: fis.plugin(&#39;png-compressor&#39;)
+});
+如果开发阶段有时不需要那么多处理流程可以禁用某些功能：
+fis.media(&#39;debug&#39;).match(&#39;*.{js,css,png}&#39;, {
+    useHash: false,
+    useSprite: false,
+    optimizer: null
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;三、调试与发布&lt;/h2&gt;
+
+&lt;p&gt;FIS3 构建后，默认情况下会对资源的 URL 进行修改，改成绝对路径。同样FIS3 内置一个简易 Web Server，可以方便调试构建结果。
+1、开启server到内置server调试目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis3 server open
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2、发布到内置server发布目录&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis3 release
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3、文件监听&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis3 release -w    //FIS3 通过对 release 命令添加 -w 或者 --watch 参数启动文件监听功能。
+fis3 release -wL  //文件修改自动构建发布了，如果浏览器能自动刷新。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4、发布配置 发布只需要配置就可以完成&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.match(&#39;*&#39;, {
+    deploy: fis.plugin(&#39;http-push&#39;, {
+        receiver: &#39;http://cq.01.p.p.baidu.com:8888/receiver.php&#39;,
+        to: &#39;/home/work/htdocs&#39; // 注意这个是指的是测试机器的路径，而非本地机器
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;四、内置功能&lt;/h2&gt;
+
+&lt;p&gt;4.1 嵌入资源 html和css中内嵌只需要在引用加载的文件后面加上__inline就可实现:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;img title=&quot;百度logo&quot; src=&quot;images/logo.gif?__inline&quot;/&amp;gt;
+&amp;lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;demo.css?__inline&quot;&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;demo.js?__inline&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;link rel=&quot;import&quot; href=&quot;demo.html?__inline&quot;&amp;gt;
+
+ @import url(&#39;demo.css?__inline&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;js中内嵌资源稍有点不同：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;__inline(&#39;demo.js&#39;);
+var img = __inline(&#39;images/logo.gif&#39;);
+var css = __inline(&#39;a.css&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4.2 资源定位 其实官方文档讲了很多，但很简单，主要是在没有inline的条件下将内嵌的资源处理后加上后缀，放入到相对应的发布目录中自动定位。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var img = __uri(&#39;images/logo.gif&#39;);
+// 处理后变成，其它的原理类似
+var img = &#39;/static/pic/logo_74e5229.gif&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4.3 声明依赖 html中声明依赖。用户可以在html的注释中声明依赖关系，这些依赖关系最终会被记录下来，当某个文件中包含字符 RESOURCE_MAP 那么这个记录会被字符串化后替换 RESOURCE_MAP。 例如index.html中含有并且设置了useMap：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!--
+    @require demo.js
+    @require &quot;demo.css&quot;
+--&amp;gt;
+//fis-conf.js
+fis.match(&#39;*.html&#39;, {
+    useMap: true
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;那么发布后会产生如下manifest.json文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;res&quot; : {
+        &quot;index.html&quot; : {
+            &quot;uri&quot; : &quot;/index.html&quot;,
+            &quot;type&quot; : &quot;html&quot;,
+            &quot;deps&quot; : [ &quot;demo.js&quot;, &quot;demo.css&quot; ]
+        }
+    },
+    &quot;pkg&quot; : {}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同样js和css中的配置方式和html中完全一致&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;五、工作原理
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;构建流程
+FIS3 是基于文件对象进行构建的，每个进入 FIS3 的文件都会实例化成一个 File 对象，整个构建过程都对这个对象进行操作完成构建任务。一个文件的构建流程分为三个阶段：
+扫项目目录拿到文件并初始化出一个文件对象的列表，列表包含需要处理文件的文件对象
+对文件对象中每一个文件进行单文件编译
+获取用户设置的 package 插件，进行打包处理（包括合并图片）
+单文件进行处理的流程依次为：lint -&amp;gt; parser -&amp;gt; preprocessor -&amp;gt; standard -&amp;gt; postprocessor -&amp;gt; optimizer。正如上面所配置的，这六个过程可以通过配置插件来定义我们最终想要的结果。例如， lint 代码校验检查，比较特殊，所以需要 release 命令命令行添加 -l 参数 parser 预处理阶段，比如 less、sass、es6、react 前端模板等都在此处预编译处理 preprocessor 标准化前处理插件 standard 标准化插件，处理内置语法 postprocessor 标准化后处理插件
+&lt;strong&gt;2. File对象&lt;/strong&gt;
+当一个文件被实例化为一个 File 对象后，包括一些文件基本属性，如 filename、realpath 等等，当这个文件被处理时，FIS3 还会把用户自定义的属性 merge 到文件对象上。例如&lt;/p&gt;
+
+    &lt;p&gt;fis.match(‘a.js’, {
+   myProp: true
+ });&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;fis将给这个a.js加上myPorp属性，有点类似与gulp的pipe处理。&lt;/p&gt;
+
+&lt;h2 id=&quot;fis3&quot;&gt;六、用fis3进行项目开发&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 插件使用&lt;/strong&gt;
+npm install -g 插件名 可以用来安装fis插件，插件列表见 http://npmsearch.com/?q=fis-parser%20fis3-parser 配置调试使用见上文的配置，fis3内置的插件如下，有这些觉得基本可以用来开发一个正式项目了。 fis-optimizer-clean-css fis-optimizer-png-compressor fis-optimizer-uglify-js fis-spriter-csssprites fis3-deploy-local-deliver fis3-deploy-http-push fis3-hook-components fis3-packager-map
+http://fis.baidu.com/fis3/docs/api/config-system-plugin.html
+2. 插件编写
+不到万不得已不要去扩展插件，用到的时候再说吧，fis3扩展了些插件，99%能满足开发需要。
+3. 模块化开发
+进行模块化开发首先安装npm install -g fis3-hook-module&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis.hook(&#39;module&#39;);
+
+
+fis.hook(&#39;module&#39;, {
+    mode: &#39;amd&#39;    //这里支持amd和commonJs
+});
+
+fis.match(&#39;/module/*.js&#39;, {
+  isMod: true // 标记匹配文件为组件
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;2. 项目开发基本规范&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 开发目录规范
+.
+├── page    // 放置页面模板
+│   └── index.html
+├── static    //公用静态资源
+│   └── lib    //公用静态资源库。例如jquery、zepto等
+├── test    //一些测试数据和用例
+└── widget    //一切组件，包括模板、css、js、图片以及其他前端资源
+    ├── header
+    ├── nav
+    └── ui
+
+//发布部署规范
+.
+├── static    //所有的静态资源都放到这个目录下
+├── template    //所有的模板都放到这个目录下
+└── test    还是一些测试数据、用例
+
+//构建工具配置
+foo
+foo/bin/foo.js
+foo/index.js
+package.json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;基于 FIS3 配置目录规范和部署规范的配置文件编写：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// 所有的文件产出到 static/ 目录下
+fis.match(&#39;*&#39;, {
+    release: &#39;/static/$0&#39;
+});
+
+// 所有模板放到 tempalte 目录下
+fis.match(&#39;*.html&#39;, {
+    release: &#39;/template/$0&#39;
+});
+
+// widget源码目录下的资源被标注为组件
+fis.match(&#39;/widget/**/*&#39;, {
+    isMod: true
+});
+
+// widget下的 js 调用 jswrapper 进行自动化组件化封装
+fis.match(&#39;/widget/**/*.js&#39;, {
+    postprocessor: fis.plugin(&#39;jswrapper&#39;, {
+        type: &#39;commonjs&#39;
+    })
+});
+
+// test 目录下的原封不动产出到 test 目录下
+fis.match(&#39;/test/**/*&#39;, {
+    release: &#39;$0&#39;
+});
+
+// optimize
+fis.media(&#39;prod&#39;)
+    .match(&#39;*.js&#39;, {
+        optimizer: fis.plugin(&#39;uglify-js&#39;, {
+            mangle: {
+                expect: [&#39;require&#39;, &#39;define&#39;, &#39;some string&#39;] //不想被压的
+            }
+        })
+    })
+    .match(&#39;*.css&#39;, {
+        optimizer: fis.plugin(&#39;clean-css&#39;, {
+            &#39;keepBreaks&#39;: true //保持一个规则一个换行
+        })
+    });
+
+// pack
+fis.media(&#39;prod&#39;)
+    // 启用打包插件，必须匹配 ::package
+    .match(&#39;::package&#39;, {
+        packager: fis.plugin(&#39;map&#39;),
+        spriter: fis.plugin(&#39;csssprites&#39;, {
+            layout: &#39;matrix&#39;,
+            margin: &#39;15&#39;
+        })
+    })
+    .match(&#39;*.js&#39;, {
+        packTo: &#39;/static/all_others.js&#39;
+    })
+    .match(&#39;*.css&#39;, {
+        packTo: &#39;/staitc/all_others.js&#39;
+    })
+    .match(&#39;/widget/**/*.js&#39;, {
+        packTo: &#39;/static/all_comp.js&#39;
+    })
+    .match(&#39;/widget/**/*.css&#39;, {
+        packTo: &#39;/static/all_comp.css&#39;
+    });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实现 /bin/foo.js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// vi foo/bin/foo.js
+
+var Liftoff = require(&#39;liftoff&#39;);
+var argv = require(&#39;minimist&#39;)(process.argv.slice(2));
+var path = require(&#39;path&#39;);
+var cli = new Liftoff({
+  name: &#39;foo&#39;, // 命令名字
+  processTitle: &#39;foo&#39;,
+  moduleName: &#39;foo&#39;,
+  configName: &#39;fis-conf&#39;,
+
+  // only js supported!
+  extensions: {
+    &#39;.js&#39;: null
+  }
+});
+
+cli.launch({
+  cwd: argv.r || argv.root,
+  configPath: argv.f || argv.file
+}, function(env) {
+  var fis;
+  if (!env.modulePath) {
+    fis = require(&#39;../&#39;);
+  } else {
+    fis = require(env.modulePath);
+  }
+  fis.set(&#39;system.localNPMFolder&#39;, path.join(env.cwd, &#39;node_modules/foo&#39;));
+  fis.set(&#39;system.globalNPMFolder&#39;, path.dirname(__dirname));
+  fis.cli.run(argv, env);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;七、必须掌握的&lt;/h2&gt;
+
+&lt;p&gt;命令行 fis3 :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fis3 release [-d path]     //发布目录
+fis3 install 插件名        //安装一个插件
+fis3 init     //初始化一个项目
+fis3 server [start | stop | restart | open | info ]      //内置服务器操作
+fis3 inspect     //比较实用的命令，用来查看文件 match 结果
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大概fis3文档的内容全部覆盖了，只有插件编写没有去深究。感觉整体能应对我们平时遇到的99%的问题。后面也靠fis团队更新插件了，至于缺少方便的插件的开发环境这点，个人觉得不到万不得已不要自己去造轮子，fis2很多插件缺少可以理解，后面还是尽量不要自己去造插件了。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Safari 遇到的坑</title>
+   <link href="/safari/2016/04/20/Safari"/>
+   <updated>2016-04-20T00:00:00+08:00</updated>
+   <id>/safari/2016/04/20/Safari</id>
+   <content type="html">&lt;h2 id=&quot;localstoragesafari&quot;&gt;第一个问题， localStorage在Safari无痕模式下的坑&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&#39;QuotaExceededError: DOM Exception 22: An attempt was made to add something to storage that exceeded &#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这是在safari 浏览器无痕模式的时候，localStorage.setItem()的时候，报以上错误！因为在无痕模式下，localStorage -&amp;gt; Storage {length: 0}  localStorage 就只有一个length:0。&lt;/p&gt;
+
+&lt;p&gt;开发H5 webapp时经常需要使用本地存储，如localStorage和sessionStorage存储一些数据，相比最多能存4k的cookie相比，用起来很好用。但是localStorage在iOS Safari、chrome和UC浏览器中的隐私模式（也叫无痕模式）下无法使用，手机Safari浏览器中具体表现是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;localStorage对象仍然存在
+但是setItem会报异常：QuotaExceededError
+getItem和removeItem直接忽略
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Safari中控制台截图
+&lt;img src=&quot;/assets/image/localstorage.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;判断浏览器是否支持localStorage的方法:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function isLocalStorageSupported() {
+    var testKey = &#39;test&#39;,
+        storage = window.sessionStorage;
+    try {
+        storage.setItem(testKey, &#39;testValue&#39;);
+        storage.removeItem(testKey);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;ajaxanysc&quot;&gt;第二个神坑，ajax同步法anysc的问题&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;TimeoutError: DOM Exception 23: A timeout occurred
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实项目上用到一个很简单的ajax 请求，只不过是同步而已
+如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$.ajax({
+	url : &#39;xxx.php&#39;,
+	type : &#39;GET&#39;,
+	dataType : &#39;json&#39;,
+	data : {xx:1},
+	anysc : false,
+	success : function(res){
+		...
+	},
+	error : function(){
+		...
+	}
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;没想到在ios Safari浏览器上，当然啦，也不是所有的IOS版本，是极少数的IOS版本会出现这个神坑,在IOS系统下也会出现这种神坑我也是醉了….
+最后只能用try catch去解决了….&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>javascript 加载更多数据</title>

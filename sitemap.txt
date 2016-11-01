@@ -9,7 +9,13 @@
 /archives/
 /rss.xml
 /sitemap.txt
+/page2/
 
+/jquery/2016/07/11/javascript-num
+/jquery/2016/06/22/javascript-num
+/vue.js/2016/06/08/vue
+/fis3/2016/05/05/fis3-learn
+/safari/2016/04/20/Safari
 /javascript/2016/03/15/loadMoreData
 /javascript/2016/03/05/loadImg
 /fisp/2016/02/13/fisp

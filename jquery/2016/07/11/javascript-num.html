@@ -1,0 +1,213 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>jquery 数字同步累加动画 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="jquery 数字同步累加动画">
+    <meta property="og:url" content="/jquery/2016/07/11/javascript-num">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="jquery 数字同步累加动画">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="jquery 数字同步累加动画">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/jquery/2016/07/11/javascript-num" title="jquery 数字同步累加动画" itemprop="url">jquery 数字同步累加动画</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2016-07-11 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-07-11</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<h2 id="section"><strong>数字累加动画</strong></h2>
+<p><img src="/assets/image/n1.jpg" alt="" /></p>
+
+<p>在项目上遇到一种这样的问题，比如在10秒内，由0平均增长到100，现在有(20,244,66)这个数字，同时由0在同一时间内以平均的增速到达。</p>
+
+<p>JS</p>
+
+<pre><code>$.fn.runingNumbers = function(settings) {
+  var steps = duration / 1000 * fps;
+  var duration = settings.duration ? settings.duration : 2000;
+  var fps = settings.fps ? settings.fps : 24;
+  var steps = duration / 1000 * fps;
+  var $window = $(window);
+  this.each(function(i, item){
+    var me = $(item);
+    var runed = false;
+    var top = me.offset().top;
+    var interval = null;
+    var goal = parseInt(me.text());
+    var step = 0;
+    $window.scroll(function(){
+      var height = $window.height();
+      var elemHeight = me.height();
+      var scrollTop = $window.scrollTop();
+      var visible = scrollTop + height &gt; top &amp;&amp; scrollTop  &lt; top + elemHeight;
+      if(!runed &amp;&amp; visible) {
+        runed = true;
+        interval = setInterval(function(){
+          if(step &lt; steps + 1) {
+            me.text(settings.pattern ? settings.pattern.replace('@number' , Math.round(goal / steps * step)) : Math.round(goal / steps * step));
+            step++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 1000 / fps);
+      }
+    }).scroll();
+  });
+  return this;
+};
+</code></pre>
+
+<p>调用</p>
+
+<pre><code> var _li = $('.al-nums ul').children('li'),$txt;
+	$.each(_li,function(i,item){
+		$txt = $(item).find('.numing');
+        $txt.runingNumbers({
+          duration: 2000,
+          fps: 24
+        });
+</code></pre>
+
+<p>最后上一个例子
+<a href="/assets/demo/number1/">demo(用力击击它….)</a></p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/jquery/2016/06/22/javascript-num" title="jquery数字滚动特效">
+  <strong>上一篇：</strong><br/>
+  <span>
+  jquery数字滚动特效</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

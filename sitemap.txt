@@ -11,6 +11,7 @@
 /sitemap.txt
 /page2/
 
+/javascript/2017/02/13/javascript-weixin
 /jquery/2016/07/11/javascript-num
 /jquery/2016/06/22/javascript-num
 /vue.js/2016/06/08/vue

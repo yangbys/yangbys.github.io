@@ -5,10 +5,60 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Tue, 01 Nov 2016 12:04:10 +0800</lastBuildDate>
-        <pubDate>Tue, 01 Nov 2016 12:04:10 +0800</pubDate>
+        <lastBuildDate>Thu, 30 Mar 2017 16:53:06 +0800</lastBuildDate>
+        <pubDate>Thu, 30 Mar 2017 16:53:06 +0800</pubDate>
         <ttl>60</ttl>
 
+
+        <item>
+                <title>调起微信客户端的坑</title>
+                <description>&lt;p&gt;最近在做一个项目的时候，遇到一个调起微信客户端支付时，出现第一次调起没反应，重新刷新页面后，就可以正常调起了，很奇怪的问题。&lt;/p&gt;
+
+&lt;p&gt;如果是在页面上直接打开微信是协议的话 location.href = ‘weixin://’ 或用iframe 方式打开是没有问题的。&lt;/p&gt;
+
+&lt;p&gt;现在先说下，问题的起因，我们是用异步去请求服务器那边的接口拿回来的微信支持链接的，
+如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$.get(&#39;GETWEIXIN&#39;, {xx:1, yy:2}, $.noop, &#39;json&#39;).done(function(res){
+	if(res.code == 200){
+		location.href = res.wxpay_url;
+	}
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大概就是这样子的代码，第一次怎么都没反应。
+然后我就把返回来的那串微信支付的链接(wxpay_url)直接拷到浏览器上打开就很完美的展示。
+我晕晕晕晕…&lt;/p&gt;
+
+&lt;p&gt;后面又想到第一次请求自动刷新页面，然后在URL上加上一些特定的参数来做判断，虽然这样是可以解决问题了，但我觉得这个做法很恶心，肯定不是我想要的。
+我想了下，会不会是&lt;strong&gt;异步&lt;/strong&gt;的问题导致的呢？？？？？&lt;/p&gt;
+
+&lt;p&gt;于是我换成了&lt;strong&gt;同步&lt;/strong&gt;的方法去试下，结果…
+先上代码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;$.ajax({
+	url: &#39;GETWEIXIN&#39;,
+	data: {xx:111},
+	dataType: &#39;json&#39;,
+	type: &#39;GET&#39;,
+	asnyc: false
+}).done(function(res){
+	if(res.code == 200){
+		location.href = res.wxpay_url;
+	}
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以成功调起了…..66666666666&lt;/p&gt;
+
+&lt;p&gt;上个图咯&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/weixin/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+                <link>/javascript/2017/02/13/javascript-weixin</link>
+                <guid>/javascript/2017/02/13/javascript-weixin</guid>
+                <pubDate>Mon, 13 Feb 2017 00:00:00 +0800</pubDate>
+        </item>
 
         <item>
                 <title>jquery 数字同步累加动画</title>

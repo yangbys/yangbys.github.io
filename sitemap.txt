@@ -28,4 +28,4 @@
 /webapp/2015/10/21/border-1px
 /webapp/2015/10/10/uc-fontSize
 /webapp/2015/09/22/rem
-/yangbys/2015/09/20/create-blog
+/yangbys/2015/09/20/create-blog 

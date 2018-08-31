@@ -212,30 +212,37 @@ chunk文件会报错找不到。</p>
 <p>比如我们现在的域名地址这样访问的：http://aa.xx.com/bank/page/count , 需要如下配置：</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">server</span> <span class="p">{</span>
-    <span class="nx">listen</span> <span class="mi">443</span><span class="p">;</span>     <span class="err">#</span> <span class="err">监听本机所有</span><span class="nx">ip</span><span class="err">上的</span> <span class="mi">443</span> <span class="err">端口</span>
-    <span class="nx">listen</span> <span class="mi">80</span><span class="p">;</span>      <span class="err">#</span> <span class="err">监听本机所有</span><span class="nx">ip</span><span class="err">上的</span> <span class="mi">80</span> <span class="err">端口</span>
-    <span class="nx">server_name</span>  <span class="nx">aa</span><span class="p">.</span><span class="nx">xx</span><span class="p">.</span><span class="nx">com</span><span class="p">;</span> <span class="err">#</span> <span class="err">域名地址</span>
-    <span class="nx">access_log</span>  <span class="o">/</span><span class="nx">data</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">logs</span><span class="o">/</span><span class="nx">nginx</span><span class="o">/</span><span class="nx">aa</span><span class="o">/</span><span class="nx">access</span><span class="p">.</span><span class="nx">log</span> <span class="nx">main</span><span class="p">;</span> <span class="err">#</span> <span class="err">新建日志文件</span>
-    <span class="nx">include</span> <span class="nx">nginx_xx</span><span class="p">.</span><span class="nx">conf</span><span class="p">;</span> 
-    <span class="cm">/* 下面是多个location 用于配置路由地址 */</span>
+    <span class="nx">listen</span>       <span class="mi">5858</span><span class="p">;</span>
+    <span class="nx">server_name</span>  <span class="mf">127.0</span><span class="p">.</span><span class="mf">0.1</span> <span class="nx">alias</span> <span class="nx">localhost</span><span class="p">;</span>
+
     <span class="nx">location</span> <span class="o">/</span> <span class="p">{</span>
-      <span class="nx">proxy_pass</span> <span class="na">http</span><span class="p">:</span><span class="c1">//aa/;</span>
-      <span class="nx">include</span> <span class="nx">nginx_proxy</span><span class="p">.</span><span class="nx">conf</span><span class="p">;</span>
+        <span class="nx">root</span>   <span class="na">D</span><span class="p">:</span><span class="sr">/vue</span><span class="err">;
+</span>        <span class="nx">try_files</span> <span class="nx">$uri</span> <span class="nx">$uri</span><span class="o">/</span> <span class="p">@</span><span class="nd">router</span><span class="p">;</span> <span class="err">#需要指向下面的</span><span class="p">@</span><span class="nd">router</span><span class="err">否则会出现</span><span class="nx">vue</span><span class="err">的路由在</span><span class="nx">nginx</span><span class="err">中刷新出现</span><span class="mi">404</span>
+        <span class="nx">index</span>  <span class="nx">index</span><span class="p">.</span><span class="nx">html</span> <span class="nx">index</span><span class="p">.</span><span class="nx">htm</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="nx">location</span> <span class="o">/</span><span class="nx">bank</span><span class="o">/</span><span class="nx">page</span><span class="o">/</span> <span class="p">{</span>
-      <span class="nx">try_files</span> <span class="nx">$uri</span> <span class="nx">$uri</span><span class="o">/</span> <span class="sr">/bank</span><span class="err">;
-</span>    <span class="p">},</span>
-    <span class="cm">/* http://aa.xx.com/bank2/page/count 有多个不同的地址 就加一个如下这个配置 */</span>
-    <span class="nx">location</span> <span class="o">/</span><span class="nx">bank2</span><span class="o">/</span><span class="nx">page</span><span class="o">/</span> <span class="p">{</span>
-      <span class="nx">try_files</span> <span class="nx">$uri</span> <span class="nx">$uri</span><span class="o">/</span> <span class="sr">/bank2</span><span class="err">;
-</span>    <span class="p">}</span>
-    <span class="nx">error_page</span>  <span class="mi">500</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span>  <span class="o">/</span><span class="mi">502</span><span class="p">.</span><span class="nx">html</span><span class="p">;</span>
-    <span class="nx">location</span> <span class="o">=</span> <span class="sr">/50x.html </span><span class="err">{
-</span>      <span class="nx">root</span>   <span class="nx">html</span><span class="p">;</span>
+
+    <span class="err">#对应上面的</span><span class="p">@</span><span class="nd">router</span><span class="err">，主要原因是路由的路径资源并不是一个真实的路径，所以无法找到具体的文件</span>
+    <span class="err">#因此需要</span><span class="nx">rewrite</span><span class="err">到</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">中，然后交给路由在处理请求资源</span>
+    <span class="nx">location</span> <span class="p">@</span><span class="nd">router</span> <span class="p">{</span>
+        <span class="nx">rewrite</span> <span class="o">^</span><span class="p">.</span><span class="o">*</span><span class="nx">$</span> <span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span> <span class="nx">last</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
-
 </code></pre></div></div>
+
+<h2 id="注意-1">注意</h2>
+
+<p>重启后，打开页面出现了如下报错</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Uncaught</span> <span class="nx">SyntaxError</span><span class="p">:</span> <span class="nx">Unexpected</span> <span class="nx">token</span> <span class="o">&lt;</span>
+</code></pre></div></div>
+
+<h2 id="原因">原因</h2>
+
+<p>打开config/index.js 文件
+这里配置的assetsPublicPath一定要配置成  “/”  而不是  “./”之类的，不然nginx服务端即使配置成为了vue h5 history模式，就会出现如上错误。
+<img src="/assets/image/vue_history.png" alt="" /></p>
+
+<p>这样配置就算是配置好了，然后就不会出现页面刷新显示404的错误了。</p>
 
 <p>try_files 指令：</p>
 

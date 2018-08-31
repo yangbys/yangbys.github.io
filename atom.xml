@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2018-08-31T15:20:28+08:00</updated>
+ <updated>2018-08-31T16:13:40+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -131,30 +131,37 @@ chunk文件会报错找不到。&lt;/p&gt;
 &lt;p&gt;比如我们现在的域名地址这样访问的：http://aa.xx.com/bank/page/count , 需要如下配置：&lt;/p&gt;
 
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;监听本机所有&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;上的&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;端口&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;监听本机所有&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;上的&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;端口&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;server_name&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;aa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;域名地址&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;access_log&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;www&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;logs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;aa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;access&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;新建日志文件&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nginx_xx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;conf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
-    &lt;span class=&quot;cm&quot;&gt;/* 下面是多个location 用于配置路由地址 */&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt;       &lt;span class=&quot;mi&quot;&gt;5858&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;server_name&lt;/span&gt;  &lt;span class=&quot;mf&quot;&gt;127.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
     &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;proxy_pass&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//aa/;&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nginx_proxy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;conf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt;   &lt;span class=&quot;na&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/vue&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;
+&lt;/span&gt;        &lt;span class=&quot;nx&quot;&gt;try_files&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;#需要指向下面的&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;否则会出现&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;vue&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;的路由在&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nginx&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;中刷新出现&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;404&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;index&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;htm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;try_files&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/bank&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;cm&quot;&gt;/* http://aa.xx.com/bank2/page/count 有多个不同的地址 就加一个如下这个配置 */&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;bank2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;try_files&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/bank2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;error_page&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;502&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;503&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;504&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;502&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/50x.html &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{
-&lt;/span&gt;      &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt;   &lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;err&quot;&gt;#对应上面的&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，主要原因是路由的路径资源并不是一个真实的路径，所以无法找到具体的文件&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;#因此需要&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rewrite&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;到&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;中，然后交给路由在处理请求资源&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;router&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;rewrite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;注意-1&quot;&gt;注意&lt;/h2&gt;
+
+&lt;p&gt;重启后，打开页面出现了如下报错&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;Uncaught&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SyntaxError&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Unexpected&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;原因&quot;&gt;原因&lt;/h2&gt;
+
+&lt;p&gt;打开config/index.js 文件
+这里配置的assetsPublicPath一定要配置成  “/”  而不是  “./”之类的，不然nginx服务端即使配置成为了vue h5 history模式，就会出现如上错误。
+&lt;img src=&quot;/assets/image/vue_history.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样配置就算是配置好了，然后就不会出现页面刷新显示404的错误了。&lt;/p&gt;
 
 &lt;p&gt;try_files 指令：&lt;/p&gt;
 

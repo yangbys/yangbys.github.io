@@ -11,7 +11,6 @@
 /sitemap.txt
 /assets/css/style.css
 /page2/
-/page3/
 
 /es6/2018/07/30/nginx-vue-history
 /vue/2018/05/11/Vue-keep-alive

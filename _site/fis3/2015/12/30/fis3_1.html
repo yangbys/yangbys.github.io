@@ -1,0 +1,202 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>用Fis3做活动或专题页面相当的方便 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="用Fis3做活动或专题页面相当的方便">
+    <meta property="og:url" content="/fis3/2015/12/30/fis3_1">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="用Fis3做活动或专题页面相当的方便">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="用Fis3做活动或专题页面相当的方便">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/fis3/2015/12/30/fis3_1" title="用Fis3做活动或专题页面相当的方便" itemprop="url">用Fis3做活动或专题页面相当的方便</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2015-12-30 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-12-30</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>FIS3 主要是用户易用性和扩展能力的提升，定位是方便那些做前端工程方案的用户能快捷的完成方案定制，我们不期待所有的人都能拿来即用，而我们期待的是 FIS3 真正能使你从折腾工具中解放出来，通过几行配置、依靠 FIS 社区能快速解决你遇到的工程问题。</p>
+
+<h2 id="fis3">用fis3做活动等等页面相当的方便</h2>
+
+<p>比如说，我们过往的开发经验是</p>
+
+<pre><code>1、设计做好了PSD设计图给到我们前端
+2、然后我们前端做了模板（包括JS交互等），就差与后端接口对接了
+3、然后我们就把模板扔给了后端，让后端开发人员他们蛋疼去（哈哈....）
+4、突然问题来了，他们后端人员不小心与你的一个标签删了，然后页面挂了，他们就过来找我们解决了，这样的开发合作太蛋疼了...(感觉有没有)
+</code></pre>
+
+<p>还有一种开发好一点的是（后端人员给接口），这样我们就很好的去实现了我们自己前端想要的结果，而且这也是现在大部分公司开发的流程之一。后端人员只管接口那块就OK了。前端把功能都实现了，然后就把页面给后端，让他们去生成或放到服务器上（一般后端人员是不会给我们前端人员的权限去目录操作的…）</p>
+
+<p>第二种方法好是好，但有一个问题就是，如果有一点产品那边需要改一个小小的地方（给我那toast提示那标题改一下），简单一点就好说，直接让开发去改就好。但是，如果功能改了，我们前端必须在模板上动手脚的话，我们改好了模板文件，又扔给开发，开发又得去操作一遍流程，这样反反复复，前端都感觉很烦…</p>
+
+<p>但是用Fis3上的fis.plugin功能（其实是用node.js写一个向服务器上传文件的功能），我们只需要在服务器上放一个.php文件就解决上面的问题了，我们前端就可以在本地一键上传文件到服务器上，而已文件、图片、样式的静态资源都可以随时加MD5(而且可以引用CDN的文件)等等功能。这样就不用每次都去找开发了，我们省事，开发他们也省事，一举两得，哈哈….</p>
+
+<pre><code>config(fis, "fuli");
+fis.media('fuli').match('*', {
+    deploy: fis.plugin('http-push', {
+        receiver: 'http://www.xxx.cn/reciver.php',
+        to : '/deploy/newfuli'
+    })
+});
+fis.media('fuli').match("{**.js,**.css}", {
+    domain: "http://xxx.cn/deploy/newfuli"
+});
+fis.media('fuli').match("{**.jpg,**.png,**.gif}", {
+    domain: "http://cdn.xxx.cn/uploads/deploy/hd"
+});
+</code></pre>
+
+<p>上线时，直接发布命令就行了  fis3 release fuli</p>
+
+<p>是不是很方便啊….</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/fis3/2015/12/08/fis3_0" title="fis3初步学习体验">
+  <strong>上一篇：</strong><br/>
+  <span>
+  fis3初步学习体验</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/fisp/2016/02/13/fisp"  title="fis plus(fisp)的使用心得">
+ <strong>下一篇：</strong><br/>
+ <span>fis plus(fisp)的使用心得
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

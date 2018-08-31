@@ -1,0 +1,297 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>javascript 简单的延迟加载图片 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="javascript 简单的延迟加载图片">
+    <meta property="og:url" content="/javascript/2016/03/05/loadImg">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="javascript 懒加载图片">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="javascript 简单的延迟加载图片">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/javascript/2016/03/05/loadImg" title="javascript 简单的延迟加载图片" itemprop="url">javascript 简单的延迟加载图片</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2016-03-05 00:00:00 +0800" itemprop="datePublished"> 发表于 2016-03-05</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p><strong>Lazy Load</strong> 是一个用 JavaScript 编写的 jQuery 插件. 它可以延迟加载长页面中的图片. 在浏览器可视区域外的图片不会被载入, 直到用户将页面滚动到它们所在的位置. 这与图片预加载的处理方式正好是相反的.</p>
+
+<p>在包含很多大图片长页面中延迟加载图片可以加快页面加载速度. 浏览器将会在加载可见图片之后即进入就绪状态. 在某些情况下还可以帮助降低服务器负担.</p>
+
+<p>最近闲着没事，就做了一个简单的懒加载图片功能，其实也就是缩小版的lazyload，但功能没有它的强大，我只做了可视区域加载与限定在某个区域下加载，所以说，功能很小，但只要用到我平时的小活动项目中，只要够用就好…哈哈</p>
+
+<p>本人懒~~依赖了jquery来实现…</p>
+
+<h2 id="section">看代码</h2>
+
+<pre><code>//yangbys
+;(function($){
+
+    $.fn.loadImg = function(option){
+        var opt = $.extend({}, {
+            placeholder : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC",
+            dataSrc : "data-original",
+            container : null,
+            callback : null
+        }, option);
+        return new loadLazy(this, opt);
+    };
+
+    function loadLazy(img, opt){
+        return this.init.apply(this, arguments);
+    };
+
+    loadLazy.prototype = {
+        init : function(imgArr, option){
+            this.opt = option;
+            this.imgArr = [];
+            var self = this;
+            var imgArr = option.container ? option.container.find("["+option.dataSrc+"]") : imgArr;
+            $.each(imgArr, function(i, item){
+                if(!item.getAttribute("src")){
+                    item.setAttribute("src", self.opt.placeholder);
+                }
+                if(item &amp;&amp; item.getAttribute(self.opt.dataSrc)){
+                    self.imgArr.push({
+                        obj : item,
+                        isLoad : false,
+                        tagName : item.tagName.toLocaleLowerCase()
+                    });
+                }
+            });
+            this.bindUI();
+        },
+        bindUI : function(){
+            var self = this;
+            (this.opt.container ? this.opt.container[0] : window).addEventListener("scroll", $.proxy(this.loadImg, this));
+            // window.addEventListener("load", function(){
+            //     setTimeout($.proxy(self.loadImg, self),10);
+            // },false);
+            window.addEventListener("resize", $.proxy(this.loadImg, this));
+            this.imgArr.length &amp;&amp; this.loadImg();
+            this.bindUI = function(){};
+        },
+        isArea : function(img){
+            var scrollTop     = document.body.scrollTop || document.documentElement.scrollTop,
+                scrollLeft    = document.body.scrollLeft || document.documentElement.scrollLeft,
+                imgOffsetTop  = $(img).offset().top,
+                imgOffsetLeft = $(img).offset().left,
+                winHeight     = this.win().h,
+                winWidth      = this.win().w,
+                imgTop        = imgOffsetTop + $(img).height();
+
+            if(scrollTop + winHeight &gt;= imgOffsetTop &amp;&amp; scrollTop &lt; imgTop &amp;&amp; scrollLeft + winWidth &gt;= imgOffsetLeft){
+                return true;
+            }
+            return false;
+        },
+        loadImg : function(){
+            var _item, _src, img;
+
+            for(var i=0,len=this.imgArr.length; i&lt;len; i++){
+                _item = this.imgArr[i];
+                img = _item.obj;
+                if(this.isArea(img) &amp;&amp; !_item.isLoad &amp;&amp; img.getAttribute(this.opt.dataSrc)){
+                    _src = img.getAttribute(this.opt.dataSrc);
+                    //加载img
+                    if(_item.tagName === "img" &amp;&amp; _src){
+                        //img.setAttribute("src", _src);
+                        $(img).css("opacity", 0).attr("src", _src).animate({opacity:1},200);
+                        this.callback(img);
+                    }else{
+                        //加载文件
+                        $(document).load(img.getAttribute(this.opt.dataSrc),function(){
+                            return this.callback(this);
+                        }.bind(this));
+                    };
+                    _item.isLoad = true;
+                }
+            };
+
+        },
+        callback : function(img){
+            this.opt.callback &amp;&amp; this.opt.callback.call(img);
+        },
+        win : function(){
+            return {
+                w : document.body.clientWidth || document.documentElement.clientWidth,
+                h : document.body.clientHeight || document.documentElement.clientHeight
+            }
+        }
+    }
+
+})(jQuery);
+</code></pre>
+
+<h2 id="section-1">使用方法</h2>
+
+<pre><code>$('img.lazy').loadImg({
+    callback : function(){
+        $(this).removeAttr("data-original");
+    }
+});
+</code></pre>
+
+<p>如果在限定在某个区域下延迟加载的</p>
+
+<pre><code>$('img.lazy').loadImg({
+    container : $(".list"),
+    callback : function(){
+        $(this).removeAttr("data-original");
+    }
+});
+</code></pre>
+
+<p>是不是很简单呢~~哈哈</p>
+
+<p>最后附上<a href="/assets/demo/loadImg/">demo</a></p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/fisp/2016/02/13/fisp" title="fis plus(fisp)的使用心得">
+  <strong>上一篇：</strong><br/>
+  <span>
+  fis plus(fisp)的使用心得</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/javascript/2016/03/15/loadMoreData"  title="javascript 加载更多数据">
+ <strong>下一篇：</strong><br/>
+ <span>javascript 加载更多数据
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

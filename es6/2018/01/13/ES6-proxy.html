@@ -1,0 +1,274 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>利用ES6中的Proxy和Reflect对象对函数方法重写 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="利用ES6中的Proxy和Reflect对象对函数方法重写">
+    <meta property="og:url" content="/es6/2018/01/13/ES6-proxy">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="利用ES6中的Proxy和Reflect对象对函数方法重写">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="利用ES6中的Proxy和Reflect对象对函数方法重写">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/es6/2018/01/13/ES6-proxy" title="利用ES6中的Proxy和Reflect对象对函数方法重写" itemprop="url">利用ES6中的Proxy和Reflect对象对函数方法重写</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-01-13 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-01-13</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>最近在做一个项目的时候，遇到一个需求就是，监听页面上的window.addEventListener方式有哪些。</p>
+
+<p>如window.addEventListener(‘resize’);window.addEventListener(‘a’);window.addEventListener(‘b’);</p>
+
+<p>得把它们收集起来做统计,但又不能更改之前别人写的代码（有可能几个同事一起开发的项目）。</p>
+
+<p>一开始是这么想的，直接在window.addEventListener方法上去做改动;</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">listenerList</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">eventName</span><span class="p">,</span> <span class="nx">fn</span><span class="p">,</span> <span class="nx">type</span><span class="p">){</span>
+    <span class="nx">listenerList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">eventName</span><span class="p">);</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="kr">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>大概就是这样子的代码。
+心里想，这么简单就搞定啦，运行一开，妈啊！溢出了….心累
+仔细一看，形成了一个死循环了….</p>
+
+<p>后面又想到用const = Object.create(window.addEventListener.<strong>proto</strong>)来实现，好像也是行不通。</p>
+
+<p>最后网上看到了ES6新语法中有一个叫Proxy(代理器)的方法可以实现。
+主要意思是
+proxy英文原意是代理的意思，在ES6中，可以翻译为”代理器”。
+它主要用于改变某些操作的默认行为，等同于在语言层面做出修改，所以属于一种“元编程”（meta programming），即对编程语言进行编程。</p>
+
+<p>proxy在目标对象的外层搭建了一层拦截，外界对目标对象的某些操作（后文会说明，有哪些操作可以拦截），必须通过这层拦截。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">win</span><span class="p">){</span>
+    <span class="kd">const</span> <span class="nx">listenerList</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Set</span><span class="p">();</span> <span class="c1">// 主要用于去重</span>
+    <span class="kd">const</span> <span class="nx">_cache</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">;</span>
+
+    <span class="kd">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">apply</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">target</span><span class="p">();</span>
+            <span class="nx">listenerList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+            <span class="k">return</span> <span class="nb">Reflect</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">_cache</span><span class="p">,</span> <span class="nx">win</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">const</span> <span class="nx">fn</span> <span class="o">=</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'in.....'</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">win</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Proxy</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+
+<span class="p">})(</span><span class="nb">window</span><span class="p">);</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'resize11111111'</span><span class="p">);</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'a'</span><span class="p">);</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">listenerList</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'resize222222222'</span><span class="p">);</span>
+<span class="p">},</span> <span class="kc">false</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<p>OK…..完成通过</p>
+
+<p>再测试一个JSON.parse方法
+我们想把字符串转成对象时，在原有的对象上再加上一个默认属性{origin: ‘yangbys’}</p>
+
+<p>我们再次用proxy去实现就很方便了</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">win</span><span class="p">){</span>
+    <span class="kd">const</span> <span class="nx">_cache</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">;</span>
+
+    <span class="kd">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">apply</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">ctx</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">_arg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="kd">const</span> <span class="nx">originObj</span> <span class="o">=</span> <span class="nx">_cache</span><span class="p">(</span><span class="nx">_arg</span><span class="p">);</span>
+            <span class="nx">originObj</span><span class="p">[</span><span class="s1">'origin'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'yangbys'</span><span class="p">;</span>
+            <span class="nx">_arg</span> <span class="o">=</span> <span class="p">[</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">originObj</span><span class="p">)];</span>
+            <span class="k">return</span> <span class="nb">Reflect</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">_cache</span><span class="p">,</span> <span class="nx">win</span><span class="p">,</span> <span class="nx">_arg</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">const</span> <span class="nx">fn</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'in.....'</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nb">window</span><span class="p">.</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Proxy</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+
+<span class="p">})(</span><span class="nb">window</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">str1</span> <span class="o">=</span> <span class="s1">'{"x":1,"y":2}'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">str2</span> <span class="o">=</span> <span class="s1">'{"name":"yangbys","key":"biao"}'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str2</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p><img src="/assets/image/proxy_01.png" alt="" /></p>
+
+<p>运行一下,看到a,b 都有origin: yangbys 的属性值了</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/javascript/2017/02/13/javascript-weixin" title="调起微信客户端的坑">
+  <strong>上一篇：</strong><br/>
+  <span>
+  调起微信客户端的坑</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/vue/2018/02/03/Vue-scope"  title="理解vue中的scope的使用">
+ <strong>下一篇：</strong><br/>
+ <span>理解vue中的scope的使用
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018  Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

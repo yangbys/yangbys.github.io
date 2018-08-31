@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -101,16 +102,16 @@
 		<p>FIS3 , 为你定制的前端工程构建工具
 解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题</p>
 
-<h2 id="section">一、安装</h2>
+<h2 id="一安装">一、安装</h2>
 
 <p>安装初始化</p>
 
-<pre><code>npm i -g fis3
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i -g fis3
 fis3 -v
 fis3 init
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-1">二、配置</h2>
+<h2 id="二配置">二、配置</h2>
 
 <p>类似Gruntfile.js或Gulpfile.js，新建fis-config.js文件 配置api介绍如下：
 fis.set(key, value)
@@ -120,20 +121,20 @@ fis.get(key)
 fis.match(selector, props, [, important])
 给匹配到的文件分配属性，文件属性决定了这个文件进行怎么样的操作；fis.match 模拟一个类似 css 的覆盖规则，负责给文件分配规则属性，这些规则属性决定了这个文件将会被如何处理；另外，后面分配到的规则会覆盖前面的；</p>
 
-<pre><code>fis.match('{a,b}.js', {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.match('{a,b}.js', {
     release: '/static/\$0'
 });
 
 fis.match('b.js', {
     release: '/static/new/\$0'
 });
-</code></pre>
+</code></pre></div></div>
 
 <p>这里b.js的输出为 /static/new/$0，如果important为true则规则不能被覆盖
 fis.media(mode)
 fis.media 是模仿自 css 的 @media，表示不同的状态。这是 fis3 中的一个重要概念，其意味着有多份配置，每一份配置都可以让 fis3 进行不同的编译；</p>
 
-<pre><code>fis.media('dev').match('*.js', {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.media('dev').match('*.js', {
     optimizer: null
 });
 
@@ -141,14 +142,14 @@ fis.media('rd').match('*.js', {
   domain: 'http://rd-host/static/cdn'
 });
 fis.plugin(name, [props, [, place]])
-</code></pre>
+</code></pre></div></div>
 
 <p><a href="http://fis.baidu.com/fis3/docs/api/config-api.html#%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7">(http://fis.baidu.com/fis3/docs/api/config-api.html#%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7)</a></p>
 
 <p>–几种重要属性设置
 <strong>全局属性介绍：</strong></p>
 
-<pre><code>var DEFAULT_SETTINGS = {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var DEFAULT_SETTINGS = {
   project: {
     charset: 'utf8',    //字符编码，@param: string
     md5Length: 7,    //md5长度， @param: number
@@ -176,11 +177,11 @@ fis.plugin(name, [props, [, place]])
 
   options: {}
 };
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>文件属性：</strong></p>
 
-<pre><code>fis.set('timeDate', Date.now());    //获取当前时间戳
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.set('timeDate', Date.now());    //获取当前时间戳
 fis.match('/widget/{*,**/*}.js', {
     charset: 'utf8',    //指定文本文件的输出编码。@param: string
     url: '/static/proj/pkg_widget.js', //指定文件的资源定位路径，以 / 开头。默认是 release 的值，url可以与发布路径 release 不一致。@param: string
@@ -220,11 +221,11 @@ fis.match('*.less', {
     userMap: true,    //文件信息是否添加到 map.json,用于处理声明依赖，后面会讲到。@param: bool
 
 });
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>插件配置属性：</strong></p>
 
-<pre><code>fis.match('*.js', {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.match('*.js', {
     lint: fis.plugin('js', {    //启用 lint 插件进行代码检查
 
     });
@@ -254,11 +255,11 @@ fis.match('**', {
           to: '/home/work/www' // 将部署到服务器的这个目录下
       })
   })
-</code></pre>
+</code></pre></div></div>
 
 <p>当然更多插件可以查看 http://npmsearch.com/?q=fis-parser%20fis3-parser 通过插件我们就可以使用一些基础功能的组合了：</p>
 
-<pre><code>// 加 md5
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 加 md5
 fis.match('*.{js,css,png}', {
     useHash: true
 });
@@ -294,66 +295,66 @@ fis.media('debug').match('*.{js,css,png}', {
     useSprite: false,
     optimizer: null
 })
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-2">三、调试与发布</h2>
+<h2 id="三调试与发布">三、调试与发布</h2>
 
 <p>FIS3 构建后，默认情况下会对资源的 URL 进行修改，改成绝对路径。同样FIS3 内置一个简易 Web Server，可以方便调试构建结果。
 1、开启server到内置server调试目录</p>
 
-<pre><code>fis3 server open
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis3 server open
+</code></pre></div></div>
 
 <p>2、发布到内置server发布目录</p>
 
-<pre><code>fis3 release
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis3 release
+</code></pre></div></div>
 
 <p>3、文件监听</p>
 
-<pre><code>fis3 release -w    //FIS3 通过对 release 命令添加 -w 或者 --watch 参数启动文件监听功能。
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis3 release -w    //FIS3 通过对 release 命令添加 -w 或者 --watch 参数启动文件监听功能。
 fis3 release -wL  //文件修改自动构建发布了，如果浏览器能自动刷新。
-</code></pre>
+</code></pre></div></div>
 
 <p>4、发布配置 发布只需要配置就可以完成</p>
 
-<pre><code>fis.match('*', {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.match('*', {
     deploy: fis.plugin('http-push', {
         receiver: 'http://cq.01.p.p.baidu.com:8888/receiver.php',
         to: '/home/work/htdocs' // 注意这个是指的是测试机器的路径，而非本地机器
     });
 });
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-3">四、内置功能</h2>
+<h2 id="四内置功能">四、内置功能</h2>
 
 <p>4.1 嵌入资源 html和css中内嵌只需要在引用加载的文件后面加上__inline就可实现:</p>
 
-<pre><code>&lt;img title="百度logo" src="images/logo.gif?__inline"/&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img title="百度logo" src="images/logo.gif?__inline"/&gt;
 &lt;link rel="stylesheet" type="text/css" href="demo.css?__inline"&gt;
 &lt;script type="text/javascript" src="demo.js?__inline"&gt;&lt;/script&gt;
 &lt;link rel="import" href="demo.html?__inline"&gt;
 
  @import url('demo.css?__inline');
-</code></pre>
+</code></pre></div></div>
 
 <p>js中内嵌资源稍有点不同：</p>
 
-<pre><code>__inline('demo.js');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__inline('demo.js');
 var img = __inline('images/logo.gif');
 var css = __inline('a.css');
-</code></pre>
+</code></pre></div></div>
 
 <p>4.2 资源定位 其实官方文档讲了很多，但很简单，主要是在没有inline的条件下将内嵌的资源处理后加上后缀，放入到相对应的发布目录中自动定位。</p>
 
-<pre><code>var img = __uri('images/logo.gif');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var img = __uri('images/logo.gif');
 // 处理后变成，其它的原理类似
 var img = '/static/pic/logo_74e5229.gif';
-</code></pre>
+</code></pre></div></div>
 
 <p>4.3 声明依赖 html中声明依赖。用户可以在html的注释中声明依赖关系，这些依赖关系最终会被记录下来，当某个文件中包含字符 RESOURCE_MAP 那么这个记录会被字符串化后替换 RESOURCE_MAP。 例如index.html中含有并且设置了useMap：</p>
 
-<pre><code>&lt;!--
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--
     @require demo.js
     @require "demo.css"
 --&gt;
@@ -361,11 +362,11 @@ var img = '/static/pic/logo_74e5229.gif';
 fis.match('*.html', {
     useMap: true
 })
-</code></pre>
+</code></pre></div></div>
 
 <p>那么发布后会产生如下manifest.json文件：</p>
 
-<pre><code>{
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
     "res" : {
         "index.html" : {
             "uri" : "/index.html",
@@ -375,12 +376,12 @@ fis.match('*.html', {
     },
     "pkg" : {}
 }
-</code></pre>
+</code></pre></div></div>
 
 <p>同样js和css中的配置方式和html中完全一致</p>
 
-<pre><code>五、工作原理
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>五、工作原理
+</code></pre></div></div>
 
 <ol>
   <li>
@@ -401,31 +402,33 @@ FIS3 是基于文件对象进行构建的，每个进入 FIS3 的文件都会实
 
 <p>fis将给这个a.js加上myPorp属性，有点类似与gulp的pipe处理。</p>
 
-<h2 id="fis3">六、用fis3进行项目开发</h2>
+<h2 id="六用fis3进行项目开发">六、用fis3进行项目开发</h2>
 
 <p><strong>1. 插件使用</strong>
 npm install -g 插件名 可以用来安装fis插件，插件列表见 http://npmsearch.com/?q=fis-parser%20fis3-parser 配置调试使用见上文的配置，fis3内置的插件如下，有这些觉得基本可以用来开发一个正式项目了。 fis-optimizer-clean-css fis-optimizer-png-compressor fis-optimizer-uglify-js fis-spriter-csssprites fis3-deploy-local-deliver fis3-deploy-http-push fis3-hook-components fis3-packager-map
-http://fis.baidu.com/fis3/docs/api/config-system-plugin.html
-2. 插件编写
-不到万不得已不要去扩展插件，用到的时候再说吧，fis3扩展了些插件，99%能满足开发需要。
-3. 模块化开发
+http://fis.baidu.com/fis3/docs/api/config-system-plugin.html</p>
+<ol>
+  <li>插件编写
+不到万不得已不要去扩展插件，用到的时候再说吧，fis3扩展了些插件，99%能满足开发需要。</li>
+  <li>
+    <p>模块化开发
 进行模块化开发首先安装npm install -g fis3-hook-module</p>
 
-<pre><code>fis.hook('module');
+    <p>fis.hook(‘module’);</p>
 
+    <p>fis.hook(‘module’, {
+     mode: ‘amd’    //这里支持amd和commonJs
+ });</p>
 
-fis.hook('module', {
-    mode: 'amd'    //这里支持amd和commonJs
-});
-
-fis.match('/module/*.js', {
-  isMod: true // 标记匹配文件为组件
-});
-</code></pre>
+    <p>fis.match(‘/module/*.js’, {
+   isMod: true // 标记匹配文件为组件
+ });</p>
+  </li>
+</ol>
 
 <p><strong>2. 项目开发基本规范</strong></p>
 
-<pre><code>// 开发目录规范
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 开发目录规范
 .
 ├── page    // 放置页面模板
 │   └── index.html
@@ -448,11 +451,11 @@ foo
 foo/bin/foo.js
 foo/index.js
 package.json
-</code></pre>
+</code></pre></div></div>
 
 <p>基于 FIS3 配置目录规范和部署规范的配置文件编写：</p>
 
-<pre><code>// 所有的文件产出到 static/ 目录下
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 所有的文件产出到 static/ 目录下
 fis.match('*', {
     release: '/static/$0'
 });
@@ -516,11 +519,11 @@ fis.media('prod')
     .match('/widget/**/*.css', {
         packTo: '/static/all_comp.css'
     });
-</code></pre>
+</code></pre></div></div>
 
 <p>实现 /bin/foo.js</p>
 
-<pre><code>// vi foo/bin/foo.js
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// vi foo/bin/foo.js
 
 var Liftoff = require('liftoff');
 var argv = require('minimist')(process.argv.slice(2));
@@ -551,18 +554,18 @@ cli.launch({
   fis.set('system.globalNPMFolder', path.dirname(__dirname));
   fis.cli.run(argv, env);
 });
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-4">七、必须掌握的</h2>
+<h2 id="七必须掌握的">七、必须掌握的</h2>
 
 <p>命令行 fis3 :</p>
 
-<pre><code>fis3 release [-d path]     //发布目录
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis3 release [-d path]     //发布目录
 fis3 install 插件名        //安装一个插件
 fis3 init     //初始化一个项目
 fis3 server [start | stop | restart | open | info ]      //内置服务器操作
 fis3 inspect     //比较实用的命令，用来查看文件 match 结果
-</code></pre>
+</code></pre></div></div>
 
 <p>大概fis3文档的内容全部覆盖了，只有插件编写没有去深究。感觉整体能应对我们平时遇到的99%的问题。后面也靠fis团队更新插件了，至于缺少方便的插件的开发环境这点，个人觉得不到万不得已不要自己去造轮子，fis2很多插件缺少可以理解，后面还是尽量不要自己去造插件了。</p>
 
@@ -606,14 +609,14 @@ fis3 inspect     //比较实用的命令，用来查看文件 match 结果
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -98,26 +99,26 @@
 </div>
 
 	<div class="article-content">
-		<h2 id="localstoragesafari">第一个问题， localStorage在Safari无痕模式下的坑</h2>
+		<h2 id="第一个问题-localstorage在safari无痕模式下的坑">第一个问题， localStorage在Safari无痕模式下的坑</h2>
 
-<pre><code>'QuotaExceededError: DOM Exception 22: An attempt was made to add something to storage that exceeded '
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'QuotaExceededError: DOM Exception 22: An attempt was made to add something to storage that exceeded '
+</code></pre></div></div>
 
 <p>这是在safari 浏览器无痕模式的时候，localStorage.setItem()的时候，报以上错误！因为在无痕模式下，localStorage -&gt; Storage {length: 0}  localStorage 就只有一个length:0。</p>
 
 <p>开发H5 webapp时经常需要使用本地存储，如localStorage和sessionStorage存储一些数据，相比最多能存4k的cookie相比，用起来很好用。但是localStorage在iOS Safari、chrome和UC浏览器中的隐私模式（也叫无痕模式）下无法使用，手机Safari浏览器中具体表现是：</p>
 
-<pre><code>localStorage对象仍然存在
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>localStorage对象仍然存在
 但是setItem会报异常：QuotaExceededError
 getItem和removeItem直接忽略
-</code></pre>
+</code></pre></div></div>
 
 <p>Safari中控制台截图
 <img src="/assets/image/localstorage.png" alt="" /></p>
 
 <p>判断浏览器是否支持localStorage的方法:</p>
 
-<pre><code>function isLocalStorageSupported() {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function isLocalStorageSupported() {
     var testKey = 'test',
         storage = window.sessionStorage;
     try {
@@ -128,17 +129,17 @@ getItem和removeItem直接忽略
         return false;
     }
 }
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="ajaxanysc">第二个神坑，ajax同步法anysc的问题</h2>
+<h2 id="第二个神坑ajax同步法anysc的问题">第二个神坑，ajax同步法anysc的问题</h2>
 
-<pre><code>TimeoutError: DOM Exception 23: A timeout occurred
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TimeoutError: DOM Exception 23: A timeout occurred
+</code></pre></div></div>
 
 <p>其实项目上用到一个很简单的ajax 请求，只不过是同步而已
 如：</p>
 
-<pre><code>$.ajax({
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$.ajax({
 	url : 'xxx.php',
 	type : 'GET',
 	dataType : 'json',
@@ -151,7 +152,7 @@ getItem和removeItem直接忽略
 		...
 	}
 })
-</code></pre>
+</code></pre></div></div>
 
 <p>没想到在ios Safari浏览器上，当然啦，也不是所有的IOS版本，是极少数的IOS版本会出现这个神坑,在IOS系统下也会出现这种神坑我也是醉了….
 最后只能用try catch去解决了….</p>
@@ -196,14 +197,14 @@ getItem和removeItem直接忽略
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

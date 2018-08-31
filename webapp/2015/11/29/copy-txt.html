@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -106,7 +107,7 @@
 
 <h2 id="copy">copy</h2>
 
-<pre><code>var copy = new clipBoard(document.getElementById('data'), {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var copy = new clipBoard(document.getElementById('data'), {
     beforeCopy: function() {
     },
     copy: function() {
@@ -115,18 +116,18 @@
     afterCopy: function() {
     }
 });
-</code></pre>
+</code></pre></div></div>
 
 <p>copy will be called automatic, if you want call by yourself, you can do like this</p>
 
-<pre><code>var copy = new clipBoard(document.getElementById('data'));
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var copy = new clipBoard(document.getElementById('data'));
 copy.copyd();
 document.getElementById('data') is the value target, you can also use it with jquery $('#data')
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="cut">cut</h2>
 
-<pre><code>var cut = new clipBoard(document.getElementById('data'), {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var cut = new clipBoard(document.getElementById('data'), {
     beforeCut: function() {
     },
     cut: function() {
@@ -135,17 +136,17 @@ document.getElementById('data') is the value target, you can also use it with jq
     afterCut: function() {
     }
 });
-</code></pre>
+</code></pre></div></div>
 
 <p>或</p>
 
-<pre><code>var cut = new clipBoard(document.getElementById('data'));
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var cut = new clipBoard(document.getElementById('data'));
 cut.cut();
-</code></pre>
+</code></pre></div></div>
 
 <h2 id="paste">paste</h2>
 
-<pre><code>var paste = new clipBoard(document.getElementById('data'), {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var paste = new clipBoard(document.getElementById('data'), {
     beforePaste: function() {
     },
     paste: function() {
@@ -154,14 +155,14 @@ cut.cut();
     afterPaste: function() {
     }
 });
-</code></pre>
+</code></pre></div></div>
 
 <p>或</p>
 
-<pre><code>var paste = new clipBoard(document.getElementById('data'));
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var paste = new clipBoard(document.getElementById('data'));
 paste.paste();
 document.getElementById('data') is the paste target, you can also use it with jquery $('#data')
-</code></pre>
+</code></pre></div></div>
 
 <p>最后上一个例子
 <a href="/assets/demo/clipboard/">demo(用力击击它….)</a></p>
@@ -206,14 +207,14 @@ document.getElementById('data') is the paste target, you can also use it with jq
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

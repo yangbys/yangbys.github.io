@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -102,7 +103,7 @@
 
 <p>在非IE浏览器（Firefox、Safari、Chrome、Opera）下可以使用window.getSelection()获得selection对象，本文讲述的是标准的selection操作方法。文中绝大部分内容来自 https://developer.mozilla.org/en/DOM/Selection</p>
 
-<h2 id="section">术语</h2>
+<h2 id="术语">术语</h2>
 
 <p>以下几个名词是英文文档中的几个名词。</p>
 
@@ -113,7 +114,7 @@
 <strong>range</strong>
 是一种fragment(HTML片断)，它包含了节点或文本节点的一部分。一般情况下，同一时刻页面中只可能有一个range，也有可能是多个range（使用Ctrl健进行多选，不过有的浏览器不允许，例如Chrome）。可以从selection中获得range对象，也可以使用document.createRange()方法获得。</p>
 
-<h2 id="section-1">属性</h2>
+<h2 id="属性">属性</h2>
 
 <p><strong>anchorNode</strong>
 返回包含“起点”的节点。</p>
@@ -133,7 +134,7 @@
 <p><strong>rangeCount</strong>
 返回selection中包含的range对象的数目，一般存在一个range，Ctrl健配合使用可以有多个。</p>
 
-<h2 id="section-2">常用方法</h2>
+<h2 id="常用方法">常用方法</h2>
 
 <p><strong>getRangeAt(index)</strong>
 从当前selection对象中获得一个range对象。
@@ -155,17 +156,17 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
 <p><strong>removeAllRanges()</strong>
 移除selection中所有的range对象，执行后anchorNode、focusNode被设置为null，不存在任何被选中的内容。</p>
 
-<h2 id="section-3">例子</h2>
+<h2 id="例子">例子</h2>
 <p><img src="/assets/image/d1.jpg" alt="" /></p>
 
-<pre><code>document.querySelector('#copy').addEventListener('click', function(){
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>document.querySelector('#copy').addEventListener('click', function(){
         var selection = window.getSelection(),
              range = new Range();
          range.selectNodeContents(nodeLink);
          selection.removeAllRanges();
          selection.addRange(range);
 });
-</code></pre>
+</code></pre></div></div>
 
 	</div>
 	</div>
@@ -207,14 +208,14 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

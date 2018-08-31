@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -100,15 +101,15 @@
 	<div class="article-content">
 		<p>FIS3 主要是用户易用性和扩展能力的提升，定位是方便那些做前端工程方案的用户能快捷的完成方案定制，我们不期待所有的人都能拿来即用，而我们期待的是 FIS3 真正能使你从折腾工具中解放出来，通过几行配置、依靠 FIS 社区能快速解决你遇到的工程问题。</p>
 
-<h2 id="fis3">用fis3做活动等等页面相当的方便</h2>
+<h2 id="用fis3做活动等等页面相当的方便">用fis3做活动等等页面相当的方便</h2>
 
 <p>比如说，我们过往的开发经验是</p>
 
-<pre><code>1、设计做好了PSD设计图给到我们前端
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1、设计做好了PSD设计图给到我们前端
 2、然后我们前端做了模板（包括JS交互等），就差与后端接口对接了
 3、然后我们就把模板扔给了后端，让后端开发人员他们蛋疼去（哈哈....）
 4、突然问题来了，他们后端人员不小心与你的一个标签删了，然后页面挂了，他们就过来找我们解决了，这样的开发合作太蛋疼了...(感觉有没有)
-</code></pre>
+</code></pre></div></div>
 
 <p>还有一种开发好一点的是（后端人员给接口），这样我们就很好的去实现了我们自己前端想要的结果，而且这也是现在大部分公司开发的流程之一。后端人员只管接口那块就OK了。前端把功能都实现了，然后就把页面给后端，让他们去生成或放到服务器上（一般后端人员是不会给我们前端人员的权限去目录操作的…）</p>
 
@@ -116,7 +117,7 @@
 
 <p>但是用Fis3上的fis.plugin功能（其实是用node.js写一个向服务器上传文件的功能），我们只需要在服务器上放一个.php文件就解决上面的问题了，我们前端就可以在本地一键上传文件到服务器上，而已文件、图片、样式的静态资源都可以随时加MD5(而且可以引用CDN的文件)等等功能。这样就不用每次都去找开发了，我们省事，开发他们也省事，一举两得，哈哈….</p>
 
-<pre><code>config(fis, "fuli");
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config(fis, "fuli");
 fis.media('fuli').match('*', {
     deploy: fis.plugin('http-push', {
         receiver: 'http://www.xxx.cn/reciver.php',
@@ -129,7 +130,7 @@ fis.media('fuli').match("{**.js,**.css}", {
 fis.media('fuli').match("{**.jpg,**.png,**.gif}", {
     domain: "http://cdn.xxx.cn/uploads/deploy/hd"
 });
-</code></pre>
+</code></pre></div></div>
 
 <p>上线时，直接发布命令就行了  fis3 release fuli</p>
 
@@ -175,14 +176,14 @@ fis.media('fuli').match("{**.jpg,**.png,**.gif}", {
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

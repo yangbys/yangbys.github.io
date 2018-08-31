@@ -1,16 +1,22 @@
 
 /404
 /atom.xml
-/about/
 /search/
 /tags/
+/about/
 /categories/
-/
 /archives/
+/
 /rss.xml
 /sitemap.txt
+/assets/css/style.css
 /page2/
+/page3/
 
+/es6/2018/07/30/nginx-vue-history
+/vue/2018/05/11/Vue-keep-alive
+/vue/2018/02/03/Vue-scope
+/es6/2018/01/13/ES6-proxy
 /javascript/2017/02/13/javascript-weixin
 /jquery/2016/07/11/javascript-num
 /jquery/2016/06/22/javascript-num
@@ -28,4 +34,4 @@
 /webapp/2015/10/21/border-1px
 /webapp/2015/10/10/uc-fontSize
 /webapp/2015/09/22/rem
-/yangbys/2015/09/20/create-blog 
+/yangbys/2015/09/20/create-blog

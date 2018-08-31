@@ -1,0 +1,305 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>理解vue中的scope的使用 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="理解vue中的scope的使用">
+    <meta property="og:url" content="/vue/2018/02/03/Vue-scope">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="理解vue中的scope的使用">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="理解vue中的scope的使用">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/02/03/Vue-scope" title="理解vue中的scope的使用" itemprop="url">理解vue中的scope的使用</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-02-03 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-02-03</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>我们都知道vue slot插槽可以传递任何属性或html元素，但是在调用组件的页面中我们可以使用 template scope=”props”来获取插槽上的属性值，获取到的值是一个对象。</p>
+
+<h2 id="注意scope它可以取任意字符串">注意：scope=”它可以取任意字符串”;</h2>
+
+<p>上面已经说了 scope获取到的是一个对象，是什么意思呢？我们先来看一个简单的demo就可以明白了~</p>
+
+<p>如下模板页面</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;!</span><span class="nx">DOCTYPE</span> <span class="nx">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Vue</span><span class="o">-</span><span class="nx">scope</span><span class="err">的理解</span><span class="o">&lt;</span><span class="sr">/title</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"./libs/vue.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"./js/scope.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/head</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"app"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">tb</span><span class="o">-</span><span class="nx">list</span> <span class="p">:</span><span class="nx">data</span><span class="o">=</span><span class="s2">"data"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">template</span> <span class="nx">scope</span><span class="o">=</span><span class="s2">"scope"</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"info"</span> <span class="p">:</span><span class="nx">s</span><span class="o">=</span><span class="s2">"JSON.stringify(scope)"</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">姓名</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">年龄</span><span class="p">:</span> <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">性别</span><span class="p">:</span> <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">索引：</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/tb-list</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"tb-list"</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/x-template"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">li</span> <span class="nx">v</span><span class="o">-</span><span class="k">for</span><span class="o">=</span><span class="s2">"(item, index) in data"</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">slot</span> <span class="p">:</span><span class="nx">row</span><span class="o">=</span><span class="s2">"item"</span> <span class="p">:</span><span class="nx">$index</span><span class="o">=</span><span class="s2">"index"</span><span class="o">&gt;&lt;</span><span class="sr">/slot</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="o">&gt;</span>
+      <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+        <span class="na">el</span><span class="p">:</span> <span class="s1">'#app'</span><span class="p">,</span>
+        <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="p">{</span>
+            <span class="na">data</span><span class="p">:</span> <span class="p">[</span>
+              <span class="p">{</span>
+                <span class="na">name</span><span class="p">:</span> <span class="s1">'kongzhi1'</span><span class="p">,</span>
+                <span class="na">age</span><span class="p">:</span> <span class="s1">'29'</span><span class="p">,</span>
+                <span class="na">sex</span><span class="p">:</span> <span class="s1">'man'</span>
+              <span class="p">},</span> 
+              <span class="p">{</span>
+                <span class="na">name</span><span class="p">:</span> <span class="s1">'kongzhi2'</span><span class="p">,</span>
+                <span class="na">age</span><span class="p">:</span> <span class="s1">'30'</span><span class="p">,</span>
+                <span class="na">sex</span><span class="p">:</span> <span class="s1">'woman'</span>
+              <span class="p">}</span>
+            <span class="p">]</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+          
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/html</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>js 代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">'tb-list'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s1">'#tb-list'</span><span class="p">,</span>
+  <span class="na">props</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">type</span><span class="p">:</span> <span class="nb">Array</span><span class="p">,</span>
+      <span class="na">required</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">beforeMount</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">},</span>
+  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>上面代码我们注册了一个叫 tb-list 这么一个组件，然后给 tb-list 传递了一个data属性值；该值是一个数组，如下值：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">data</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="s1">'kongzhi1'</span><span class="p">,</span>
+    <span class="na">age</span><span class="p">:</span> <span class="s1">'29'</span><span class="p">,</span>
+    <span class="na">sex</span><span class="p">:</span> <span class="s1">'man'</span>
+  <span class="p">},</span> 
+  <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="s1">'kongzhi2'</span><span class="p">,</span>
+    <span class="na">age</span><span class="p">:</span> <span class="s1">'30'</span><span class="p">,</span>
+    <span class="na">sex</span><span class="p">:</span> <span class="s1">'woman'</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>tb-list组件模板页面是如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">li</span> <span class="nx">v</span><span class="o">-</span><span class="k">for</span><span class="o">=</span><span class="s2">"(item, index) in data"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">slot</span> <span class="p">:</span><span class="nx">row</span><span class="o">=</span><span class="s2">"item"</span> <span class="p">:</span><span class="nx">$index</span><span class="o">=</span><span class="s2">"index"</span><span class="o">&gt;&lt;</span><span class="sr">/slot</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>遍历data属性值，然后使用slot来接收 tb-list组件中的任何内容；其内容如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span> <span class="nx">scope</span><span class="o">=</span><span class="s2">"scope"</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"info"</span> <span class="p">:</span><span class="nx">s</span><span class="o">=</span><span class="s2">"JSON.stringify(scope)"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">姓名</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">年龄</span><span class="p">:</span> <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">性别</span><span class="p">:</span> <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">索引：</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>最后在模板上使用scope来接收slot中的属性；因此scope的值是如下一个对象：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"row"</span><span class="p">:{</span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"kongzhi1"</span><span class="p">,</span><span class="s2">"age"</span><span class="p">:</span><span class="s2">"29"</span><span class="p">,</span><span class="s2">"sex"</span><span class="p">:</span><span class="s2">"man"</span><span class="p">},</span><span class="s2">"$index"</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>因为遍历了二次，因此还有一个是如下对象；</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s2">"row"</span><span class="p">:{</span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"kongzhi2"</span><span class="p">,</span><span class="s2">"age"</span><span class="p">:</span><span class="s2">"30"</span><span class="p">,</span><span class="s2">"sex"</span><span class="p">:</span><span class="s2">"woman"</span><span class="p">},</span><span class="s2">"$index"</span><span class="p">:</span><span class="mi">1</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>从上面返回的scope属性值我们可以看到，scope返回的值是slot标签上返回的所有属性值，并且是一个对象的形式保存起来，该slot有两个属性，一个是row，另一个是index, 因此返回 {“row”: item, “index, 因此返回 {“row”: item, “index”: “index索引”}; 其中item就是data里面的一个个对象。</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/es6/2018/01/13/ES6-proxy" title="利用ES6中的Proxy和Reflect对象对函数方法重写">
+  <strong>上一篇：</strong><br/>
+  <span>
+  利用ES6中的Proxy和Reflect对象对函数方法重写</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/vue/2018/05/11/Vue-keep-alive"  title="vue2的keep-alive的总结">
+ <strong>下一篇：</strong><br/>
+ <span>vue2的keep-alive的总结
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018  Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

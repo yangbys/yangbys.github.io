@@ -1,0 +1,234 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>webapp移动端的另一复制文本(selection)方法 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="webapp移动端的另一复制文本(selection)方法">
+    <meta property="og:url" content="/webapp/2015/11/12/copy-txt">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="webapp移动端的另一复制文本。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="webapp移动端的另一复制文本(selection)方法">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/webapp/2015/11/12/copy-txt" title="webapp移动端的另一复制文本(selection)方法" itemprop="url">webapp移动端的另一复制文本(selection)方法</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2015-11-12 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-11-12</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>selection是对当前激活选中区（即高亮文本）进行操作。</p>
+
+<p>在非IE浏览器（Firefox、Safari、Chrome、Opera）下可以使用window.getSelection()获得selection对象，本文讲述的是标准的selection操作方法。文中绝大部分内容来自 https://developer.mozilla.org/en/DOM/Selection</p>
+
+<h2 id="section">术语</h2>
+
+<p>以下几个名词是英文文档中的几个名词。</p>
+
+<p><strong>anchor</strong>
+选中区域的“起点”。
+<strong>focus</strong>
+选中区域的“结束点”。
+<strong>range</strong>
+是一种fragment(HTML片断)，它包含了节点或文本节点的一部分。一般情况下，同一时刻页面中只可能有一个range，也有可能是多个range（使用Ctrl健进行多选，不过有的浏览器不允许，例如Chrome）。可以从selection中获得range对象，也可以使用document.createRange()方法获得。</p>
+
+<h2 id="section-1">属性</h2>
+
+<p><strong>anchorNode</strong>
+返回包含“起点”的节点。</p>
+
+<p><strong>anchorOffset</strong>
+“起点”在anchorNode中的偏移量。</p>
+
+<p><strong>focusNode</strong>
+返回包含“结束点”的节点。</p>
+
+<p><strong>focusOffset</strong>
+“结束点”在focusNode中的偏移量。</p>
+
+<p><strong>isCollapsed</strong>
+“起点”和“结束点”是否重合。</p>
+
+<p><strong>rangeCount</strong>
+返回selection中包含的range对象的数目，一般存在一个range，Ctrl健配合使用可以有多个。</p>
+
+<h2 id="section-2">常用方法</h2>
+
+<p><strong>getRangeAt(index)</strong>
+从当前selection对象中获得一个range对象。
+index：参考rangeCount属性。
+返回：根据下标index返回相应的range对象。</p>
+
+<p><strong>selectAllChildren(parentNode)</strong>
+将parentNode的所有后代节点（parentNode除外）变为selection，页面中原来的selection将被抛弃。</p>
+
+<p><strong>addRange(range)</strong>
+将range添加到selection当中，所以一个selection中可以有多个range。
+注意Chrome不允许同时存在多个range，它的处理方式和Firefox有些不同。</p>
+
+<p><strong>removeRange(range)</strong>
+从当前selection移除range对象，返回值undefined。
+Chrome目前没有改函数，即便是在Firefox中如果用自己创建（document.createRange()）的range作为参数也会报错。
+如果用oSelction.getRangeAt()取到的，则不会报错。</p>
+
+<p><strong>removeAllRanges()</strong>
+移除selection中所有的range对象，执行后anchorNode、focusNode被设置为null，不存在任何被选中的内容。</p>
+
+<h2 id="section-3">例子</h2>
+<p><img src="/assets/image/d1.jpg" alt="" /></p>
+
+<pre><code>document.querySelector('#copy').addEventListener('click', function(){
+        var selection = window.getSelection(),
+             range = new Range();
+         range.selectNodeContents(nodeLink);
+         selection.removeAllRanges();
+         selection.addRange(range);
+});
+</code></pre>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/webapp/2015/10/28/sticky" title="聊聊移动端position:sticky">
+  <strong>上一篇：</strong><br/>
+  <span>
+  聊聊移动端position:sticky</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/webapp/2015/11/29/copy-txt"  title="分享一个JS实现复制、剪切、粘贴的功能">
+ <strong>下一篇：</strong><br/>
+ <span>分享一个JS实现复制、剪切、粘贴的功能
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

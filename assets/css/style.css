@@ -704,7 +704,7 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 #main.post .article-content pre {
   display: block;
   overflow: auto;
-  background-color: #f7f7f7;
+  background-color: #333;
   border-radius: 4px;
 }
 
@@ -763,3 +763,5 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 	-webkit-animation: bounce 1.5s;
 			animation: bounce 1.5s;
 }
+
+

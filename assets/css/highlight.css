@@ -277,14 +277,14 @@ pre {
     word-break: break-all;
     word-wrap: break-word;
     color: #333;
-    background-color: rgba(128,128,128,0.05);
+    background-color: #000;
     border: 1px solid rgba(128,128,128,0.075);
     border-radius: 4px
 }
 pre code {
     padding: 0;
     font-size: 16px;
-    color: #406DD5;
+    color: #b7b7b7;
     white-space: pre-wrap;
     background-color: transparent;
     border-radius: 0

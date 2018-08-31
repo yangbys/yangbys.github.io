@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -135,11 +136,11 @@
 <p>其主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。
 <img src="/assets/image/fis3/01/6.png" alt="" /></p>
 
-<h2 id="section">1、资源定位</h2>
+<h2 id="1资源定位">1、资源定位</h2>
 
 <p><strong>HTML中的资源定位</strong></p>
 
-<pre><code>&lt;!--源码：
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--源码：
 &lt;img title="百度logo" src="images/logo.gif"/&gt;
 编译后--&gt;
 &lt;img title="百度logo" src="/images/logo_74e5229.gif"/&gt;
@@ -153,52 +154,52 @@
 &lt;script type="text/javascript" src="demo.js"&gt;&lt;/script&gt;
 编译后--&gt;
 &lt;script type="text/javascript" src="/demo_33c5143.js"&gt;&lt;/script&gt;
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>js中的资源定位</strong></p>
 
-<pre><code>var img = __uri('images/logo.gif');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var img = __uri('images/logo.gif');
  var css = __uri('demo.css');
  var js = __uri('demo.js');
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>编译</strong>后</p>
 
-<pre><code>var img = '/images/logo_74e5229.gif';
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var img = '/images/logo_74e5229.gif';
 var css = '/demo_7defa41.css';
 var js = '/demo_33c5143.js';
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>css中的资源定位</strong></p>
 
-<pre><code>@import url('demo.css');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import url('demo.css');
 .style {
       background: url('images/body-bg.png');
   }
-</code></pre>
+</code></pre></div></div>
 
 <p><strong>编译后</strong></p>
 
-<pre><code>@import url('/demo_7defa41.css');
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import url('/demo_7defa41.css');
   .style {
       background: url('/images/body-bg_1b8c3e0.png');
   }
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-1">2、内容嵌入</h2>
+<h2 id="2内容嵌入">2、内容嵌入</h2>
 
-<pre><code>&lt;link rel="stylesheet" type="text/css" href="demo.css?__inline"&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;link rel="stylesheet" type="text/css" href="demo.css?__inline"&gt;
 &lt;link rel="import" href="demo.html?__inline"&gt;
 &lt;script type="text/javascript" src="demo.js?__inline"&gt;&lt;/script&gt;
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section-2">3、依赖声明</h2>
+<h2 id="3依赖声明">3、依赖声明</h2>
 
-<pre><code>/*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/*
  *   @require demo.js
  *   @require "demo.css"
 */
-</code></pre>
+</code></pre></div></div>
 
 	</div>
 	</div>
@@ -240,14 +241,14 @@ var js = '/demo_33c5143.js';
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

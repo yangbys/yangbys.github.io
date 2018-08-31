@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -100,14 +101,14 @@
 	<div class="article-content">
 		<p>position:sticky是一个新的css3属性，它的表现类似position:relative和position:fixed的合体，在目标区域在屏幕中可见时，它的行为就像position:relative; 而当页面滚动超出目标区域时，它的表现就像position:fixed，它会固定在目标位置。</p>
 
-<pre><code>.sticky {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.sticky {
 	position: -webkit-sticky;
 	position:sticky;
 	top: 15px;
 }
-</code></pre>
+</code></pre></div></div>
 
-<h2 id="section">浏览器兼容性：</h2>
+<h2 id="浏览器兼容性">浏览器兼容性：</h2>
 
 <p>由于这是一个全新的属性，以至于到现在都没有一个规范，W3C也刚刚开始讨论它，而现在只有webkit nightly版本和chrome 开发版(Chrome 23.0.1247.0+ Canary)才开始支持它。
 另外需要注意的是，如果同时定义了left和right值，那么left生效，right会无效，同样，同时定义了top和bottom，top赢。</p>
@@ -136,7 +137,7 @@
 <p>当页面滚动到该元素之前，元素的表现跟position:relative一样
 当页面滚动到该元素之后，元素的表现跟position:fixed一样</p>
 
-<h2 id="positionsticky">position:sticky的用法</h2>
+<h2 id="positionsticky的用法">position:sticky的用法</h2>
 
 <p>设置了position:sticky的元素要生效必须至少设置top、bottom、left、right其中的一个。top和bottom两者之间top的优先级高， left和right两者之间left的优先级高。</p>
 
@@ -182,14 +183,14 @@
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

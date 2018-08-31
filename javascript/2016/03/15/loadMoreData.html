@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -104,7 +105,7 @@
 
 <p>直接上代码  – 本人懒 - - 依赖jquery啦</p>
 
-<pre><code>var loadMore = function (obj, param){
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var loadMore = function (obj, param){
     var defaduls = {
         callback : null
     }
@@ -228,13 +229,13 @@ loadMore.prototype = {
         return loadHTML;
     }
 }
-</code></pre>
+</code></pre></div></div>
 
 <p>这样~~我们就提供了一个callback的方法处理html</p>
 
 <p>使用方法</p>
 
-<pre><code>    var _list = $(".xcpj-list");
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    var _list = $(".xcpj-list");
     var _jsonURL = "test/pingjianList.json";
 
     //获取数据
@@ -290,7 +291,7 @@ loadMore.prototype = {
         }
         return _listHTML;
     }
-</code></pre>
+</code></pre></div></div>
 
 <p>最后附上<a href="/assets/demo/loadImg/">demo</a></p>
 
@@ -334,14 +335,14 @@ loadMore.prototype = {
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

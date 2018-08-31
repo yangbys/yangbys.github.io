@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -98,14 +99,14 @@
 </div>
 
 	<div class="article-content">
-		<h2 id="section"><strong>数字累加动画</strong></h2>
+		<h2 id="数字累加动画"><strong>数字累加动画</strong></h2>
 <p><img src="/assets/image/n1.jpg" alt="" /></p>
 
 <p>在项目上遇到一种这样的问题，比如在10秒内，由0平均增长到100，现在有(20,244,66)这个数字，同时由0在同一时间内以平均的增速到达。</p>
 
 <p>JS</p>
 
-<pre><code>$.fn.runingNumbers = function(settings) {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$.fn.runingNumbers = function(settings) {
   var steps = duration / 1000 * fps;
   var duration = settings.duration ? settings.duration : 2000;
   var fps = settings.fps ? settings.fps : 24;
@@ -138,18 +139,18 @@
   });
   return this;
 };
-</code></pre>
+</code></pre></div></div>
 
 <p>调用</p>
 
-<pre><code> var _li = $('.al-nums ul').children('li'),$txt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> var _li = $('.al-nums ul').children('li'),$txt;
 	$.each(_li,function(i,item){
 		$txt = $(item).find('.numing');
         $txt.runingNumbers({
           duration: 2000,
           fps: 24
         });
-</code></pre>
+</code></pre></div></div>
 
 <p>最后上一个例子
 <a href="/assets/demo/number1/">demo(用力击击它….)</a></p>
@@ -194,14 +195,14 @@
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

@@ -43,6 +43,7 @@
 
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
 </head>
 
   <body>
@@ -105,12 +106,12 @@
 <p>现在先说下，问题的起因，我们是用异步去请求服务器那边的接口拿回来的微信支持链接的，
 如</p>
 
-<pre><code class="language-javascript">$.get('GETWEIXIN', {xx:1, yy:2}, $.noop, 'json').done(function(res){
-	if(res.code == 200){
-		location.href = res.wxpay_url;
-	}
-})
-</code></pre>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'GETWEIXIN'</span><span class="p">,</span> <span class="p">{</span><span class="na">xx</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="na">yy</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span> <span class="nx">$</span><span class="p">.</span><span class="nx">noop</span><span class="p">,</span> <span class="s1">'json'</span><span class="p">).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+	<span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">){</span>
+		<span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">wxpay_url</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
 
 <p>大概就是这样子的代码，第一次怎么都没反应。
 然后我就把返回来的那串微信支付的链接(wxpay_url)直接拷到浏览器上打开就很完美的展示。
@@ -122,18 +123,18 @@
 <p>于是我换成了<strong>同步</strong>的方法去试下，结果…
 先上代码</p>
 
-<pre><code class="language-javascript">$.ajax({
-	url: 'GETWEIXIN',
-	data: {xx:111},
-	dataType: 'json',
-	type: 'GET',
-	asnyc: false
-}).done(function(res){
-	if(res.code == 200){
-		location.href = res.wxpay_url;
-	}
-})
-</code></pre>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+	<span class="na">url</span><span class="p">:</span> <span class="s1">'GETWEIXIN'</span><span class="p">,</span>
+	<span class="na">data</span><span class="p">:</span> <span class="p">{</span><span class="na">xx</span><span class="p">:</span><span class="mi">111</span><span class="p">},</span>
+	<span class="na">dataType</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
+	<span class="na">type</span><span class="p">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+	<span class="na">asnyc</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+	<span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">){</span>
+		<span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">wxpay_url</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
 
 <p>可以成功调起了…..66666666666</p>
 
@@ -155,6 +156,14 @@
 </div>
 
 
+<div class="next pageBtn">
+<a href="/es6/2018/01/13/ES6-proxy"  title="利用ES6中的Proxy和Reflect对象对函数方法重写">
+ <strong>下一篇：</strong><br/>
+ <span>利用ES6中的Proxy和Reflect对象对函数方法重写
+</span>
+</a>
+</div>
+
 </div>
 
 
@@ -173,14 +182,14 @@
 	
 	
 	<div class="info">
-		<p> @2016 Yangbys. <br/><br/>
+		<p> @2018  Yangbys. <br/><br/>
 			Email: yangbys@126.com</p>
 	</div>
 	 
 
 </div>
 
-    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
 
 
 <!-- Totop Begin -->

@@ -1,0 +1,291 @@
+
+
+abbr[title] {
+    border-bottom: 1px dotted
+}
+
+b,strong {
+    font-weight: bold
+}
+
+dfn {
+    font-style: italic
+}
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0
+}
+
+mark {
+    background: #ff0;
+    color: #000
+}
+
+code,kbd,pre,samp {
+    font-size: 1em
+}
+
+pre {
+    white-space: pre-wrap
+}
+
+q {
+    quotes: "\201C" "\201D" "\2018" "\2019"
+}
+
+small {
+    font-size: 80%
+}
+
+sub,sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
+}
+
+sup {
+    top: -0.5em
+}
+
+sub {
+    bottom: -0.25em
+}
+
+img {
+    border: 0
+}
+
+svg:not(:root) {
+    overflow: hidden
+}
+
+figure {
+    margin: 0
+}
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: .35em .625em .75em
+}
+
+legend {
+    border: 0;
+    padding: 0
+}
+
+blockquote {
+    padding: 10.5px 21px;
+    margin: 0 0 21px;
+    border-left: 5px solid rgba(128,128,128,0.075)
+}
+
+blockquote p {
+    font-size: 18.75px;
+    font-weight: 300;
+    line-height: 1.25
+}
+
+blockquote p:last-child {
+    margin-bottom: 0
+}
+
+blockquote small,blockquote .small {
+    display: block;
+    line-height: 1.45;
+    color: #999
+}
+
+blockquote small:before,blockquote .small:before {
+    content: '\2014 \00A0'
+}
+
+blockquote.pull-right {
+    padding-right: 15px;
+    padding-left: 0;
+    border-right: 5px solid rgba(128,128,128,0.075);
+    border-left: 0
+}
+
+blockquote.pull-right p,blockquote.pull-right small,blockquote.pull-right .small {
+    text-align: right
+}
+
+blockquote.pull-right small:before,blockquote.pull-right .small:before {
+    content: ''
+}
+
+blockquote.pull-right small:after,blockquote.pull-right .small:after {
+    content: '\00A0 \2014'
+}
+
+blockquote:before,blockquote:after {
+    content: ""
+}
+
+address {
+    margin-bottom: 21px;
+    font-style: normal;
+    line-height: 1.45
+}
+
+code,kbd,pre,samp {
+}
+
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #3f3f3f;
+    background-color: rgba(128,128,128,0.075);
+    white-space: nowrap;
+    border-radius: 4px
+}
+
+pre {
+    display: block;
+    padding: 10px;
+    margin: 0 0 10.5px;
+    font-size: 14px;
+    line-height: 1.45;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #333;
+    background-color: rgba(128,128,128,0.05);
+    border: 1px solid rgba(128,128,128,0.075);
+    border-radius: 4px
+}
+
+pre code {
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0
+}
+
+.pre-scrollable {
+    max-height: 340px;
+    overflow-y: scroll
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px
+}
+
+.container:before,.container:after {
+    content: " ";
+    display: table
+}
+
+.container:after {
+    clear: both
+}
+
+.container:before,.container:after {
+    content: " ";
+    display: table
+}
+
+.container:after {
+    clear: both
+}
+
+code,pre {
+    font-size: .9em
+}
+
+code {
+    white-space: normal
+}
+
+pre,pre.prettyprint {
+    text-align: start;
+    border: 0;
+    padding: 10px 20px;
+    border-radius: 5px
+}
+
+pre code,pre.prettyprint code {
+    background-color: transparent !important
+}
+
+dt,dd {
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+
+dd {
+    margin-left: 40px
+}
+
+table {
+    margin-bottom: 20px
+}
+
+table th,table td {
+    padding: 8px;
+    line-height: 20px;
+    vertical-align: top;
+    border-top: 1px solid #ddd
+}
+
+table th {
+    font-weight: bold
+}
+
+table thead th {
+    vertical-align: bottom
+}
+
+table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td {
+    border-top: 0
+}
+
+table tbody+tbody {
+    border-top: 2px solid #ddd
+}
+blockquote {
+    border-left-width: 10px;
+    background-color: rgba(128,128,128,0.05);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 15px 20px
+}
+
+blockquote p {
+    margin-bottom: 1.1em;
+    font-size: 1em;
+    line-height: 1.45
+}
+
+blockquote ul:last-child,blockquote ol:last-child {
+    margin-bottom: 0
+}
+pre {
+    display: block;
+    padding: 10px;
+    margin: 0 0 10.5px;
+    font-size: 14px;
+    line-height: 1.45;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #333;
+    background-color: rgba(128,128,128,0.05);
+    border: 1px solid rgba(128,128,128,0.075);
+    border-radius: 4px
+}
+pre code {
+    padding: 0;
+    font-size: 16px;
+    color: #406DD5;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 0
+}

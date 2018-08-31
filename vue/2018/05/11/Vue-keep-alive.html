@@ -1,0 +1,553 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>vue2的keep-alive的总结 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="vue2的keep-alive的总结">
+    <meta property="og:url" content="/vue/2018/05/11/Vue-keep-alive">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="vue2的keep-alive的总结">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="vue2的keep-alive的总结">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/assets/css/markdown.css" type="text/css"> -->
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/05/11/Vue-keep-alive" title="vue2的keep-alive的总结" itemprop="url">vue2的keep-alive的总结</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-05-11 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-05-11</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>keep-alive 是Vue的内置组件，能在组件切换过程中将状态保留在内存中，防止重复渲染DOM。结合vue-router中使用，可以缓存某个view的整个内容。</p>
+
+<p>基本使用如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">keep</span><span class="o">-</span><span class="nx">alive</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">component</span><span class="o">&gt;</span>
+    <span class="c">&lt;!--</span> <span class="err">该组件将被缓存！</span> <span class="o">--&gt;</span>
+  <span class="o">&lt;</span><span class="sr">/component</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/keep-alive</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>一般有这样的需求，当我们第一次进入列表页需要请求一下数据，当我从列表页进入详情页，详情页不缓存也需要请求下数据，然后返回列表页
+有两个情况：</p>
+<ol>
+  <li>直接点击浏览器的后退返回按钮。</li>
+  <li>点击导航栏中的 /list的链接返回。</li>
+</ol>
+
+<p>那么针对第一种情况下，我们直接通过后退按钮时，返回到列表页(/list) 是不需要请求数据。
+针对第二种情况下，我们通过链接返回到列表页是需要请求数据。</p>
+
+<p>所以这边有三种情况：</p>
+<ol>
+  <li>默认进来列表页需要请求数据。</li>
+  <li>进入详情页后，通过浏览器默认后退按钮返回，是不需要ajax的请求的。</li>
+  <li>进入详情页后，通过点击链接返回到列表页后，也是需要发ajax请求的。</li>
+</ol>
+
+<h2 id="配置如下">配置如下：</h2>
+<ol>
+  <li>入口文件 app.vue 的配置如下：</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--</span> <span class="err">缓存所有的页面</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="nx">keep</span><span class="o">-</span><span class="nx">alive</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">view</span> <span class="nx">v</span><span class="o">-</span><span class="k">if</span><span class="o">=</span><span class="s2">"$route.meta.keep_alive"</span><span class="o">&gt;&lt;</span><span class="sr">/router-view</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/keep-alive</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">view</span> <span class="nx">v</span><span class="o">-</span><span class="k">if</span><span class="o">=</span><span class="s2">"!$route.meta.keep_alive"</span><span class="o">&gt;&lt;</span><span class="sr">/router-view</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<ol>
+  <li>在router中设置meta属性，设置 keepAlive: true 表示需要使用缓存，false的话表示不需要使用缓存。且添加滚动行为 scrollBehavior</li>
+</ol>
+
+<p>router/index.js 的配置如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="s1">'vue'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Router</span> <span class="k">from</span> <span class="s1">'vue-router'</span><span class="p">;</span>
+<span class="c1">// import HelloWorld from '@/views/HelloWorld';</span>
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Router</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">({</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="s1">'history'</span><span class="p">,</span> <span class="c1">// 访问路径不带井号  需要使用 history模式，才能使用 scrollBehavior</span>
+  <span class="na">base</span><span class="p">:</span> <span class="s1">'/page/app'</span><span class="p">,</span>  <span class="c1">// 配置单页应用的基路径</span>
+  <span class="na">routes</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/list'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span>  <span class="c1">// 使用懒加载</span>
+      <span class="na">meta</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/list'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/list'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span> <span class="c1">// 使用懒加载</span>
+      <span class="na">meta</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存  false表示不需要被缓存</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/detail'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'detail'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/detail'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">)</span> <span class="c1">// 使用懒加载</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">scrollBehavior</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 保存到 meta 中，备用</span>
+    <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">savedPosition</span> <span class="o">=</span> <span class="nx">savedPosition</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{};</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">router</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>list.vue 代码如下：</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"hello"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">vue</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/detail"</span><span class="o">&gt;</span><span class="err">跳转到</span><span class="nx">detail</span><span class="err">页</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'helloworld'</span><span class="p">,</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">msg</span><span class="p">:</span> <span class="s1">'Welcome to Your Vue.js App'</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">ajaxRequest</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'aa'</span><span class="p">:</span> <span class="mi">1</span>
+      <span class="p">};</span>
+      <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">'testUrl'</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">beforeRouteEnter</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">next</span><span class="p">(</span><span class="nx">vm</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="cm">/*
+       如果 to.meta.savedPosition === undefined 说明是刷新页面或可以叫第一次进入页面 需要刷新数据
+       如果savedPosition === null, 那么说明是点击了导航链接;
+       此时需要刷新数据，获取新的列表内容。
+       否则的话 什么都不做，直接使用 keep-alive中的缓存
+       */</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">savedPosition</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">vm</span><span class="p">.</span><span class="nx">ajaxRequest</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">savedPosition</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">vm</span><span class="p">.</span><span class="nx">ajaxRequest</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<ol>
+  <li>detail.vue 代码如下：</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"list"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/list"</span><span class="o">&gt;</span><span class="err">返回列表页</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">msg</span><span class="p">:</span> <span class="s1">'Welcome to Your Vue.js App'</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+  <span class="nx">created</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">ajaxRequest</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">ajaxRequest</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'aa'</span><span class="p">:</span> <span class="mi">1</span>
+      <span class="p">};</span>
+      <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">'withdary'</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<h2 id="二使用routermeta-扩展">二：使用router.meta 扩展</h2>
+
+<p>假设现在有3个页面，需求如下：</p>
+<ol>
+  <li>默认有A页面，A页面进来需要一个请求。</li>
+  <li>B页面跳转到A页面，A页面不需要重新请求。</li>
+  <li>C页面跳转到A页面，A页面需要重新请求。</li>
+</ol>
+
+<p>实现方式如下：
+在 A 路由里面设置 meta 属性：：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">path</span><span class="p">:</span> <span class="s1">'/a'</span><span class="p">,</span>
+  <span class="nx">name</span><span class="p">:</span> <span class="s1">'A'</span><span class="p">,</span>
+  <span class="nx">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/a'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span>
+  <span class="nx">meta</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nl">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>所以router/index下的所有代码变为如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="s1">'vue'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Router</span> <span class="k">from</span> <span class="s1">'vue-router'</span><span class="p">;</span>
+<span class="c1">// import HelloWorld from '@/views/HelloWorld';</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Router</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">({</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="s1">'history'</span><span class="p">,</span> <span class="c1">// 访问路径不带井号  需要使用 history模式，才能使用 scrollBehavior</span>
+  <span class="na">base</span><span class="p">:</span> <span class="s1">'/page/app'</span><span class="p">,</span>  <span class="c1">// 配置单页应用的基路径</span>
+  <span class="na">routes</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/list'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span>  <span class="c1">// 使用懒加载</span>
+      <span class="na">meta</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/list'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/list'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span> <span class="c1">// 使用懒加载</span>
+      <span class="na">meta</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存  false表示不需要被缓存</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/detail'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'detail'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/detail'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">)</span> <span class="c1">// 使用懒加载</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/a'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'A'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/a'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">),</span>
+      <span class="na">meta</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">keepAlive</span><span class="p">:</span> <span class="kc">true</span>  <span class="c1">// true 表示需要使用缓存</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/b'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'B'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/b'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/c'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'C'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/c'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nx">scrollBehavior</span> <span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 保存到 meta 中，备用</span>
+    <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">savedPosition</span> <span class="o">=</span> <span class="nx">savedPosition</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">savedPosition</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{};</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">router</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>在 B 组件里面设置 beforeRouteLeave</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">beforeRouteLeave</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 设置下一个路由meta</span>
+  <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">keepAlive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 让A缓存，不请求数据</span>
+  <span class="nx">next</span><span class="p">();</span> <span class="c1">// 跳转到A页面</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>B组件所有代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"list"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/a"</span><span class="o">&gt;</span><span class="err">返回</span><span class="nx">a</span><span class="err">页面</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">msg</span><span class="p">:</span> <span class="s1">'Welcome to B Page'</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+  <span class="nx">created</span><span class="p">()</span> <span class="p">{},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">},</span>
+  <span class="nx">beforeRouteLeave</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 设置下一个路由meta</span>
+    <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">keepAlive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 让A缓存，不请求数据</span>
+    <span class="nx">next</span><span class="p">();</span> <span class="c1">// 跳转到A页面</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>在 C 组件里面设置 beforeRouteLeave：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">beforeRouteLeave</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 设置下一个路由meta</span>
+  <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">keepAlive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// 让A不缓存，重新请求数据</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span>
+  <span class="nx">next</span><span class="p">();</span> <span class="c1">// 跳转到A页面</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>c组件所有代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"list"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/a"</span><span class="o">&gt;</span><span class="err">返回</span><span class="nx">a</span><span class="err">页面</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'list'</span><span class="p">,</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">msg</span><span class="p">:</span> <span class="s1">'Welcome to B Page'</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+  <span class="nx">created</span><span class="p">()</span> <span class="p">{},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">},</span>
+  <span class="nx">beforeRouteLeave</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 设置下一个路由meta</span>
+    <span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">keepAlive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// 让A不缓存，重新请求数据</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span>
+    <span class="nx">next</span><span class="p">();</span> <span class="c1">// 跳转到A页面</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>a组件内的所有的代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">template</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"hello"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">vue</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/b"</span><span class="o">&gt;</span><span class="err">跳转到</span><span class="nx">b</span><span class="err">页面</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">router</span><span class="o">-</span><span class="nx">link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/c"</span><span class="o">&gt;</span><span class="err">跳转到</span><span class="nx">c</span><span class="err">页面</span><span class="o">&lt;</span><span class="sr">/router-link</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/template</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'helloworld'</span><span class="p">,</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">msg</span><span class="p">:</span> <span class="s1">'Welcome to A Page'</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">ajaxRequest</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'aa'</span><span class="p">:</span> <span class="mi">1</span>
+      <span class="p">};</span>
+      <span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span><span class="k">this</span><span class="p">.</span><span class="nx">$store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">'testUrl'</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)]).</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{});</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">beforeRouteEnter</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">from</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">next</span><span class="p">(</span><span class="nx">vm</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="cm">/*
+       如果 to.meta.savedPosition === undefined 说明是刷新页面或可以叫第一次进入页面 需要刷新数据
+       如果to.meta.keepAlive === false, 那么说明是需要请求的;
+       此时需要刷新数据，获取新的列表内容。
+       否则的话 什么都不做，直接使用 keep-alive中的缓存
+       */</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">savedPosition</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">vm</span><span class="p">.</span><span class="nx">ajaxRequest</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">to</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">keepAlive</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">vm</span><span class="p">.</span><span class="nx">ajaxRequest</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>注意 b组件到a组件不重新请求数据 (包括点击链接和浏览器后退按钮)，c组件到a组件请求数据(包括点击链接和浏览器后退按钮).</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/vue/2018/02/03/Vue-scope" title="理解vue中的scope的使用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  理解vue中的scope的使用</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/es6/2018/07/30/nginx-vue-history"  title="在nginx上部署vue项目(history模式)">
+ <strong>下一篇：</strong><br/>
+ <span>在nginx上部署vue项目(history模式)
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018  Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

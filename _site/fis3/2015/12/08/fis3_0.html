@@ -1,0 +1,267 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>fis3初步学习体验 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="fis3初步学习体验">
+    <meta property="og:url" content="/fis3/2015/12/08/fis3_0">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="fis3初步学习体验">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="fis3初步学习体验">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/fis3/2015/12/08/fis3_0" title="fis3初步学习体验" itemprop="url">fis3初步学习体验</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2015-12-08 00:00:00 +0800" itemprop="datePublished"> 发表于 2015-12-08</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>作为前端开发，或多或少都会接触很多前端构建工具，最近的业务使用到了百度FIS团队的fis3，想和大家分享下我所理解的fis3。</p>
+
+<p>使用方法简单说</p>
+
+<p>首先，你需要安装node和npm</p>
+
+<p>然后，使用 npm install -g install 命令安装fis3，安装完成是这样的
+<img src="/assets/image/fis3/01/1.jpg" alt="" /></p>
+
+<p>表示安装成功。</p>
+
+<p>然后我们可以通过 fis3 release -w 来对代码进行监听。
+注：fis3默认内置了fis3-command-release插件，提供了文件监听和浏览器自动刷新功能，在release的时候添加-w或-L参数就可以，这样可以很方便的部署代码。</p>
+
+<p>当你需要使用插件的时候，可以用 fis3 install -g 插件名 进行安装。</p>
+
+<p>与其他构件工具一样，fis3也需要配置fis-conf.js文件。</p>
+
+<p>添加MD5戳以及资源的合并压缩（配置 useHash: true 即可添加MD5戳）
+<img src="/assets/image/fis3/01/2.jpg" alt="" /></p>
+
+<p><strong>CssSprite图片合并</strong>
+<img src="/assets/image/fis3/01/3.jpg" alt="" /></p>
+
+<p><strong>对sass文件进行编译</strong>
+<img src="/assets/image/fis3/01/4.jpg" alt="" /></p>
+
+<p>这样我们就可以使用基本的fis3了。</p>
+
+<p>fis三种编译能力</p>
+
+<p>fis3可以做到以下几点：
+<img src="/assets/image/fis3/01/5.jpg" alt="" /></p>
+
+<p>其主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。
+<img src="/assets/image/fis3/01/6.png" alt="" /></p>
+
+<h2 id="section">1、资源定位</h2>
+
+<p><strong>HTML中的资源定位</strong></p>
+
+<pre><code>&lt;!--源码：
+&lt;img title="百度logo" src="images/logo.gif"/&gt;
+编译后--&gt;
+&lt;img title="百度logo" src="/images/logo_74e5229.gif"/&gt;
+
+&lt;!--源码：
+&lt;link rel="stylesheet" type="text/css" href="demo.css"&gt;
+编译后--&gt;
+&lt;link rel="stylesheet" type="text/css" href="/demo_7defa41.css"&gt;
+
+&lt;!--源码：
+&lt;script type="text/javascript" src="demo.js"&gt;&lt;/script&gt;
+编译后--&gt;
+&lt;script type="text/javascript" src="/demo_33c5143.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p><strong>js中的资源定位</strong></p>
+
+<pre><code>var img = __uri('images/logo.gif');
+ var css = __uri('demo.css');
+ var js = __uri('demo.js');
+</code></pre>
+
+<p><strong>编译</strong>后</p>
+
+<pre><code>var img = '/images/logo_74e5229.gif';
+var css = '/demo_7defa41.css';
+var js = '/demo_33c5143.js';
+</code></pre>
+
+<p><strong>css中的资源定位</strong></p>
+
+<pre><code>@import url('demo.css');
+.style {
+      background: url('images/body-bg.png');
+  }
+</code></pre>
+
+<p><strong>编译后</strong></p>
+
+<pre><code>@import url('/demo_7defa41.css');
+  .style {
+      background: url('/images/body-bg_1b8c3e0.png');
+  }
+</code></pre>
+
+<h2 id="section-1">2、内容嵌入</h2>
+
+<pre><code>&lt;link rel="stylesheet" type="text/css" href="demo.css?__inline"&gt;
+&lt;link rel="import" href="demo.html?__inline"&gt;
+&lt;script type="text/javascript" src="demo.js?__inline"&gt;&lt;/script&gt;
+</code></pre>
+
+<h2 id="section-2">3、依赖声明</h2>
+
+<pre><code>/*
+ *   @require demo.js
+ *   @require "demo.css"
+*/
+</code></pre>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/webapp/2015/11/29/copy-txt" title="分享一个JS实现复制、剪切、粘贴的功能">
+  <strong>上一篇：</strong><br/>
+  <span>
+  分享一个JS实现复制、剪切、粘贴的功能</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/fis3/2015/12/30/fis3_1"  title="用Fis3做活动或专题页面相当的方便">
+ <strong>下一篇：</strong><br/>
+ <span>用Fis3做活动或专题页面相当的方便
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2016 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

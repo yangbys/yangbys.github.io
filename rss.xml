@@ -5,10 +5,62 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Fri, 31 Aug 2018 16:13:40 +0800</lastBuildDate>
-        <pubDate>Fri, 31 Aug 2018 16:13:40 +0800</pubDate>
+        <lastBuildDate>Fri, 14 Sep 2018 15:28:09 +0800</lastBuildDate>
+        <pubDate>Fri, 14 Sep 2018 15:28:09 +0800</pubDate>
         <ttl>60</ttl>
 
+
+        <item>
+                <title>vue+webpack+nginx 部署在服务器非根目录下访问404问题</title>
+                <description>&lt;p&gt;最近想把所有的前端项目都整合在两台机器上，通过负载访问如下路径&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;Https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//域名/clinetPage/&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//域名/member/&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Https&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//域名/loan/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这样的方式访问&lt;/p&gt;
+
+&lt;p&gt;按照平时的打包方式，直接将webpack打包好的包放到服务器上
+服务器路径/H5/clinetPage(并非平时的/clinetPage)&lt;/p&gt;
+
+&lt;p&gt;在ngnix中做好配置如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;location&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;^~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/clinetPage/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;root&lt;/span&gt;   &lt;span class=&quot;nx&quot;&gt;D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;soft&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xxx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;try_files&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/clinetPage/i&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ndex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;gzip&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;gzip_types&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;javascript&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;css&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jpeg&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;png&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;结果访问Https://域名/clinetPage/ 时一片红，各种/static/js /static/css找不到&lt;/p&gt;
+
+&lt;p&gt;困扰了好几天，各种改~&lt;/p&gt;
+
+&lt;p&gt;最后终于改好了，总结了以下几点
+1、修改config/index.js配置文件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/vue_nginx/01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2、修改build/webpack.prod.conf.js配置文件&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/vue_nginx/02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3、修改router/index.js&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/vue_nginx/03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;4、修改ngnix配置&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/vue_nginx/04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这几个改好了，部署就没有问题啦~ 分享给大家&lt;/p&gt;
+</description>
+                <link>/vue/2018/08/11/nginx-vue-history1</link>
+                <guid>/vue/2018/08/11/nginx-vue-history1</guid>
+                <pubDate>Sat, 11 Aug 2018 00:00:00 +0800</pubDate>
+        </item>
 
         <item>
                 <title>在nginx上部署vue项目(history模式)</title>
@@ -255,8 +307,8 @@ try_files file … = code&lt;/p&gt;
 
 &lt;p&gt;地址配置到 //aa.xx.com/aa/dist 上即可&lt;/p&gt;
 </description>
-                <link>/es6/2018/07/30/nginx-vue-history</link>
-                <guid>/es6/2018/07/30/nginx-vue-history</guid>
+                <link>/vue/2018/07/30/nginx-vue-history</link>
+                <guid>/vue/2018/07/30/nginx-vue-history</guid>
                 <pubDate>Mon, 30 Jul 2018 00:00:00 +0800</pubDate>
         </item>
 
@@ -2672,29 +2724,6 @@ Chrome目前没有改函数，即便是在Firefox中如果用自己创建（docu
                 <link>/webapp/2015/10/21/border-1px</link>
                 <guid>/webapp/2015/10/21/border-1px</guid>
                 <pubDate>Wed, 21 Oct 2015 00:00:00 +0800</pubDate>
-        </item>
-
-        <item>
-                <title>UC浏览器 默认字体放大的坑</title>
-                <description>&lt;p&gt;在android机子下~UC浏览器会自己把你的页面放大了（这里我设置的字体是12号），在什么原生浏览器或什么360浏览器上都是正常的~~偏偏UC这货就放大了(scale);&lt;/p&gt;
-
-&lt;p&gt;后面问了问前端老大，说是UC浏览器可能读取到你页面的字体太小了，会把你的整体放大了&lt;/p&gt;
-
-&lt;p&gt;加了这个属性就正常了，我的天啊&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;meta name=&quot;wap-font-scale&quot; content=&quot;no&quot;&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;还有一个问题可以H5页面套在webview里时，有些机子字体可能会出现一些很奇怪的样子&lt;/p&gt;
-
-&lt;p&gt;可以试下加个这属性看看&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;meta http-equiv=&quot;Cache-Control&quot; content=&quot;no-siteapp&quot; /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-                <link>/webapp/2015/10/10/uc-fontSize</link>
-                <guid>/webapp/2015/10/10/uc-fontSize</guid>
-                <pubDate>Sat, 10 Oct 2015 00:00:00 +0800</pubDate>
         </item>
 
 

@@ -1,0 +1,408 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>在nginx上部署vue项目(history模式) | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="在nginx上部署vue项目(history模式)">
+    <meta property="og:url" content="/vue/2018/07/30/nginx-vue-history">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="在nginx上部署vue项目(history模式)">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="在nginx上部署vue项目(history模式)">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/07/30/nginx-vue-history" title="在nginx上部署vue项目(history模式)" itemprop="url">在nginx上部署vue项目(history模式)</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-07-30 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-07-30</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>vue-router 默认是hash模式，使用url的hash来模拟一个完整的url，当url改变的时候，页面不会重新加载。但是如果我们不想hash这种以#号结尾的路径时候的话，我们可以使用路由的history的模式。比如如下网址：</p>
+
+<p>使用hash模式的话，那么访问变成 http://localhost:8080/bank/page/count/#/ 这样的访问，如果路由使用 history的话，那么访问的路径变成 如下：
+http://localhost:8080/bank/page/count 这样的了；</p>
+
+<p>在路由的配置就是如下：我们还是以 vue-cli项目为例：</p>
+
+<p>在src/router/index.js 代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="s1">'vue'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Router</span> <span class="k">from</span> <span class="s1">'vue-router'</span><span class="p">;</span>
+<span class="c1">// import HelloWorld from '@/views/HelloWorld';</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Router</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">({</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="s1">'history'</span><span class="p">,</span> <span class="c1">// 访问路径不带井号  需要使用 history模式</span>
+  <span class="na">base</span><span class="p">:</span> <span class="s1">'/bank/page'</span><span class="p">,</span>  <span class="c1">// 基础路径</span>
+  <span class="na">routes</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">path</span><span class="p">:</span> <span class="s1">'/count'</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="s1">'count'</span><span class="p">,</span>
+      <span class="na">component</span><span class="p">:</span> <span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">require</span><span class="p">([</span><span class="s1">'@/views/count'</span><span class="p">],</span> <span class="nx">resolve</span><span class="p">)</span> <span class="c1">// 使用懒加载</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>不过history的这种模式需要后台配置支持。比如：</p>
+
+<p>当我们进行项目的主页的时候，一切正常，可以访问，但是当我们刷新页面或者直接访问路径的时候就会返回404，那是因为在history模式下，只是动态的通过js操作window.history来改变浏览器地址栏里的路径，并没有发起http请求，但是当我直接在浏览器里输入这个地址的时候，就一定要对服务器发起http请求，但是这个目标在服务器上又不存在，所以会返回404，怎么解决呢？我们现在可以把所有请求都转发到 http://localhost:8080/bank/page/index.html上就可以了。</p>
+
+<p>一： apache服务器上的配置如下：</p>
+
+<ol>
+  <li>
+    <h2 id="如果我们现在是使用apache做web服务器的话我们需要开启-htaccess支持即可">如果我们现在是使用apache做web服务器的话，我们需要开启 .htaccess支持即可：</h2>
+    <p>在文件里加上如下，就一切正常了</p>
+  </li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">IfModule</span> <span class="nx">mod_rewrite</span><span class="p">.</span><span class="nx">c</span><span class="o">&gt;</span>
+  <span class="nx">RewriteEngine</span> <span class="nx">On</span>
+  <span class="nx">RewriteBase</span> <span class="o">/</span>
+  <span class="nx">RewriteRule</span> <span class="o">^</span><span class="nx">index</span><span class="err">\</span><span class="p">.</span><span class="nx">html$</span> <span class="o">-</span> <span class="p">[</span><span class="nx">L</span><span class="p">]</span>
+  <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">f</span>
+  <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">d</span>
+  <span class="nx">RewriteRule</span> <span class="p">.</span> <span class="o">/</span><span class="nx">bank</span><span class="o">/</span><span class="nx">page</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span> <span class="p">[</span><span class="nx">L</span><span class="p">]</span>
+<span class="o">&lt;</span><span class="sr">/IfModule</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>上面的apache的作用是：把所有服务器上不存在的请求全部转发到 index.html上去，这样就可以直接通过各种url来访问了。</p>
+
+<h2 id="注意">注意：</h2>
+
+<ol>
+  <li>
+    <p>RewriteRule . /bank/page/index.html [L] 这段代码；前面需要加 /bank/page/这样的，因为我在路由配置base里面
+加了 /bank/page/ 这个路径，否则匹配不到了。</p>
+  </li>
+  <li>
+    <p>vue-cli 项目中需要修改 config/index.js 中的build下的 assetsPublicPath: ‘/bank/page/’, 如果使用相对路径，
+chunk文件会报错找不到。</p>
+  </li>
+  <li>
+    <p>在apache的 www/bank/page 目录下新建 .htaccess文件，需要修改RewriteRule 为/bank/page/index.html, 否则刷新页面服务端会直接报404错误。</p>
+  </li>
+  <li>
+    <p>修改httpd.conf文件，开启rewrite_module功能。</p>
+  </li>
+  <li>
+    <p>LoadModule rewrite_module libexec/apache2/mod_rewrite.so，去掉前面的#</p>
+  </li>
+  <li>
+    <p>然后找到AllowOverride None的那行，把它改成AllowOverride All，来使.htaccess文件生效。</p>
+  </li>
+</ol>
+
+<h2 id="二nginx服务器上的配置如下">二：nginx服务器上的配置如下：</h2>
+
+<p>vue-cli 执行打包命令：</p>
+
+<p>npm run build</p>
+
+<p>如上进行打包，生成dist文件夹，把该文件夹下的文件直接复制到nginx服务器目录下，就可打开项目，但是只有首页可以看到的，刷新一下页面也是404了，原因和上面一样，因此需要在nginx服务器配置对所有的路径或者文件夹进行跳转，重定向到首页 index.html即可：这样就能找到路由了。</p>
+
+<p>nginx服务器配置如下：</p>
+
+<ol>
+  <li>
+    <p>首先登录服务器。</p>
+  </li>
+  <li>
+    <p>进入目录 /etc/usr/local/nginx/conf/下;</p>
+  </li>
+</ol>
+
+<p>执行命令：</p>
+
+<p>2-1 cd /etc/ 回车</p>
+
+<p>2-2 cd /usr/ 回车</p>
+
+<p>2-3 cd loacl/ 回车</p>
+
+<p>2-4 cd nginx 回车</p>
+
+<p>2-5 cd conf 回车</p>
+
+<p>2-6 vi nginx_v4.conf 进入 nginx文件内 新建一个项目的相关配置如下：</p>
+
+<p>比如我们现在的域名地址这样访问的：http://aa.xx.com/bank/page/count , 需要如下配置：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">server</span> <span class="p">{</span>
+    <span class="nx">listen</span>       <span class="mi">5858</span><span class="p">;</span>
+    <span class="nx">server_name</span>  <span class="mf">127.0</span><span class="p">.</span><span class="mf">0.1</span> <span class="nx">alias</span> <span class="nx">localhost</span><span class="p">;</span>
+
+    <span class="nx">location</span> <span class="o">/</span> <span class="p">{</span>
+        <span class="nx">root</span>   <span class="na">D</span><span class="p">:</span><span class="sr">/vue</span><span class="err">;
+</span>        <span class="nx">try_files</span> <span class="nx">$uri</span> <span class="nx">$uri</span><span class="o">/</span> <span class="p">@</span><span class="nd">router</span><span class="p">;</span> <span class="err">#需要指向下面的</span><span class="p">@</span><span class="nd">router</span><span class="err">否则会出现</span><span class="nx">vue</span><span class="err">的路由在</span><span class="nx">nginx</span><span class="err">中刷新出现</span><span class="mi">404</span>
+        <span class="nx">index</span>  <span class="nx">index</span><span class="p">.</span><span class="nx">html</span> <span class="nx">index</span><span class="p">.</span><span class="nx">htm</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#对应上面的</span><span class="p">@</span><span class="nd">router</span><span class="err">，主要原因是路由的路径资源并不是一个真实的路径，所以无法找到具体的文件</span>
+    <span class="err">#因此需要</span><span class="nx">rewrite</span><span class="err">到</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="err">中，然后交给路由在处理请求资源</span>
+    <span class="nx">location</span> <span class="p">@</span><span class="nd">router</span> <span class="p">{</span>
+        <span class="nx">rewrite</span> <span class="o">^</span><span class="p">.</span><span class="o">*</span><span class="nx">$</span> <span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span> <span class="nx">last</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="注意-1">注意</h2>
+
+<p>重启后，打开页面出现了如下报错</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Uncaught</span> <span class="nx">SyntaxError</span><span class="p">:</span> <span class="nx">Unexpected</span> <span class="nx">token</span> <span class="o">&lt;</span>
+</code></pre></div></div>
+
+<h2 id="原因">原因</h2>
+
+<p>打开config/index.js 文件
+这里配置的assetsPublicPath一定要配置成  “/”  而不是  “./”之类的，不然nginx服务端即使配置成为了vue h5 history模式，就会出现如上错误。
+<img src="/assets/image/vue_history.png" alt="" /></p>
+
+<p>这样配置就算是配置好了，然后就不会出现页面刷新显示404的错误了。</p>
+
+<p>try_files 指令：</p>
+
+<p>语法：
+try_files file … uri 
+或 
+try_files file … = code</p>
+
+<p>默认值：无</p>
+
+<p>作用域：server location</p>
+
+<p>其作用是按顺序检查文件是否存在，返回第一个找到的文件或文件夹（结尾加斜线表示为文件夹），如果所有的文件或文件夹都找不到，会进行一个内部重定向到最后一个参数。</p>
+
+<p>需要注意的是，只有最后一个参数可以引起一个内部重定向，之前的参数只设置内部URI的指向。最后一个参数是回退URI且必须存在，否则会出现内部500错误。命名的location也可以使用在最后一个参数中。与rewrite指令不同，如果回退URI不是命名的location那么args不会自动保留，如果你想保留args不会自动保留，如果你想保留args，则必须明确声明。</p>
+
+<h2 id="location指令">location指令</h2>
+
+<p>语法：</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">location</span> <span class="p">[</span><span class="o">=|~|~*|^~|</span><span class="p">@]</span> <span class="o">/</span><span class="nx">uri</span><span class="o">/</span> <span class="p">{</span> <span class="err">…</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>默认值：无</p>
+
+<p>作用域：server</p>
+
+<p>location指令是用来为匹配的URI进行配置，URI即语法中的”/uri/”，可以是字符串或正则表达式。但如果要使用正则表达式，则必须指定前缀。 [@] 即是命名location，一般只用于内部重定向请求。</p>
+
+<ol>
+  <li>
+    <p>设置成功后需要重启：nginx重启命令；在 /etc/usr/local/nginx/conf/ 目录下, cd ../ 然后进入sbin目录下 cd sbin 接着运行命令 ./nginx -s reload 重启后即可生效。</p>
+  </li>
+  <li>
+    <p>在/data/www/logs/nginx/aa/目录下 新建 access.log 文件。</p>
+  </li>
+</ol>
+
+<p>然后nginx保存和退出命令 :wq</p>
+
+<p>直接退出的命令是 :q</p>
+
+<ol>
+  <li>mac系统下 自带 apache2服务器，需要对apache2作反向代理；配置如下：</li>
+</ol>
+
+<p>进入本地mac apache2配置；</p>
+
+<p>命令：cd /etc/apache2</p>
+
+<p>命令：sudo vi httpd.conf</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">80</span><span class="o">&gt;</span>
+  <span class="nx">ServerName</span> <span class="nx">aa</span><span class="p">.</span><span class="nx">xx</span><span class="p">.</span><span class="nx">com</span>
+  <span class="nx">ProxyRequests</span> <span class="nx">off</span>
+  <span class="nx">Header</span> <span class="kd">set</span> <span class="nx">Access</span><span class="o">-</span><span class="nx">Control</span><span class="o">-</span><span class="nx">Allow</span><span class="o">-</span><span class="nx">Origin</span> <span class="o">*</span>
+  <span class="o">&lt;</span><span class="nb">Proxy</span> <span class="o">*&gt;</span>
+      <span class="nx">Order</span> <span class="nx">deny</span><span class="p">,</span><span class="nx">allow</span>
+      <span class="nx">Allow</span> <span class="k">from</span> <span class="nx">all</span>
+  <span class="o">&lt;</span><span class="sr">/Proxy</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="nx">Location</span> <span class="o">/</span><span class="nx">aa</span><span class="o">&gt;</span>
+      <span class="nx">ProxyPass</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8896/</span>
+      <span class="nx">ProxyPassReverse</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8896/</span>
+  <span class="o">&lt;</span><span class="sr">/Location</span><span class="err">&gt;
+</span>  <span class="c1">// .... 更多配置省略</span>
+<span class="o">&lt;</span><span class="sr">/VirtualHost</span><span class="err">&gt;
+</span>
+</code></pre></div></div>
+
+<p>然后进入 sbin目录下 启动服务 sudo apachectl start</p>
+
+<p>重启命令如下 sudo apachectl restart</p>
+
+<ol>
+  <li>java服务端的配置如下（如果是vm放到开发那边的话，开发那边需要如下处理下，如果页面vm不放在开发那边的话，下面的配置可以忽略）</li>
+</ol>
+
+<p>在项目目录下 webapp/web-inf/view/ 新建文件夹 aa 和 include文件</p>
+
+<p>aa文件下 新建index.vm</p>
+
+<p>如下代码：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="nx">parse</span><span class="p">(</span><span class="s2">"include/common.vm"</span><span class="p">)</span>
+<span class="err">#</span><span class="p">@</span><span class="nd">frame</span><span class="p">(</span><span class="s2">"xx管理"</span><span class="p">,</span><span class="kc">true</span><span class="p">)</span>
+<span class="err">#</span><span class="nx">css</span><span class="p">([</span><span class="s2">"${version}/business/aa/aa.css"</span><span class="p">])</span> <span class="c1">// 打包后的css路径，具体看自己的路径</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"app"</span><span class="o">&gt;&lt;</span><span class="sr">/div</span><span class="err">&gt;
+#</span><span class="nx">js</span><span class="p">([</span><span class="s2">"${version}/business/aa/aa.js"</span><span class="p">])</span> <span class="c1">// 打包后的js路径，具体看自己的路径</span>
+<span class="err">#</span><span class="nx">end</span>
+</code></pre></div></div>
+
+<p>6-2 java开发需要配置一下：</p>
+
+<p>1 设置路由： /aa 设置路由到 /aa/index.vm</p>
+
+<p>2 这个include/common.vm有一个地址配置，是在disconf上配置的，你加一个</p>
+
+<p>地址配置到 //aa.xx.com/aa/dist 上即可</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/vue/2018/05/11/Vue-keep-alive" title="vue2的keep-alive的总结">
+  <strong>上一篇：</strong><br/>
+  <span>
+  vue2的keep-alive的总结</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/vue/2018/08/11/nginx-vue-history1"  title="vue+webpack+nginx 部署在服务器非根目录下访问404问题">
+ <strong>下一篇：</strong><br/>
+ <span>vue+webpack+nginx 部署在服务器非根目录下访问404问题
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

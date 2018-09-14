@@ -1,0 +1,202 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>vue+webpack+nginx 部署在服务器非根目录下访问404问题 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="vue+webpack+nginx 部署在服务器非根目录下访问404问题">
+    <meta property="og:url" content="/vue/2018/08/11/nginx-vue-history1">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="vue+webpack+nginx 部署在服务器非根目录下访问404问题">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="vue+webpack+nginx 部署在服务器非根目录下访问404问题">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/08/11/nginx-vue-history1" title="vue+webpack+nginx 部署在服务器非根目录下访问404问题" itemprop="url">vue+webpack+nginx 部署在服务器非根目录下访问404问题</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-08-11 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-08-11</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>最近想把所有的前端项目都整合在两台机器上，通过负载访问如下路径</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Https</span><span class="p">:</span><span class="c1">//域名/clinetPage/</span>
+<span class="nx">Https</span><span class="p">:</span><span class="c1">//域名/member/</span>
+<span class="nx">Https</span><span class="p">:</span><span class="c1">//域名/loan/</span>
+</code></pre></div></div>
+
+<p>这样的方式访问</p>
+
+<p>按照平时的打包方式，直接将webpack打包好的包放到服务器上
+服务器路径/H5/clinetPage(并非平时的/clinetPage)</p>
+
+<p>在ngnix中做好配置如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">location</span>  <span class="o">^~</span> <span class="sr">/clinetPage/</span> <span class="p">{</span>
+    <span class="nx">root</span>   <span class="nx">D</span><span class="p">:</span><span class="o">/</span><span class="nx">soft</span><span class="o">/</span><span class="nx">xxx</span><span class="p">;</span>
+    <span class="nx">try_files</span> <span class="nx">$uri</span> <span class="nx">$uri</span><span class="o">/</span> <span class="sr">/clinetPage/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="p">;</span>
+    <span class="nx">gzip</span> <span class="nx">on</span><span class="p">;</span>
+    <span class="nx">gzip_types</span> <span class="nx">application</span><span class="o">/</span><span class="nx">javascript</span> <span class="nx">text</span><span class="o">/</span><span class="nx">css</span> <span class="nx">image</span><span class="o">/</span><span class="nx">jpeg</span> <span class="nx">image</span><span class="o">/</span><span class="nx">png</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>结果访问Https://域名/clinetPage/ 时一片红，各种/static/js /static/css找不到</p>
+
+<p>困扰了好几天，各种改~</p>
+
+<p>最后终于改好了，总结了以下几点
+1、修改config/index.js配置文件</p>
+
+<p><img src="/assets/image/vue_nginx/01.png" alt="" /></p>
+
+<p>2、修改build/webpack.prod.conf.js配置文件</p>
+
+<p><img src="/assets/image/vue_nginx/02.png" alt="" /></p>
+
+<p>3、修改router/index.js</p>
+
+<p><img src="/assets/image/vue_nginx/03.png" alt="" /></p>
+
+<p>4、修改ngnix配置</p>
+
+<p><img src="/assets/image/vue_nginx/04.png" alt="" /></p>
+
+<p>这几个改好了，部署就没有问题啦~ 分享给大家</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/vue/2018/07/30/nginx-vue-history" title="在nginx上部署vue项目(history模式)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在nginx上部署vue项目(history模式)</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

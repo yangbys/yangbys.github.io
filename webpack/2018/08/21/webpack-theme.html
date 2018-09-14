@@ -1,0 +1,364 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>webpack构建下换肤功能的思路 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="webpack构建下换肤功能的思路">
+    <meta property="og:url" content="/webpack/2018/08/21/webpack-theme">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="使用 webpack，打包多套不同主题的解决方案以及实践中所遇到的问题及解决方案。">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="webpack构建下换肤功能的思路">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/webpack/2018/08/21/webpack-theme" title="webpack构建下换肤功能的思路" itemprop="url">webpack构建下换肤功能的思路</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-08-21 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-08-21</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>最近项目中要实现一个换肤的功能，大体想了下，记录一下思路</p>
+
+<p>要实现换肤功能，目标就是打包生成多份皮肤文件，需要哪个就用哪个</p>
+
+<h2 id="起因">起因</h2>
+<p>首先，简单的介绍一下什么是多主题，所谓多套主题/配色，就是我们很常见的换肤功能。换肤简单来说就是更换 css。这是一个老生常谈的问题，具体实践请参考less换肤功能实践。本文不在赘述。 一般实现多主题的样式文件，我们都会借用 gulp、grunt这种构建工具进行构建。但是，这样做有一个巨大的问题，就是非常不方便。我们既然已经使用了 webpack 进行打包，又为什么还要使用其他的构建工具呢？ 另外，还有一个巨大的弊端就是使用其他构建工具构建的 css ，是没办法支持提供的 scope功能的。这非常致命。所以到底该如何使用 webpack 进行构建呢？</p>
+
+<h2 id="大致思路">大致思路</h2>
+<p>新建一些 <theme>.less文件，，使用 webpack 读取 themes目录中的样式文件，编译后输出 <theme>.css。并且首次加载时只引用默认主题文件，其他的可以到切换的时候再引入。 所以只需要解决解决编译多套 css 输出的问题和不让 css 注入 html的问题就好了。</theme></theme></p>
+
+<h2 id="解决编译多套-css-输出的问题">解决编译多套 css 输出的问题</h2>
+<p>建立一个初始化的项目，这个项目以react项目为例，预编译语言使用的是less。你可以随着自己的喜好进行任意选择。初始配置。然后再less文件夹下，新建一个themes目录，和多个 <theme>.less。</theme></p>
+
+<p><img src="/assets/image/vue_theme/01.png" alt="" /></p>
+
+<p>建好之后，把所有的 文件引入 index.js中，webpack就会帮你把他们编译输出到一起了。一般情况下，extract-text-webpack-plugin 可以帮我们把样式文件抽出来，但是会帮我们把他们都放在同一个文件中。 修改index.js。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="s1">'./less/index.less'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./less/themes/green.less'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./less/themes/red.less'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./less/themes/yellow.less'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>然后编译一下，你发现所有的样式都混在一起了。</p>
+
+<p><img src="/assets/image/vue_theme/02.png" alt="" /></p>
+
+<p>参照文档，我们需要多次声明 ExtractTextPlugin，以达到把不同的主题输出到不同文件的目的。这里我使用的是, loader 的 include 和 exclude参数。在默认样式中将其他样式排除，然后每一个主题的样式,分别打包自己的样式。 最终代码的改动如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 默认主体样式</span>
+<span class="kd">const</span> <span class="nx">extractSass</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ExtractTextPlugin</span><span class="p">({</span>
+  <span class="na">filename</span><span class="p">:</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">assetsPath</span><span class="p">(</span><span class="s1">'css/[name].css'</span><span class="p">),</span>
+  <span class="na">allChunks</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">});</span>
+
+
+<span class="c1">// 主题路径</span>
+<span class="kd">const</span> <span class="nx">THEME_PATH</span> <span class="o">=</span> <span class="s1">'./src/style/themes'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">styleLoaders</span> <span class="o">=</span> <span class="p">[{</span><span class="na">loader</span><span class="p">:</span> <span class="s1">'css-loader'</span><span class="p">},</span> <span class="p">{</span><span class="na">loader</span><span class="p">:</span> <span class="s1">'sass-loader'</span><span class="p">}];</span>
+
+<span class="kd">const</span> <span class="nx">resolveToThemeStaticPath</span> <span class="o">=</span> <span class="nx">fileName</span> <span class="o">=&gt;</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">THEME_PATH</span><span class="p">,</span> <span class="nx">fileName</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">themeFileNameSet</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readdirSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">THEME_PATH</span><span class="p">)).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">fileName</span> <span class="o">=&gt;</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">scss/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">fileName</span><span class="p">));</span>
+<span class="kd">const</span> <span class="nx">themePaths</span> <span class="o">=</span> <span class="nx">themeFileNameSet</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">resolveToThemeStaticPath</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getThemeName</span> <span class="o">=</span> <span class="nx">fileName</span> <span class="o">=&gt;</span> <span class="s2">`theme-</span><span class="p">${</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">fileName</span><span class="p">,</span> <span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">fileName</span><span class="p">))}</span><span class="s2">`</span><span class="p">;</span>
+
+<span class="c1">// 全部 ExtractSass 的集合</span>
+<span class="kd">const</span> <span class="nx">themesExtractSassSet</span> <span class="o">=</span> <span class="nx">themeFileNameSet</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">fileName</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">ExtractTextPlugin</span><span class="p">({</span>
+    <span class="na">filename</span><span class="p">:</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">assetsPath</span><span class="p">(</span><span class="s2">`css/</span><span class="p">${</span><span class="nx">getThemeName</span><span class="p">(</span><span class="nx">fileName</span><span class="p">)}</span><span class="s2">.css`</span><span class="p">),</span>
+    <span class="na">allChunks</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'themeFileNameSet++++++++'</span><span class="p">,</span> <span class="nx">themeFileNameSet</span><span class="p">)</span>
+
+<span class="c1">// 主题 Loader 的集合</span>
+<span class="kd">const</span> <span class="nx">themeLoaderSet</span> <span class="o">=</span> <span class="nx">themeFileNameSet</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">fileName</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">scss|sass|css</span><span class="se">)</span><span class="sr">$/</span><span class="p">,</span>
+    <span class="na">include</span><span class="p">:</span> <span class="nx">resolveToThemeStaticPath</span><span class="p">(</span><span class="nx">fileName</span><span class="p">),</span>
+    <span class="na">loader</span><span class="p">:</span> <span class="nx">themesExtractSassSet</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">extract</span><span class="p">({</span>
+      <span class="na">use</span><span class="p">:</span> <span class="nx">styleLoaders</span><span class="p">,</span>
+      <span class="na">fallback</span><span class="p">:</span> <span class="s1">'vue-style-loader'</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">context</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'../'</span><span class="p">),</span>
+  <span class="na">entry</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">app</span><span class="p">:</span> <span class="s1">'./src/main.js'</span><span class="p">,</span>
+    <span class="na">themes</span><span class="p">:</span> <span class="s1">'./src/config/themes.js'</span>
+  <span class="p">},</span>
+  <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">build</span><span class="p">.</span><span class="nx">assetsRoot</span><span class="p">,</span>
+    <span class="na">filename</span><span class="p">:</span> <span class="s1">'[name].js'</span><span class="p">,</span>
+    <span class="na">publicPath</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s1">'production'</span>
+      <span class="p">?</span> <span class="nx">config</span><span class="p">.</span><span class="nx">build</span><span class="p">.</span><span class="nx">assetsPublicPath</span>
+      <span class="p">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">dev</span><span class="p">.</span><span class="nx">assetsPublicPath</span>
+  <span class="p">},</span>
+  <span class="na">resolve</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">extensions</span><span class="p">:</span> <span class="p">[</span><span class="s1">'.js'</span><span class="p">,</span> <span class="s1">'.vue'</span><span class="p">,</span> <span class="s1">'.json'</span><span class="p">],</span>
+    <span class="na">alias</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s1">'vue$'</span><span class="p">:</span> <span class="s1">'vue/dist/vue.esm.js'</span><span class="p">,</span>
+      <span class="s1">'@'</span><span class="p">:</span> <span class="nx">resolve</span><span class="p">(</span><span class="s1">'src'</span><span class="p">),</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">...</span><span class="nx">themeLoaderSet</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">scss|sass|css</span><span class="se">)</span><span class="sr">$/</span><span class="p">,</span>
+        <span class="na">exclude</span><span class="p">:</span> <span class="nx">themePaths</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="nx">extractSass</span><span class="p">.</span><span class="nx">extract</span><span class="p">({</span>
+          <span class="na">use</span><span class="p">:</span> <span class="nx">styleLoaders</span><span class="p">,</span>
+          <span class="na">fallback</span><span class="p">:</span> <span class="s1">'vue-style-loader'</span>
+        <span class="p">})</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">vue$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'vue-loader'</span><span class="p">,</span>
+        <span class="na">options</span><span class="p">:</span> <span class="nx">vueLoaderConfig</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">js$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'babel-loader'</span><span class="p">,</span>
+        <span class="na">include</span><span class="p">:</span> <span class="p">[</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">'src'</span><span class="p">),</span> <span class="nx">resolve</span><span class="p">(</span><span class="s1">'test'</span><span class="p">),</span> <span class="nx">resolve</span><span class="p">(</span><span class="s1">'node_modules/webpack-dev-server/client'</span><span class="p">)]</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">png|jpe</span><span class="se">?</span><span class="sr">g|gif|svg</span><span class="se">)(\?</span><span class="sr">.*</span><span class="se">)?</span><span class="sr">$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'url-loader'</span><span class="p">,</span>
+        <span class="na">exclude</span><span class="p">:</span> <span class="p">[</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">'src/icons'</span><span class="p">)],</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">limit</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">assetsPath</span><span class="p">(</span><span class="s1">'img/[name].[hash:7].[ext]'</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">mp4|webm|ogg|mp3|wav|flac|aac</span><span class="se">)(\?</span><span class="sr">.*</span><span class="se">)?</span><span class="sr">$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'url-loader'</span><span class="p">,</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">limit</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">assetsPath</span><span class="p">(</span><span class="s1">'media/[name].[hash:7].[ext]'</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">woff2</span><span class="se">?</span><span class="sr">|eot|ttf|otf</span><span class="se">)(\?</span><span class="sr">.*</span><span class="se">)?</span><span class="sr">$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'url-loader'</span><span class="p">,</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">limit</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">assetsPath</span><span class="p">(</span><span class="s1">'fonts/[name].[hash:7].[ext]'</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.</span><span class="sr">svg$/</span><span class="p">,</span>
+        <span class="na">loader</span><span class="p">:</span> <span class="s1">'svg-sprite-loader'</span><span class="p">,</span>
+        <span class="na">include</span><span class="p">:</span> <span class="p">[</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">'src/icons'</span><span class="p">)],</span>
+        <span class="na">options</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">symbolId</span><span class="p">:</span> <span class="s1">'icon-[name]'</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">extractSass</span><span class="p">,</span>
+    <span class="p">...</span><span class="nx">themesExtractSassSet</span><span class="p">,</span>
+    <span class="k">new</span> <span class="nx">HtmlWebpackHandleCssInjectPlugin</span><span class="p">({</span>
+      <span class="na">filter</span><span class="p">:</span> <span class="p">(</span><span class="nx">filePath</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// filter 函数Array.filer用法一直。参数filePath参数给出的就是link标签中[href]的值。</span>
+        <span class="k">return</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'app'</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>做出以上改动之后，就可以正常的输出样式文件了。</p>
+
+<p><img src="/assets/image/vue_theme/03.png" alt="" /></p>
+
+<h2 id="不让-css-注入-html">不让 css 注入 html</h2>
+
+<p>HtmlWebpackHandleCssInjectPlugin.js</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">HtmlWebpackHandleCssInjectPlugin</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+    <span class="p">}</span>
+  
+    <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">handleHtmlWebpackPluginAfterHtmlProcessing</span> <span class="o">=</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="p">{</span> <span class="nx">filter</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;link .+</span><span class="se">?</span><span class="sr">&gt;</span><span class="se">(?=(?:</span><span class="sr">&lt;.+</span><span class="se">?</span><span class="sr">&gt;</span><span class="se">)</span><span class="sr">*&lt;</span><span class="se">\/</span><span class="sr">head&gt;</span><span class="se">)</span><span class="sr">/g</span><span class="p">,</span> <span class="p">(</span><span class="nx">link</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">link</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">href="</span><span class="se">)(</span><span class="sr">.*</span><span class="se">)</span><span class="sr">" /</span><span class="p">)[</span><span class="mi">2</span><span class="p">];</span>
+                <span class="k">return</span> <span class="nx">filter</span><span class="p">(</span><span class="nx">filePath</span><span class="p">,</span> <span class="nx">link</span><span class="p">)</span> <span class="p">?</span> <span class="nx">link</span> <span class="p">:</span> <span class="s1">''</span><span class="p">;</span>
+            <span class="p">});</span>
+            <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">};</span>
+  
+        <span class="k">if</span> <span class="p">(</span><span class="nx">compiler</span><span class="p">.</span><span class="nx">hooks</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// webpack 4 support</span>
+            <span class="nx">compiler</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">compilation</span><span class="p">.</span><span class="nx">tap</span><span class="p">(</span><span class="s1">'htmlWebpackPluginAfterHtmlProcessing'</span><span class="p">,</span> <span class="p">(</span><span class="nx">compilation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">compilation</span><span class="p">.</span><span class="nx">hooks</span><span class="p">.</span><span class="nx">htmlWebpackPluginAfterHtmlProcessing</span><span class="p">.</span><span class="nx">tapPromise</span><span class="p">(</span><span class="s1">'htmlWebpackPluginAfterHtmlProcessing'</span><span class="p">,</span> <span class="nx">handleHtmlWebpackPluginAfterHtmlProcessing</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// Hook into the html-webpack-plugin processing</span>
+            <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">'compilation'</span><span class="p">,</span> <span class="p">(</span><span class="nx">compilation</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">'html-webpack-plugin-after-html-processing'</span><span class="p">,</span> <span class="nx">handleHtmlWebpackPluginAfterHtmlProcessing</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>filter 函数Array.filer用法一直。参数filePath参数给出的就是link标签中[href]的值。 这个方法，既不需要任何工具，也不需要删除什么。非常完美。</p>
+
+<p><img src="/assets/image/vue_theme/04.png" alt="" /></p>
+
+<h2 id="最终效果">最终效果</h2>
+<p><img src="/assets/image/vue_theme/05.gif" alt="" /></p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/vue/2018/08/11/nginx-vue-history1" title="vue+webpack+nginx 部署在服务器非根目录下访问404问题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  vue+webpack+nginx 部署在服务器非根目录下访问404问题</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

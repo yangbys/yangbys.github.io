@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2018-09-19T18:05:18+08:00</updated>
+ <updated>2018-09-19T18:09:41+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -127,7 +127,7 @@
    <link href="/webpack/2018/08/21/webpack-theme"/>
    <updated>2018-08-21T00:00:00+08:00</updated>
    <id>/webpack/2018/08/21/webpack-theme</id>
-   <content type="html">&lt;p&gt;最近项目中要实现一个换肤的功能，大体想了下，记录一下思路&lt;/p&gt;
+   <content type="html">&lt;p&gt;最近项目中要实现一个换肤的功能，网到找到了一些方法例子&lt;/p&gt;
 
 &lt;p&gt;要实现换肤功能，目标就是打包生成多份皮肤文件，需要哪个就用哪个&lt;/p&gt;
 

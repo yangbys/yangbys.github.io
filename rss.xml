@@ -5,8 +5,8 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Wed, 19 Sep 2018 18:05:18 +0800</lastBuildDate>
-        <pubDate>Wed, 19 Sep 2018 18:05:18 +0800</pubDate>
+        <lastBuildDate>Wed, 19 Sep 2018 18:09:41 +0800</lastBuildDate>
+        <pubDate>Wed, 19 Sep 2018 18:09:41 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -122,7 +122,7 @@
 
         <item>
                 <title>webpack构建下换肤功能的思路</title>
-                <description>&lt;p&gt;最近项目中要实现一个换肤的功能，大体想了下，记录一下思路&lt;/p&gt;
+                <description>&lt;p&gt;最近项目中要实现一个换肤的功能，网到找到了一些方法例子&lt;/p&gt;
 
 &lt;p&gt;要实现换肤功能，目标就是打包生成多份皮肤文件，需要哪个就用哪个&lt;/p&gt;
 

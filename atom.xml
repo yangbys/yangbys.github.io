@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2018-09-19T17:19:25+08:00</updated>
+ <updated>2018-09-19T17:58:32+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -20,9 +20,9 @@
    <content type="html">&lt;p&gt;需求：使mini播放器被点击时，其img放大到normal播放器的的img位置&lt;/p&gt;
 
 &lt;p&gt;如下图，从左下角往右上角放大
-&lt;img src=&quot;/assets/image/create_animate/01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/image/create_animate/animate_01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/image/create_animate/02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/image/create_animate/animate_02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// 安装&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;keyframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;animation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;save&lt;/span&gt;

@@ -12,6 +12,7 @@
 /assets/css/style.css
 /page2/
 
+/vue/2018/09/04/create-keyframe-animation
 /webpack/2018/08/21/webpack-theme
 /vue/2018/08/11/nginx-vue-history1
 /vue/2018/07/30/nginx-vue-history

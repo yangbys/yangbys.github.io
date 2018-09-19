@@ -1,0 +1,260 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>create-keyframe-animation实例 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="create-keyframe-animation实例">
+    <meta property="og:url" content="/vue/2018/09/04/create-keyframe-animation">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="create-keyframe-animation">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="create-keyframe-animation实例">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/09/04/create-keyframe-animation" title="create-keyframe-animation实例" itemprop="url">create-keyframe-animation实例</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-09-04 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-09-04</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p>需求：使mini播放器被点击时，其img放大到normal播放器的的img位置</p>
+
+<p>如下图，从左下角往右上角放大
+<img src="/assets/image/create_animate/01.png" alt="" /></p>
+
+<p><img src="/assets/image/create_animate/02.png" alt="" /></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 安装</span>
+<span class="nx">npm</span> <span class="nx">install</span> <span class="nx">create</span><span class="o">-</span><span class="nx">keyframe</span><span class="o">-</span><span class="nx">animation</span> <span class="o">--</span><span class="nx">save</span>
+</code></pre></div></div>
+
+<p>网上找的
+项目代码：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">animations</span> <span class="k">from</span> <span class="s1">'create-keyframe-animation'</span>
+
+<span class="c1">// create-keyframe-animation 使用 开始</span>
+    <span class="nx">enter</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="p">{</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">scale</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_getPosAndScale</span><span class="p">()</span><span class="c1">// 获取变化数值</span>
+
+      <span class="kd">let</span> <span class="nx">animation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2">px,</span><span class="p">${</span><span class="nx">y</span><span class="p">}</span><span class="s2">px,0) scale(</span><span class="p">${</span><span class="nx">scale</span><span class="p">}</span><span class="s2">)`</span>
+        <span class="p">},</span>
+        <span class="mi">60</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(0,0,0) scale(1.1)`</span>
+        <span class="p">},</span>
+        <span class="mi">100</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(0,0,0) scale(1)`</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">registerAnimation</span><span class="p">({</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'move'</span><span class="p">,</span>
+        <span class="nx">animation</span><span class="p">,</span>
+        <span class="na">presets</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">duration</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span><span class="c1">// 动画时长</span>
+          <span class="na">easing</span><span class="p">:</span> <span class="s1">'linear'</span><span class="c1">// 动画曲线</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+      <span class="c1">// 绑定动画元素，done--到下一步afterEnter</span>
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">runAnimation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">cdWrapper</span><span class="p">,</span> <span class="s1">'move'</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="nx">afterEnter</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">unregisterAnimation</span><span class="p">(</span><span class="s1">'move'</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">cdWrapper</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">animation</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="p">},</span>
+    <span class="c1">// 该动画后部分（注释）功能会影响singer-detail的回退</span>
+    <span class="c1">// 使用enter和afterEnter的方法则可行</span>
+    <span class="nx">leave</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="p">{</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">scale</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_getPosAndScale</span><span class="p">()</span>
+
+      <span class="kd">let</span> <span class="nx">animation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(0,0,0) scale(1)`</span>
+        <span class="p">},</span>
+        <span class="mi">60</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(0,0,0) scale(1.1)`</span>
+        <span class="p">},</span>
+        <span class="mi">100</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">transform</span><span class="p">:</span> <span class="s2">`translate3d(</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2">px,</span><span class="p">${</span><span class="nx">y</span><span class="p">}</span><span class="s2">px,0) scale(</span><span class="p">${</span><span class="nx">scale</span><span class="p">}</span><span class="s2">)`</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">registerAnimation</span><span class="p">({</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">'out'</span><span class="p">,</span>
+        <span class="nx">animation</span><span class="p">,</span>
+        <span class="na">presets</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">duration</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+          <span class="na">easing</span><span class="p">:</span> <span class="s1">'linear'</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">runAnimation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">cdWrapper</span><span class="p">,</span> <span class="s1">'out'</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span>
+      <span class="c1">// this.$refs.cdWrapper.style.transition = 'all 0.4s'</span>
+      <span class="c1">// const {x, y, scale} = this._getPosAndScale()</span>
+      <span class="c1">// this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`</span>
+      <span class="c1">// this.$refs.cdWrapper.addEventListener('transitionend', done)</span>
+    <span class="p">},</span>
+    <span class="nx">afterLeave</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">animations</span><span class="p">.</span><span class="nx">unregisterAnimation</span><span class="p">(</span><span class="s1">'out'</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">cdWrapper</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">animation</span> <span class="o">=</span> <span class="s1">''</span>
+      <span class="c1">// this.$refs.cdWrapper.style.transition = ''</span>
+      <span class="c1">// this.$refs.cdWrapper.style[transform] = ''</span>
+    <span class="p">},</span>
+    <span class="c1">// create-keyframe-animation 使用 结束</span>
+     <span class="nx">_getPosAndScale</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">targetWidth</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="kd">const</span> <span class="nx">paddingLeft</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="kd">const</span> <span class="nx">paddingBottom</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="kd">const</span> <span class="nx">paddingTop</span> <span class="o">=</span> <span class="mi">80</span>
+        <span class="kd">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">*</span> <span class="mf">0.8</span>
+        <span class="kd">const</span> <span class="nx">scale</span> <span class="o">=</span> <span class="nx">targetWidth</span> <span class="o">/</span> <span class="nx">width</span>
+        <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">paddingLeft</span><span class="p">)</span>
+        <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">-</span> <span class="nx">paddingTop</span> <span class="o">-</span> <span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">paddingBottom</span>
+        <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">x</span><span class="p">,</span>
+          <span class="nx">y</span><span class="p">,</span>
+          <span class="nx">scale</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/webpack/2018/08/21/webpack-theme" title="webpack构建下换肤功能的思路">
+  <strong>上一篇：</strong><br/>
+  <span>
+  webpack构建下换肤功能的思路</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

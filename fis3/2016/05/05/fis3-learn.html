@@ -296,6 +296,17 @@ fis.media('debug').match('*.{js,css,png}', {
 })
 </code></pre></div></div>
 
+<p>可以想只发布dist目录下的内容到远程：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fis.media('prod').match('/dist/(**)', {
+    release: '$1',
+    deploy: fis.plugin('http-push', {
+        receiver: 'http://xxxx.com',
+        to: '/xxx/xxx' 
+    })
+});
+</code></pre></div></div>
+
 <h2 id="三调试与发布">三、调试与发布</h2>
 
 <p>FIS3 构建后，默认情况下会对资源的 URL 进行修改，改成绝对路径。同样FIS3 内置一个简易 Web Server，可以方便调试构建结果。

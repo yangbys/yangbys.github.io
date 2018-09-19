@@ -5,8 +5,8 @@
         <description>杨标Blog - </description>
         <link></link>
         <atom:link href="" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Wed, 19 Sep 2018 17:58:32 +0800</lastBuildDate>
-        <pubDate>Wed, 19 Sep 2018 17:58:32 +0800</pubDate>
+        <lastBuildDate>Wed, 19 Sep 2018 18:05:18 +0800</lastBuildDate>
+        <pubDate>Wed, 19 Sep 2018 18:05:18 +0800</pubDate>
         <ttl>60</ttl>
 
 
@@ -1838,6 +1838,17 @@ fis.media('debug').match('*.{js,css,png}', {
     useSprite: false,
     optimizer: null
 })
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以想只发布dist目录下的内容到远程：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fis.media('prod').match('/dist/(**)', {
+    release: '$1',
+    deploy: fis.plugin('http-push', {
+        receiver: 'http://xxxx.com',
+        to: '/xxx/xxx' 
+    })
+});
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;三调试与发布&quot;&gt;三、调试与发布&lt;/h2&gt;

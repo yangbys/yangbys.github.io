@@ -4,7 +4,7 @@
  <title>杨标Blog</title>
  <link href="" rel="self"/>
  <link href=""/>
- <updated>2018-09-19T17:58:32+08:00</updated>
+ <updated>2018-09-19T18:05:18+08:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -1843,6 +1843,17 @@ fis.media('debug').match('*.{js,css,png}', {
     useSprite: false,
     optimizer: null
 })
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以想只发布dist目录下的内容到远程：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fis.media('prod').match('/dist/(**)', {
+    release: '$1',
+    deploy: fis.plugin('http-push', {
+        receiver: 'http://xxxx.com',
+        to: '/xxx/xxx' 
+    })
+});
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;三调试与发布&quot;&gt;三、调试与发布&lt;/h2&gt;

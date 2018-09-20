@@ -1,0 +1,245 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>javascript浮点数处理 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="javascript浮点数处理">
+    <meta property="og:url" content="/js/2018/09/14/floating-point-number">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="javascript浮点数处理">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="javascript浮点数处理">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/js/2018/09/14/floating-point-number" title="javascript浮点数处理" itemprop="url">javascript浮点数处理</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-09-14 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-09-14</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<h2 id="前言">前言：</h2>
+<p>近期在做项目的时候，遇到了一些JS浮点数精度的问题。这个问题，其实说大不大，说小不小。但是这次因为涉及到一些财务和结算的问题，然后突然发现这个小问题处理起来还是挺麻烦的。这里把相关的原因的问题的解决方案整理一下，也希望给各位提供一些参考。</p>
+
+<h2 id="案例分析">案例分析：</h2>
+<p>近期的项目，由于在H5页面上需要进行动态的金额计算，且金额涉及到了小数，因而随之产生了JS浮点数计算的精度丢失问题。 
+测试又提了一个bug就是 “0.01-0.001 = 0.009000000000000001”，马上联想到了浮动数的问题导致，瞬间Mon bi了。</p>
+
+<p>原生计算</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.9</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.8</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.4</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mf">0.2</span><span class="o">-</span><span class="mf">0.1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mf">0.9</span><span class="o">-</span><span class="mf">0.8</span><span class="p">);</span>
+
+<span class="c1">//结果</span>
+<span class="mf">5.8999999999999995</span>
+<span class="mi">6</span>
+<span class="mf">6.3999999999999995</span>
+<span class="mf">0.1</span>
+<span class="mf">0.009999999999999995</span>
+</code></pre></div></div>
+
+<p>定义一个自定义的转换和处理函数</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">formatFloat</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">digit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nx">digit</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">f</span> <span class="o">*</span> <span class="nx">m</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="nx">m</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>运行一下看下效果</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">formatFloat</span><span class="p">((</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.9</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">formatFloat</span><span class="p">((</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.8</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">formatFloat</span><span class="p">((</span><span class="mf">6.8</span><span class="o">-</span><span class="mf">0.4</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">formatFloat</span><span class="p">((</span><span class="mf">0.2</span><span class="o">-</span><span class="mf">0.1</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">formatFloat</span><span class="p">((</span><span class="mf">0.9</span><span class="o">-</span><span class="mf">0.8</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">// 结果</span>
+<span class="mf">0.1</span>
+<span class="mi">6</span>
+<span class="mf">6.4</span>
+<span class="mf">0.1</span>
+<span class="mf">0.1</span>
+</code></pre></div></div>
+
+<p>好像看起来已经非常不错咯</p>
+
+<p>然后再试试新玩法</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">formatFloat</span><span class="p">((</span><span class="mf">0.01</span><span class="o">+</span><span class="mf">0.001</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">formatFloat</span><span class="p">((</span><span class="mf">1.0001</span><span class="p">,</span><span class="mf">1000.002</span><span class="p">),</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">// 结果</span>
+<span class="mf">0.01</span>
+<span class="mi">1001</span>
+</code></pre></div></div>
+
+<p>又傻了，还是不对…………..</p>
+
+<p>最后网上看到有人用了特殊的处理方法</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">addNum</span> <span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">sq1</span><span class="p">,</span> <span class="nx">sq2</span><span class="p">,</span> <span class="nx">m</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">sq1</span> <span class="o">=</span> <span class="nx">num1</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">sq1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">sq2</span> <span class="o">=</span> <span class="nx">num2</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">sq2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">sq1</span><span class="p">,</span> <span class="nx">sq2</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">num1</span> <span class="o">*</span> <span class="nx">m</span><span class="p">)</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">num2</span> <span class="o">*</span> <span class="nx">m</span><span class="p">))</span> <span class="o">/</span> <span class="nx">m</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>// 运行看下</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">addNum</span><span class="p">(</span><span class="mf">1.0001</span><span class="p">,</span><span class="mf">1000.002</span><span class="p">))</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">addNum</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span><span class="mf">0.05</span><span class="p">))</span>
+
+<span class="c1">// 结果</span>
+<span class="mf">1001.0021</span>
+<span class="mf">0.051</span>
+</code></pre></div></div>
+
+<p>好像结果还挺满意的………^_^</p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/vue/2018/09/04/create-keyframe-animation" title="create-keyframe-animation实例">
+  <strong>上一篇：</strong><br/>
+  <span>
+  create-keyframe-animation实例</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

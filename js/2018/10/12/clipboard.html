@@ -1,0 +1,258 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>clipboard.js 实现移动端和pc端复制到剪贴板功能 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="clipboard.js 实现移动端和pc端复制到剪贴板功能">
+    <meta property="og:url" content="/js/2018/10/12/clipboard">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="clipboard.js 实现移动端和pc端复制到剪贴板功能">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="clipboard.js 实现移动端和pc端复制到剪贴板功能">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/js/2018/10/12/clipboard" title="clipboard.js 实现移动端和pc端复制到剪贴板功能" itemprop="url">clipboard.js 实现移动端和pc端复制到剪贴板功能</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-10-12 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-10-12</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<h2 id="前言">前言：</h2>
+<p>最近，一些项目中用到监听用户复制。剪切的操作。</p>
+
+<h2 id="案例1">案例1</h2>
+<p>在PC端，当用户获得一个优惠卡的使用券，当用户使用ctrl + C复制得到的使用券时，将使用券的代号复制到粘贴板，以便于用户ctrl+v进行粘贴。
+<img src="/assets/image/copy/copy_01.png" alt="" /></p>
+
+<h2 id="案例2">案例2</h2>
+<p>在移动端（android 和 iOS端），用户获得邀请码之后，可以使用一键复制的功能，将邀请码复制到剪切板，然后在app中进行兑换。
+<img src="/assets/image/copy/copy_02.png" alt="" />
+使用jQuery中的方法监听用户的剪切、复制、粘贴的行为</p>
+
+<p>原生计算</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s2">"#cut"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"cut"</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+   <span class="nx">alert</span><span class="p">(</span><span class="s2">"剪切"</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#copy"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"copy"</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+   <span class="nx">alert</span><span class="p">(</span><span class="s2">"复制"</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#paste"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"paste"</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+   <span class="nx">alert</span><span class="p">(</span><span class="s2">"粘贴"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>这些行为包括使用键盘的ctrl + c操作，或者右击鼠标—&gt;复制等操作。</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">value</span><span class="o">=</span><span class="s2">"剪切板内容"</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"clipboard"</span><span class="o">/&gt;</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s2">"#clipboard"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"paste"</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">eve</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">;</span><span class="c1">//所有js的原生事件都被保存到originalEvent中</span>
+    <span class="kd">var</span> <span class="nx">cp</span> <span class="o">=</span> <span class="nx">eve</span><span class="p">.</span><span class="nx">clipboardData</span><span class="p">;</span><span class="c1">//从originalEvent取出剪切板的事件</span>
+    <span class="kd">var</span> <span class="nx">clipboardData</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">clipboardData</span><span class="o">||</span><span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">clipboardData</span><span class="p">;</span> <span class="c1">//兼容ie||chrome</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">clipboardData</span><span class="p">.</span><span class="nx">getData</span><span class="p">(</span><span class="s1">'Text'</span><span class="p">);</span><span class="c1">//获取剪切板内容</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>clipboardData对象</p>
+
+<p>clipboardData是JavaScript剪切板对象，该对象提供了3个常用方法</p>
+
+<p><img src="/assets/image/copy/copy_04.png" alt="" /></p>
+
+<p>clipboardData兼容性</p>
+
+<p>经过尝试，clipboardData对象内兼容大部分px浏览器，像chrome，firefox、ie等，但是在手机端兼容性不是很好，目前clipboardData在ios上的safari浏览器无效，为解决移动端这个问题，我们引用一个js插件——clipboard.js</p>
+
+<p>clipboard.js插件</p>
+
+<p>介绍
+clipboard.js依赖于HTML5退出的Selection API和execCommand API</p>
+
+<p>使用
+在页面中引入js</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">"dist/clipboard.min.js"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p>使用clipboard.js的自定义属性</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--</span> <span class="nx">Trigger</span> <span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="nx">button</span> <span class="kd">class</span><span class="o">=</span><span class="s2">"btn"</span> <span class="nx">data</span><span class="o">-</span><span class="nx">clipboard</span><span class="o">-</span><span class="nx">text</span><span class="o">=</span><span class="s2">"Just because you can doesn't mean you should — clipboard.js"</span><span class="o">&gt;</span>
+    <span class="nx">Copy</span> <span class="nx">to</span> <span class="nx">clipboard</span>
+<span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">clipboard</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ClipboardJS</span><span class="p">(</span><span class="s1">'.btn'</span><span class="p">);</span>
+
+<span class="nx">clipboard</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'success'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">'Action:'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">action</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">'Text:'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">text</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">'Trigger:'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">trigger</span><span class="p">);</span>
+
+    <span class="nx">e</span><span class="p">.</span><span class="nx">clearSelection</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="nx">clipboard</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Action:'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">action</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Trigger:'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">trigger</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>高级用法：</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nx">ClipboardJS</span><span class="p">(</span><span class="s1">'.btn'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">target</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">trigger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">trigger</span><span class="p">.</span><span class="nx">nextElementSibling</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">ClipboardJS</span><span class="p">(</span><span class="s1">'.btn'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">text</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">trigger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">trigger</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'aria-label'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="浏览器兼容">浏览器兼容</h2>
+<p><img src="/assets/image/copy/copy_03.png" alt="" /></p>
+
+<h2 id="官网">官网</h2>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">https</span><span class="p">:</span><span class="c1">//clipboardjs.com/</span>
+</code></pre></div></div>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/js/2018/09/14/floating-point-number" title="javascript浮点数处理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  javascript浮点数处理</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

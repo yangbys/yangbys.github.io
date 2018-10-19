@@ -30,6 +30,7 @@ caption,th,td {
 a img {
 	border:none
 }
+img {max-width: 100%;}
 /* Public style */
 * {
 	-webkit-margin-before:0;

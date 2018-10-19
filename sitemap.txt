@@ -12,6 +12,7 @@
 /assets/css/style.css
 /page2/
 
+/js/2018/10/12/clipboard
 /js/2018/09/14/floating-point-number
 /vue/2018/09/04/create-keyframe-animation
 /webpack/2018/08/21/webpack-theme

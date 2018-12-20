@@ -1,0 +1,596 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>深入理解vue mvvm双向绑定原理 | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="深入理解vue mvvm双向绑定原理">
+    <meta property="og:url" content="/vue/2018/11/25/vue-mvvm">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="理解vue的核心理念">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="深入理解vue mvvm双向绑定原理">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/vue/2018/11/25/vue-mvvm" title="深入理解vue mvvm双向绑定原理" itemprop="url">深入理解vue mvvm双向绑定原理</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-11-25 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-11-25</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<p><img src="/assets/image/mvvm/00.png" alt="" /></p>
+
+<h2 id="理解vue的核心理念">理解vue的核心理念</h2>
+
+<p><img src="/assets/image/mvvm/02.png" alt="" /></p>
+
+<p>这种开发模式,就是所谓的MV结构,我们现在了解的MVC,MVP,ＭＶＶＭ都是MV的衍生物，对比这几种框架模式，我们会总结出来一个本质的特点，那就是这些开发模式都是让视图和数据间不会发生直接联系．对比用原生JS获得dom的操作，你会发现原生dom流其实是将dom作为数据，从dom中获得Ｍｏｄｅｌ，随后又更改dom来实现更新视图，视图和模型其实混在一起，所以代码自然混乱，不易维护．</p>
+
+<p>在具有响应式系统的Vue实例中，DOM状态只是数据状态的一个映射 即 UI=VM(State) ，当等式右边State改变了，页面展示部分UI就会发生相应改变。很多人初次上手Vue时，觉得很好用，原因就是这个．不过，Vue的核心定位并不是一个框架，设计上也没有完全遵循MVVM模式，可以看到在图中只有State和View两部分， Vue的核心功能强调的是状态到界面的映射，对于代码的结构组织并不重视， 所以单纯只使用其核心功能时，它并不是一个框架，而更像一个视图模板引擎，这也是为什么Vue开发者把其命名成读音类似于view的原因。</p>
+
+<h2 id="二探讨vue的双向绑定原理及实现">二　探讨vue的双向绑定原理及实现</h2>
+
+<p><img src="/assets/image/mvvm/03.webp" alt="" /></p>
+
+<p>下面介绍两个内容
+1．vue双向绑定的原理
+2．实现简易版vue的过程，包括声明式数据渲染及一些简单的指令</p>
+
+<h2 id="vue双向绑定原理">vue双向绑定原理</h2>
+
+<p>vue的双向绑定是由数据劫持结合发布者－订阅者模式实现的，那么什么是数据劫持？vue是如何进行数据劫持的？说白了就是通过Object.defineProperty()来劫持对象属性的setter和getter操作，在数据变动时做你想要做的事情．我们可以看一下通过控制台梳齿一个定义在vue初始化数据上的对象是什么．</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+    <span class="na">el</span><span class="p">:</span> <span class="s1">'#app'</span><span class="p">,</span>
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">firstName</span><span class="p">:</span> <span class="s1">'yang'</span><span class="p">,</span>
+        <span class="na">lastName</span><span class="p">:</span> <span class="s1">'biao'</span><span class="p">,</span>
+        <span class="na">more</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">x</span><span class="p">:</span> <span class="s1">'test1688'</span>
+        <span class="p">},</span>
+        <span class="na">test</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">x</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">y</span><span class="p">:</span> <span class="s1">'还不错的哦！'</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">'test'</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p><img src="/assets/image/mvvm/04.png" alt="" /></p>
+
+<p>在打印结果中我们可以看到属性a有两个方法：get和set.为什么会有这两个方法呢，这正是vue通过Object.defineProperty()进行数据劫持的．</p>
+
+<p>Object.defineProperty()这个方法是做什么的呢？文档上是这样说的</p>
+
+<p><img src="/assets/image/mvvm/05.png" alt="" /></p>
+
+<p>简单的说，他可以控制一个对象属性的一些特有操作，比如读写权，是否可枚举，这里我们主要研究它的get和set方法，如果想清楚更多用法，可以参考：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+我们可以很轻松的打印出一个对象的属性数据：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Test</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">'yangbys'</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Test</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>  <span class="c1">// yangbys</span>
+</code></pre></div></div>
+<p>但是如果在执行console.log(Test.name)的同时，给Test增加一个名号呢，这个时候应该怎么做，这时候我们就需要用到Object.defineProperty( )了：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//在console.log(Test.name)同时,直接给加一个名号</span>
+<span class="kd">var</span> <span class="nx">Test</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">Test</span><span class="p">,</span><span class="s1">'name'</span><span class="p">,{</span>
+    <span class="na">set</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">name</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'你取了一个名叫:'</span><span class="o">+</span><span class="nx">value</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="na">get</span><span class="p">:</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'get方法被监听到'</span><span class="p">);</span>
+        <span class="k">return</span> <span class="s1">'&lt;'</span><span class="o">+</span><span class="nx">name</span><span class="o">+</span><span class="s1">'&gt;'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">Test</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'yangbys'</span><span class="p">;</span>  <span class="c1">//你取了一个名叫:yangbys</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Test</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span><span class="err">　</span><span class="c1">// yangbys</span>
+</code></pre></div></div>
+
+<p><img src="/assets/image/mvvm/06.png" alt="" /></p>
+
+<p>另外再说下，我在网上看到一道面试题是这样的
+怎样得到一个这样的结果 (a === 1 &amp;&amp; a === 2 &amp;&amp; a === 3 &amp;&amp; true)</p>
+
+<p>一看就可以用Object.defineProperty()来实现了</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 用来存放保存的值</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">get</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="o">++</span> <span class="nx">n</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span> <span class="o">===</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span> <span class="o">===</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="kc">true</span><span class="p">)</span> <span class="c1">// 是不是很简单呢</span>
+</code></pre></div></div>
+
+<h2 id="实现过程">实现过程</h2>
+
+<p>我们已经知道如何实现数据的双向绑定了，　那么首先要对数据进行劫持监听，所以我们首先要设置一个监听器Observer,用来监听所有的属性，当属性变化时，就需要通知订阅者Watcher,看是否需要更新．因为属性可能是多个，所以会有多个订阅者，故我们需要一个消息订阅器Dep来专门收集这些订阅者，并在监听器Observer和订阅者Watcher之间进行统一的管理．以为在节点元素上可能存在一些指令，所以我们还需要有一个指令解析器Compile，对每个节点元素进行扫描和解析，将相关指令初始化成一个订阅者Watcher，并替换模板数据并绑定相应的函数，这时候当订阅者Watcher接受到相应属性的变化，就会执行相对应的更新函数，从而更新视图．</p>
+
+<p>整理上面的思路，我们需要实现三个步骤，来完成双向绑定：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="p">.</span><span class="err">实现一个监听器</span><span class="nx">Observer</span><span class="err">，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</span>
+ 
+<span class="mi">2</span><span class="p">.</span><span class="err">实现一个订阅者</span><span class="nx">Watcher</span><span class="err">，可以收到属性的变化通知并执行相应的函数，从而更新视图。</span>
+ 
+<span class="mi">3</span><span class="p">.</span><span class="err">实现一个解析器</span><span class="nx">Compile</span><span class="err">，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。</span>
+</code></pre></div></div>
+
+<p>流程图如下：</p>
+
+<p><img src="/assets/image/mvvm/07.png" alt="" /></p>
+
+<h2 id="1实现一个监听器observer">1.实现一个监听器Observer</h2>
+
+<p>数据监听器的核心方法就是Object.defineProperty()，通过遍历循环对所有属性值进行监听，并对其进行Object.defineProperty()处理，那么代码可以这样写：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//对所有属性都要监听,递归遍历所有属性</span>
+<span class="kd">function</span> <span class="nx">defineReactive</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span><span class="p">){</span>
+    <span class="nx">observe</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">enumerable</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>         <span class="c1">//当且仅当该属性的 configurable 为 true 时，该属性描述符才能够被改变，同时该属性也能从对应的对象上被删除。</span>
+        <span class="na">configurable</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>       <span class="c1">//当且仅当该属性的enumerable为true时，该属性才能够出现在对象的枚举属性中</span>
+        <span class="na">get</span><span class="p">:</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="na">set</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">val</span> <span class="o">=</span> <span class="nx">newVal</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'属性'</span><span class="o">+</span><span class="nx">key</span><span class="o">+</span><span class="s1">'已经被监听,现在值为:"'</span><span class="o">+</span><span class="nx">newVal</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span><span class="o">+</span><span class="s1">'"'</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">observe</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">data</span> <span class="o">||</span> <span class="k">typeof</span> <span class="nx">data</span> <span class="o">!==</span> <span class="s1">'object'</span><span class="p">){</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">defineReactive</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
+    <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">library</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">book1</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="s1">''</span>
+    <span class="p">},</span>
+    <span class="na">book2</span><span class="p">:</span> <span class="s1">''</span>
+<span class="p">};</span>
+<span class="nx">observe</span><span class="p">(</span><span class="nx">library</span><span class="p">);</span>
+<span class="nx">library</span><span class="p">.</span><span class="nx">book1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">'vue权威指南'</span><span class="p">;</span> <span class="c1">// 属性name已经被监听了，现在值为：“vue权威指南”</span>
+<span class="nx">library</span><span class="p">.</span><span class="nx">book2</span> <span class="o">=</span> <span class="s1">'没有此书籍'</span><span class="p">;</span>  <span class="c1">// 属性book2已经被监听了，现在值为：“没有此书籍”</span>
+</code></pre></div></div>
+
+<p>通过observe()方法进行遍历向下找到所有的属性，并通过defineReactive()方法进行数据劫持监听．</p>
+
+<p>在上面的思路中，我们需要一个可以容纳消息订阅者的消息订阅器Dep，订阅器主要收集消息订阅者，然后在属性变化时执行相应订阅者的更新函数，那么消息订阅器Dep需要有一个容器，用来存放消息订阅者．我们将上面的监听器Observer稍微修改一下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">defineReactive</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="nx">key</span><span class="p">,</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">observe</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">dep</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dep</span><span class="p">();</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">enumerable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">configurable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">get</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">Dep</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">//Watcher初始化触发</span>
+                <span class="nx">dep</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">Dep</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span> <span class="c1">// 在这里添加一个订阅者</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">val</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="na">set</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">val</span> <span class="o">===</span> <span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">val</span> <span class="o">=</span> <span class="nx">newVal</span><span class="p">;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'属性'</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">'已经被监听了，现在值为：“'</span> <span class="o">+</span> <span class="nx">newVal</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'”'</span><span class="p">);</span>
+            <span class="nx">observe</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span> <span class="c1">// 监听递归遍历所有属性</span>
+            <span class="nx">dep</span><span class="p">.</span><span class="nx">notify</span><span class="p">();</span> <span class="c1">// 如果数据变化，通知所有订阅者</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+ 
+<span class="kd">function</span> <span class="nx">observe</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">data</span> <span class="o">||</span> <span class="k">typeof</span> <span class="nx">data</span> <span class="o">!==</span> <span class="s1">'object'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">){</span>
+        <span class="nx">defineReactive</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="nx">key</span><span class="p">,</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+ 
+<span class="kd">function</span> <span class="nx">Dep</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">subs</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="p">}</span>
+ 
+<span class="c1">//prototype 属性使您有能力向对象添加属性和方法</span>
+<span class="c1">//prototype这个属性只有函数对象才有，具体的说就是构造函数具有.只要你声明定义了一个函数对象，这个prototype就会存在</span>
+<span class="c1">//对象实例是没有这个属性</span>
+<span class="nx">Dep</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>                        
+    <span class="na">add</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">watcher</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">subs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">watcher</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="na">notify</span><span class="p">:</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">subs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">sub</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">sub</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>        <span class="c1">//通知每个订阅者检查更新</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">Dep</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>在代码中，我们将订阅器Dep添加一个订阅者设计在get里面，这是为了让Watcher在初始化时触发，因此判断是否需要需要添加订阅者，至于具体实现的方法，我们在下文中深究．在set方法中，如果函数变化，就会通知所有的订阅者，订阅者们将会执行相对应的更新函数，到目前为止，一个比较完善的Observer已经成型了，下面我们要写订阅者Watcher.</p>
+
+<h2 id="２实现订阅者watcher">２．实现订阅者Watcher</h2>
+
+<p>根据我们的思路，订阅者Wahcher在初始化时要将自己添加到订阅器Dep中，那么如何进行添加呢？</p>
+
+<p>我们已经知道监听器Observer是在get函数中执行了添加订阅者的操作的，所以我们只需要在订阅者Watcher在初始化时触发相对应的get函数来执行添加订阅者的操作即可．那么怎么触发对应的get函数呢？我们只需要获取对应的属性值，就可以通过Object.defineProperty()触发对应的get了．</p>
+
+<p>在这里需要注意一个细节，我们只需要在订阅者初始化时才执行添加订阅者，所以我们需要一个判断，在Dep.target上缓存一下订阅者，添加成功后去除就行了，代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Watcher</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">arrt</span><span class="p">,</span> <span class="nx">node</span><span class="p">){</span>
+    <span class="nx">Dep</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="k">this</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$vm</span> <span class="o">=</span> <span class="nx">vm</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">key</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">attr</span> <span class="o">=</span> <span class="nx">attr</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
+    <span class="nx">Dep</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Watcher</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="p">{</span><span class="nx">node</span><span class="p">,</span> <span class="nx">attr</span><span class="p">,</span> <span class="nx">$vm</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">$vm</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">key</span><span class="p">]</span>
+            
+            <span class="kd">var</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">nodeType</span>
+
+            <span class="c1">// element</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span><span class="p">){</span>
+                <span class="kd">var</span> <span class="nx">modelValue</span> <span class="o">=</span> <span class="nx">getAttrValue</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s1">'v-model'</span><span class="p">)</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="nx">modelValue</span><span class="p">){</span>
+                    <span class="nx">node</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">$vm</span><span class="p">[</span><span class="nx">modelValue</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="c1">// text</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">3</span><span class="p">){</span>
+                <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\{\{(</span><span class="sr">.*</span><span class="se">?)\}\}</span><span class="sr">/</span>
+                <span class="kd">let</span> <span class="nx">nodeValue</span>
+                <span class="c1">// 多级 </span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nb">RegExp</span><span class="p">.</span><span class="nx">$1</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+                    <span class="kd">var</span> <span class="nx">attrs</span> <span class="o">=</span> <span class="nb">RegExp</span><span class="p">.</span><span class="nx">$1</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span>
+                    <span class="kd">let</span> <span class="nx">obj</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="p">[</span><span class="nx">index</span><span class="p">,</span> <span class="nx">item</span><span class="p">]</span> <span class="k">of</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">entries</span><span class="p">()){</span>
+                        <span class="nx">obj</span> <span class="o">=</span> <span class="nx">obj</span> <span class="p">?</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">item</span><span class="p">]</span> <span class="p">:</span> <span class="nx">$vm</span><span class="p">[</span><span class="nx">item</span><span class="p">]</span>
+                    <span class="p">}</span>
+                    <span class="nx">nodeValue</span> <span class="o">=</span> <span class="nx">obj</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="nx">nodeValue</span> <span class="o">=</span> <span class="nx">attr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\{\{(</span><span class="sr">.*</span><span class="se">?)\}\}</span><span class="sr">/g</span><span class="p">,</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">$vm</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+                    <span class="p">})</span>
+                <span class="p">}</span>
+                
+                <span class="nx">node</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">nodeValue</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>这样我们就可以用理想的形式改变模板数据了</p>
+
+<h2 id="３实现指令解析器compile">３．实现指令解析器Compile</h2>
+
+<p>再上面的双向绑定demo中，我们发现整个过程都没有解析dom节点，而是固定某个节点进行替换数据，所以接下来我们要实现一个解析器Compile来解析和绑定工作，分析解析器的作用，实现步骤如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="p">.</span><span class="err">解析模板指令，并替换模板数据，初始化视图</span>
+ 
+<span class="mi">2</span><span class="p">.</span><span class="err">将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器</span>
+</code></pre></div></div>
+
+<p>接下来需要遍历所有节点，对含有指令的节点进行特殊的处理，这里我们先处理最简单的情况，只对带有 ‘’ 这种形式的指令进行处理，代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">getAttrValue</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">key</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">value</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getAttrHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">key</span><span class="p">){</span>
+    <span class="kd">const</span> <span class="nx">attr</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">attributes</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">attr</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">attr</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">':'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+            <span class="kd">const</span> <span class="nx">attrs</span> <span class="o">=</span> <span class="nx">attr</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nx">attrs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">?</span> <span class="nx">attrs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="nx">attrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">attr</span><span class="p">.</span><span class="nx">value</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
+
+<span class="c1">// 遍历#app (el) 下面的所有节点</span>
+<span class="kd">function</span> <span class="nx">compile</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">allNode</span><span class="p">){</span>
+    <span class="kd">const</span> <span class="nx">nodes</span> <span class="o">=</span> <span class="nx">allNode</span><span class="p">.</span><span class="nx">childNodes</span>
+
+    <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">nodes</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span> <span class="nx">node</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">nodeType</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">nodeType</span>
+        <span class="kd">const</span> <span class="nx">tagName</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">tagName</span> 
+        
+        <span class="c1">// 元素 element</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">1</span><span class="p">){</span>
+            <span class="kd">const</span> <span class="nx">modelValue</span> <span class="o">=</span> <span class="nx">getAttrValue</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s1">'v-model'</span><span class="p">)</span>
+            <span class="kd">const</span> <span class="nx">handleValue</span> <span class="o">=</span> <span class="nx">getAttrValue</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s1">'v-on:click'</span><span class="p">)</span>
+            <span class="kd">const</span> <span class="nx">getHanleName</span> <span class="o">=</span> <span class="nx">getAttrHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s1">'v-on:click'</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">((</span><span class="nx">tagName</span> <span class="o">===</span> <span class="s1">'INPUT'</span> <span class="o">||</span> <span class="nx">tagName</span> <span class="o">===</span> <span class="s1">'TEXTAREA'</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">modelValue</span><span class="p">){</span>
+                <span class="nx">node</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'input'</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">vm</span><span class="p">.</span><span class="nx">$data</span><span class="p">[</span><span class="nx">modelValue</span><span class="p">]</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span>
+                <span class="p">})</span>
+                
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'new Watcher+++++'</span><span class="p">,</span> <span class="nx">modelValue</span><span class="p">,</span> <span class="nx">modelValue</span><span class="p">)</span>
+                <span class="k">new</span> <span class="nx">Watcher</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">modelValue</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">modelValue</span><span class="p">)</span>
+
+                <span class="c1">// 赋值给当前的输入框</span>
+                <span class="nx">node</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">vm</span><span class="p">.</span><span class="nx">$data</span><span class="p">[</span><span class="nx">modelValue</span><span class="p">]</span>
+            <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">handleValue</span><span class="p">){</span>
+                <span class="nx">node</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">getHanleName</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="nx">vm</span><span class="p">.</span><span class="nx">$methods</span><span class="p">[</span><span class="nx">handleValue</span><span class="p">]){</span>
+                        <span class="nx">vm</span><span class="p">.</span><span class="nx">$methods</span><span class="p">[</span><span class="nx">handleValue</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="nx">vm</span><span class="p">)</span>
+                    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">`没有找到 </span><span class="p">${</span><span class="nx">handleValue</span><span class="p">}</span><span class="s2"> 该事件`</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    
+                <span class="p">})</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// 文本 text</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">3</span><span class="p">){</span>
+            <span class="kd">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">textContent</span>
+            <span class="kd">const</span> <span class="nx">nodeValue</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\{\{(</span><span class="sr">.*</span><span class="se">?)\}\}</span><span class="sr">/g</span><span class="p">,</span> <span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'new Watcher+++++'</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span>
+                <span class="k">new</span> <span class="nx">Watcher</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nx">vm</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+            <span class="p">})</span>
+
+            <span class="c1">// node.textContent = nodeValue</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">hasChildNodes</span><span class="p">()){</span>
+            <span class="nx">compile</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>为了将解析器Compile与监听器Observer和订阅者Watcher关联起来，我们需要一个Vue函数</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Vue</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">function</span><span class="p">:</span> <span class="nx">init</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$options</span> <span class="o">=</span> <span class="nx">options</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$data</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$methods</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">methods</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$el</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">el</span><span class="p">)</span>
+        
+        <span class="nx">observe</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$data</span><span class="p">)</span>
+
+        <span class="c1">// 把data的属性挂载到当前对象上</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">proxy</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+        
+        <span class="nx">compile</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="na">function</span><span class="p">:</span> <span class="nx">proxy</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">vm</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">data</span> <span class="o">===</span> <span class="s1">'object'</span><span class="p">){</span>
+            <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="p">{</span>
+                    <span class="na">enumerable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="na">configurable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="kd">get</span><span class="p">()</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+                    <span class="p">},</span>
+                    <span class="kd">set</span><span class="p">(</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newVal</span>
+                    <span class="p">}</span>
+                <span class="p">})</span>
+            <span class="p">})</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>到这里，一个数据双向绑定功能已经基本完成了.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"app"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"firstName"</span> <span class="nx">v</span><span class="o">-</span><span class="nx">model</span><span class="o">=</span><span class="s2">"firstName"</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span> <span class="nx">id</span><span class="o">=</span><span class="s2">"lastName"</span> <span class="nx">v</span><span class="o">-</span><span class="nx">model</span><span class="o">=</span><span class="s2">"lastName"</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">style</span><span class="o">=</span><span class="s2">"margin-top:10px;"</span><span class="o">&gt;&lt;</span><span class="nx">button</span> <span class="nx">v</span><span class="o">-</span><span class="nx">on</span><span class="p">:</span><span class="nx">click</span><span class="o">=</span><span class="s2">"test"</span><span class="o">&gt;</span><span class="err">点击我咯</span><span class="o">&lt;</span><span class="sr">/button&gt;&lt;/</span><span class="nx">div</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="kd">var</span> <span class="nx">vm</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+    <span class="na">el</span><span class="p">:</span> <span class="s1">'#app'</span><span class="p">,</span>
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">firstName</span><span class="p">:</span> <span class="s1">'yang'</span><span class="p">,</span>
+        <span class="na">lastName</span><span class="p">:</span> <span class="s1">'biao'</span><span class="p">,</span>
+        <span class="na">more</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">x</span><span class="p">:</span> <span class="s1">'test1688'</span>
+        <span class="p">},</span>
+        <span class="na">test</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">x</span><span class="p">:</span> <span class="p">{</span>
+                <span class="na">y</span><span class="p">:</span> <span class="s1">'还不错的哦！'</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">'test'</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<p><img src="/assets/image/mvvm/08.png" alt="" /></p>
+
+<p>到目前为止，我们简易版的demo已经成功了，通过上面这个例子，我们可以更加深刻的理解vue的一些机制，比如双向绑定，声明式渲染等．</p>
+
+<p><a href="/assets/demo/mvvm/">demo(用力击击它….)</a></p>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/js/2018/11/02/new" title="js中的new()到底做了些什么？？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  js中的new()到底做了些什么？？</span>
+</a>
+</div>
+
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+	<title>test_vue_mvvm</title>
+	<style>
+		* {margin:0; padding:0;}
+		#app {padding:20px}
+	</style>
+</head>
+<body>
+	<div id="app">
+        <p>{{more.x}}</p>
+        <p>{{firstName}} {{lastName}}</p>
+        <p>{{lastName}}</p>
+        <p>{{test.x.y}}</p>
+        <input type="text" id="firstName" v-model="firstName" />
+        <input type="text" id="lastName" v-model="lastName" />
+        <div style="margin-top:10px;"><button v-on:click="test">点击我咯</button></div>
+    </div>
+
+	<script src="./js/vue.js"></script>
+	<script>
+
+        function getAttrValue(node, key){
+            return node.attributes[key] && node.attributes[key].value
+        }
+
+        function getAttrHandler(node, key){
+            const attr = node.attributes[key]
+            if(attr){
+                if(attr.name.indexOf(':') > -1){
+                    const attrs = attr.name.split(':')
+                    return attrs[1] ? attrs[1] : attrs[0]
+                }
+
+                return attr.value
+            }
+            return false
+        }
+
+        class Dep {
+            constructor() {
+                this.subs = []
+            }
+
+            add(watcher) {
+                this.subs.push(watcher)
+            }
+
+            notify() {
+                this.subs.forEach(watcher => {
+                    watcher.update()
+                })
+            }
+        }
+
+        Dep.target = null
+
+
+        class Watcher {
+            constructor(vm, key, node, attr) {
+                // console.log('init Attr++++++++',attr)
+                Dep.target = this
+                this.$vm = vm
+                this.key = key
+                this.attr = attr
+                this.node = node
+                this.update()
+                Dep.target = null
+            }
+            
+            update() {
+                const {node, attr, $vm} = this
+                this.value = $vm[this.key]
+                
+                const nodeType = node.nodeType
+
+                // element
+                if(nodeType === 1){
+                    const modelValue = getAttrValue(node, 'v-model')
+
+                    if(modelValue){
+                        node.value = $vm[modelValue]
+                    }
+                }
+                
+                // text
+                if(nodeType === 3){
+                    const reg = /\{\{(.*?)\}\}/
+                    let nodeValue
+                    // 多级 {{x.y.z}}
+                    if(reg.test(attr) && RegExp.$1.indexOf('.') > -1){
+                        const attrs = RegExp.$1.split('.')
+                        let obj
+                        for(let [index, item] of attrs.entries()){
+                            obj = obj ? obj[item] : $vm[item]
+                        }
+                        nodeValue = obj
+                    }else{
+                        nodeValue = attr.replace(/\{\{(.*?)\}\}/g, (str, key) => {
+                            return $vm[key]
+                        })
+                    }
+                    
+                    node.textContent = nodeValue
+                }
+                
+            }
+        }
+        
+        function defineRective(data, key, val){
+            observe(val)
+            const dep = new Dep()
+
+            Object.defineProperty(data, key, {
+                get() {
+                    if(Dep.target){
+                        dep.add(Dep.target)
+                    }
+                    return val
+                },
+                set(newVal) {
+                    if(val === newVal){
+                        return
+                    }
+                    val = newVal
+                    observe(newVal)
+                    dep.notify()
+                }
+            })
+        }
+        
+        function observe(data) {
+            if(!data || typeof data !== 'object') {
+                return
+            }
+
+            Object.keys(data).forEach( key => {
+                defineRective(data, key, data[key])
+            })
+        }
+
+        function compile(vm, allNode){
+            const nodes = allNode.childNodes
+
+            Array.from(nodes).forEach( node => {
+                const nodeType = node.nodeType
+                const tagName = node.tagName 
+                
+                // 元素 element
+                if(nodeType === 1){
+                    const modelValue = getAttrValue(node, 'v-model')
+                    const handleValue = getAttrValue(node, 'v-on:click')
+                    const getHanleName = getAttrHandler(node, 'v-on:click')
+                    if((tagName === 'INPUT' || tagName === 'TEXTAREA') && modelValue){
+                        node.addEventListener('input', e => {
+                            vm.$data[modelValue] = e.target.value
+                        })
+                        
+                        console.log('new Watcher+++++', modelValue, modelValue)
+                        new Watcher(vm, modelValue, node, modelValue)
+
+                        // 赋值给当前的输入框
+                        node.value = vm.$data[modelValue]
+                    }else if(handleValue){
+                        node.addEventListener(getHanleName, function(){
+                            if(vm.$methods[handleValue]){
+                                vm.$methods[handleValue].call(vm)
+                            }else{
+                                throw new Error(`没有找到 ${handleValue} 该事件`)
+                            }
+                            
+                        })
+                    }
+                }
+                
+                // 文本 text
+                if(nodeType === 3){
+                    const text = node.textContent
+                    const nodeValue = text.replace(/\{\{(.*?)\}\}/g, (str, key) => {
+                        console.log('new Watcher+++++', key, text)
+                        new Watcher(vm, key, node, text)
+                        return vm[key]
+                    })
+
+                    // node.textContent = nodeValue
+                }
+
+                if(node.hasChildNodes()){
+                    compile(vm, node)
+                }
+            })
+            
+        }
+
+
+        class Vue {
+            constructor(options){
+                this.init(options)
+            }
+
+            init(options) {
+                this.$options = options
+                this.$data = options.data
+                this.$methods = options.methods
+                this.$el = document.querySelector(options.el)
+                
+                observe(this.$data)
+                this.proxy(options.data, this)
+                
+                // options.methods && this.proxy(options.methods, this)
+
+                compile(this, this.$el)
+            }
+            
+            proxy(data, vm) {
+                if(typeof data === 'object'){
+                    Object.keys(data).forEach(key => {
+                        Object.defineProperty(vm, key, {
+                            enumerable: true,
+                            configurable: true,
+                            get() {
+                                return data[key]
+                            },
+                            set(newVal) {
+                                data[key] = newVal
+                            }
+                        })
+                    })
+                }
+            }
+
+        }
+        
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'yang',
+                lastName: 'biao',
+                more: {
+                    x: 'test1688'
+                },
+                test: {
+                    x: {
+                        y: '还不错的哦！'
+                    }
+                }
+            },
+            methods: {
+                test() {
+                    this.firstName = this.firstName + 'test'
+                }
+            }
+        })
+
+        
+        
+    </script>
+</body>
+</html>

@@ -12,6 +12,8 @@
 /assets/css/style.css
 /page2/
 
+/vue/2018/11/25/vue-mvvm
+/js/2018/11/02/new
 /js/2018/10/12/clipboard
 /js/2018/09/14/floating-point-number
 /vue/2018/09/04/create-keyframe-animation

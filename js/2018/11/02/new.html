@@ -1,0 +1,247 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+    
+    
+    
+    
+    <title>js中的new()到底做了些什么？？ | 杨标Blog</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+
+    
+    <!--<%- open_graph({twitter_id: theme.author.twitter, google_plus: theme.author.google_plus}) %>-->
+    
+    <meta name="description" content="page.description">
+    
+    <meta property="og:type" content="article">
+    
+    <meta property="og:title" content="js中的new()到底做了些什么？？">
+    <meta property="og:url" content="/js/2018/11/02/new">
+    <meta property="og:site_name" content="杨标Blog">
+    <meta property="og:description" content="js中的new()到底做了些什么">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="js中的new()到底做了些什么？？">
+    <meta name="twitter:description" content="page.description">
+    <meta name="twitter:creator" content="@">
+    <link rel="publisher" href="">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨标Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/assets/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/assets/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/jacman.jpg">
+    
+
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/highlight.css" type="text/css">
+</head>
+
+  <body>
+    <div id="header">
+        <div class="header-content clearfix">
+
+		    
+			<div class="imglogo">
+				<a href="/"><img src="/assets/img/author.jpg" alt="杨标Blog" title="杨标Blog"/></a>
+			</div>
+			
+
+			<div class="textlogo">
+				<h1 class="site-name"><a href="/" title="杨标Blog">杨标Blog</a></h1>
+				<h2 class="blog-motto">生活因我而精彩!</h2>
+			</div>
+
+			<div class="nav animated">
+				<ul class="navList clearfix">
+					
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">分类</a></li>
+					
+						<li><a href="/categories">归档</a></li>
+					
+						<li><a href="/tags">标签</a></li>
+					
+						<li><a href="/about">关于Yangbys</a></li>
+					
+				</ul>
+			</div>
+</div>
+
+    </div>
+    <div id="container">
+      
+
+
+
+
+
+<div id="main" class="post" itemscope itemprop="blogPost">
+	<div itemprop="articleBody">
+	<div class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/js/2018/11/02/new" title="js中的new()到底做了些什么？？" itemprop="url">js中的new()到底做了些什么？？</a>
+  </h1>
+  <p class="article-time">
+    <time datetime="2018-11-02 00:00:00 +0800" itemprop="datePublished"> 发表于 2018-11-02</time>
+  </p>
+</div>
+
+	<div class="article-content">
+		<h2 id="使用new关键字调用函数new-classa的具体步骤">使用new关键字调用函数（new ClassA(…)）的具体步骤：</h2>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span><span class="p">.</span> <span class="err">创建空对象；</span>
+<span class="err">　　</span><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="mi">2</span><span class="p">.</span> <span class="err">设置新对象的</span><span class="kd">constructor</span><span class="err">属性为构造函数的名称，设置新对象的</span><span class="nx">__proto__</span><span class="err">属性指向构造函数的</span><span class="nx">prototype</span><span class="err">对象；</span>
+<span class="err">　　</span><span class="nx">obj</span><span class="p">.</span><span class="nx">__proto__</span> <span class="o">=</span> <span class="nx">ClassA</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+
+<span class="mi">3</span><span class="p">.</span> <span class="err">使用新对象调用函数，函数中的</span><span class="k">this</span><span class="err">被指向新实例对象：</span>
+<span class="err">　　</span><span class="nx">ClassA</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span><span class="err">　　</span><span class="c1">//{}.构造函数();          </span>
+
+<span class="mi">4</span><span class="p">.</span> <span class="err">将初始化完毕的新对象地址，保存到等号左边的变量中</span>
+</code></pre></div></div>
+
+<h2 id="new-操作符">new 操作符</h2>
+
+<p>在有上面的基础概念的介绍之后，在加上new操作符，我们就能完成传统面向对象的class + new的方式创建对象，在JavaScript中，我们将这类方式成为Pseudoclassical。
+基于上面的例子，我们执行如下代码</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Base</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>这样代码的结果是什么，我们在Javascript引擎中看到的对象模型是：
+<img src="/assets/image/new_object.png" alt="" /></p>
+
+<p>new操作符具体干了什么呢?其实很简单，就干了三件事情。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">obj</span>  <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">__proto__</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">prototype</span><span class="p">;</span>
+<span class="nx">Base</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>第一行，我们创建了一个空对象obj
+第二行，我们将这个空对象的__proto__成员指向了Base函数对象prototype成员对象
+第三行，我们将Base函数对象的this指针替换成obj，然后再调用Base函数，于是我们就给obj对象赋值了一个id成员变量，这个成员变量的值是”base”，关于call函数的用法。</p>
+
+<h2 id="注意">注意：</h2>
+<p>若构造函数中返回this或返回值是基本类型（number、string、boolean、null、undefined）的值，则返回新实例对象；若返回值是引用类型的值，则实际返回值为这个引用类型。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">"bar"</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">test</span> <span class="p">()</span> <span class="p">{</span>
+<span class="err">　　</span><span class="k">this</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="s2">"foo"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">new</span> <span class="nx">test</span><span class="p">();</span>            <span class="err">　　　　　　　　</span><span class="c1">//test中的this指新对象，并未改变全局的foo属性</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span>             <span class="c1">// "bar"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nx">test</span><span class="p">().</span><span class="nx">foo</span><span class="p">);</span>  <span class="c1">// "foo";</span>
+</code></pre></div></div>
+
+<h2 id="优先级问题">优先级问题：</h2>
+
+<p>优先级由高到低：小括号(xxx) —&gt; 属性访问.  —&gt; new foo() —-&gt; foo()</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">getName</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">Foo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> 
+    <span class="p">};</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Foo</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">//先从.属性访问符号开始往前面找一个最近的对象，同时注意new Foo()优先于Foo();</span>
+<span class="kd">var</span> <span class="nx">a</span><span class="o">=</span><span class="k">new</span> <span class="nx">Foo</span><span class="p">.</span><span class="nx">getName</span><span class="p">();</span><span class="c1">//3;===new (Foo.getName)();返回Foo.getName类型的实例</span>
+
+<span class="kd">var</span> <span class="nx">b</span><span class="o">=</span><span class="k">new</span> <span class="nx">Foo</span><span class="p">().</span><span class="nx">getName</span><span class="p">();</span><span class="c1">//2;===(new Foo()).getName()；返回undefined</span>
+
+<span class="kd">var</span> <span class="nx">c</span><span class="o">=</span><span class="k">new</span> <span class="k">new</span> <span class="nx">Foo</span><span class="p">().</span><span class="nx">getName</span><span class="p">();</span><span class="c1">//2;===new (new Foo().getName)();返回Foo.getName类型的实例</span>
+
+<span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span><span class="c1">//===((new Date()).getTime)()</span>
+
+<span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">).</span><span class="nx">getTime</span><span class="p">();</span>
+
+<span class="k">new</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">getTime</span><span class="p">();</span><span class="c1">//Uncaught TypeError: Date(...).getTime is not a function；===new (Date.getTime)()</span>
+</code></pre></div></div>
+
+	</div>
+	</div>
+	
+<div class="article-nav clearfix">
+ 
+ <div class="prev pageBtn" >
+ <a href="/js/2018/10/12/clipboard" title="clipboard.js 实现移动端和pc端复制到剪贴板功能">
+  <strong>上一篇：</strong><br/>
+  <span>
+  clipboard.js 实现移动端和pc端复制到剪贴板功能</span>
+</a>
+</div>
+
+
+<div class="next pageBtn">
+<a href="/vue/2018/11/25/vue-mvvm"  title="深入理解vue mvvm双向绑定原理">
+ <strong>下一篇：</strong><br/>
+ <span>深入理解vue mvvm双向绑定原理
+</span>
+</a>
+</div>
+
+</div>
+
+
+	
+
+</div>
+
+
+    </div>
+    <div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="info">
+		<p> @2018 Yangbys. <br/><br/>
+			Email: yangbys@126.com</p>
+	</div>
+	 
+
+</div>
+
+    <script src="/assets/js/jquery-2.0.3.min.js?v=321"></script>
+
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/assets/img/scrollup.png"/></a>
+	</div>
+	<script src="/assets/js/totop.js"></script>
+
+
+<script src="/assets/js/snow.js"></script>
+
+<!-- Totop End -->
+
+  </body>
+</html>
+
